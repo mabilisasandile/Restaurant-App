@@ -2,9 +2,10 @@
 import React, { useState, useEffect } from "react";
 import { auth } from "../config/firebase";
 import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
-import { Text, View, TextInput, Alert, Button, StyleSheet, TouchableOpacity } from "react-native";
+import { Text, View, TextInput, Alert, Image, StyleSheet, TouchableOpacity } from "react-native";
 import { Card } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
+import image1 from '../images/ash.jpg';
 
 
 
@@ -59,14 +60,17 @@ const SignIn = () => {
     };
 
 
-
     return (
 
         <View style={styles.container}>
 
             <Card style={styles.card}>
-                <Card.Title title="Sign In Page" subtitle="Enter your credentials to log in!" />
+                <Card.Title title="Sign In Here" />
                 <Card.Content>
+                    <Image
+                        source={image1}
+                        style={styles.image}
+                    />
                     <TextInput
                         placeholder="Username/Email"
                         value={email}
@@ -91,7 +95,7 @@ const SignIn = () => {
                 </Card.Actions>
 
                 <Card.Actions>
-                    <TouchableOpacity style={styles.nav_link} onPress={() => navigation.navigate('SignUp')}>
+                    <TouchableOpacity style={styles.nav_link} onPress={handleLinkClick}>
                         <Text>No account? Sign Up Now </Text>
                     </TouchableOpacity>
                 </Card.Actions>
@@ -116,10 +120,16 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
+    image: {
+        width: 250,
+        height: 200,
+        borderRadius: 20,
+        resizeMode: 'cover',
+    },
     card: {
         marginTop: 15,
         marginBottom: 15,
-        height: 500,
+        height: 600,
         width: 300,
         backgroundColor: '#d8bfd8',
         borderRadius: 10,
@@ -134,7 +144,7 @@ const styles = StyleSheet.create({
     },
     text: {
         fontSize: 18,
-        marginBottom: 20,
+        marginBottom: 10,
         color: "#FFFFFF",
     },
     button: {
@@ -149,8 +159,8 @@ const styles = StyleSheet.create({
         cursor: 'pointer',
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: 10,
-        marginBottom: 10,
+        marginTop: 5,
+        marginBottom: 5,
     },
     nav_link: {
         paddingHorizontal: 5,
@@ -161,8 +171,8 @@ const styles = StyleSheet.create({
         cursor: 'pointer',
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: 10,
-        marginBottom: 10,
+        marginTop: 5,
+        marginBottom: 5,
         textDecorationLine: 'underline',
         textDecorationColor: '#000000',
     },
@@ -174,8 +184,8 @@ const styles = StyleSheet.create({
         borderColor: 'gray',
         borderWidth: 1,
         borderRadius: 5,
-        marginTop: 20,
-        marginBottom: 20,
+        marginTop: 10,
+        marginBottom: 10,
     },
     labels: {
         color: "#FFFFFF",

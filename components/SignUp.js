@@ -6,6 +6,7 @@ import { Text, View, TextInput, Alert, Button, StyleSheet, TouchableOpacity } fr
 import { addDoc, collection, doc } from "firebase/firestore";
 import { Card } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
+import SignIn from "./SignIn";
 
 
 const SignUp = () => {
@@ -39,7 +40,7 @@ const SignUp = () => {
             Alert.alert("Success", "Signed Up Successfully.", [{ text: "OK" }]);
             console.log("Signed Up Successfully.");
             setMessage("Successfully registered");
-            // navigation.navigate('SignIn');
+            navigation.navigate('SignIn');
 
         }).catch((error) => {
 
@@ -50,6 +51,11 @@ const SignUp = () => {
 
         })
     })
+
+
+    const handleLinkClick = () => {
+        navigation.navigate('SignIn');
+    }
 
 
     return (
@@ -107,7 +113,7 @@ const SignUp = () => {
                     </TouchableOpacity>
                 </Card.Actions>
                 <Card.Actions>
-                    <TouchableOpacity style={styles.nav_link} onPress={() => navigation.navigate('SignIn')}>
+                    <TouchableOpacity style={styles.nav_link} onPress={handleLinkClick}>
                         <Text>Already have an account? Sign in </Text>
                     </TouchableOpacity>
                 </Card.Actions>
