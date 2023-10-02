@@ -43,7 +43,6 @@ export default function Home() {
             </View>
 
             <View style={styles.slide2}>
-
                 <TouchableOpacity style={styles.button} onPress={handleMenuNav}>
                     <Text>Check Menus</Text>
                 </TouchableOpacity>
@@ -51,7 +50,6 @@ export default function Home() {
                 <TouchableOpacity style={styles.button} onPress={handleCartNav}>
                     <Text>View Cart</Text>
                 </TouchableOpacity>
-
             </View>
         </View>
     );

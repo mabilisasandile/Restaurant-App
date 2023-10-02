@@ -26,11 +26,11 @@ export default function App() {
 
       <NavigationContainer>
         <Stack.Navigator>
-          {/* <Stack.Screen name="SignIn" component={SignIn} /> */}
+          <Stack.Screen name="SignIn" component={SignIn} />
           <Stack.Screen name="Home" component={Home} />
-          {/* <Stack.Screen name="Menu" component={Menu} />
+          <Stack.Screen name="Menu" component={Menu} />
           <Stack.Screen name="Cart" component={Cart} />
-          <Stack.Screen name="Register" component={SignUp} /> */}
+          <Stack.Screen name="Register" component={SignUp} />
         </Stack.Navigator>
       </NavigationContainer>
     </View>
@@ -44,8 +44,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   headerContainer: {
     flexDirection: 'row',
