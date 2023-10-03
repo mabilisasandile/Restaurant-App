@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, Image, TouchableOpacity, ScrollView } from 'react-native';
 import { useNavigation } from "@react-navigation/native";
 // import * as Animatable from 'react-native-animatable';
-// import Swiper from "react-native-swiper";
+import Swiper from "react-native-swiper";
 import Menu from './Menu';
 import Cart from './Cart';
 
@@ -12,45 +12,124 @@ import image3 from '../images/petsos.jpg';
 import image4 from '../images/esrageziyor.jpg';
 import image5 from '../images/davis.jpg';
 import HomeHeader from "./HomeHeader";
+import { Icon } from "react-native-elements";
 
 
 export default function Home() {
 
+    const [delivery, setDelivery] = useState(true);
     const navigation = useNavigation();
 
 
-    const handleMenuNav =()=>{
+    const handleMenuNav = () => {
         navigation.navigate('Menu');
     }
 
-    const handleCartNav =()=>{
+    const handleCartNav = () => {
         navigation.navigate('Cart');
     }
 
     return (
         <View style={styles.container}>
-            <HomeHeader />
-            <View style={{ flex: 3, justifyContent: 'flex-start', alignItems: 'center', paddingTop: 20 }}>
-                <Text style={styles.text}>RESTAURANT APP</Text>
-
+            <View style={{ alignContent:"flex-start", alignItems:"flex-start", paddingBottom:5 }}>
+                <HomeHeader />
             </View>
 
-            <View style={styles.slide1}>
-                <Image
-                    source={image1}
-                    style={styles.image}
-                />
-            </View>
+            <ScrollView
+                stickyHeaderIndices={[0]}
+                showsVerticalScrollIndicator={true}
+            >
+                <View>
+                <View style={{ marginTop:10, flexDirection:'row', height:50, width:'100%', margin:20 }}>
+                    <TouchableOpacity
+                        onPress={() => { setDelivery(true) }}
+                        style={{ ...styles.deliveryBtn, backgroundColor: delivery ? '#8a2be2' : '#808080' }}
+                    >
+                        <Text style={styles.deliveryText}>Delivery</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={() => { setDelivery(false) }}
+                        style={{ ...styles.deliveryBtn, backgroundColor: delivery ? '#808080' : '#8a2be2' }}
+                    >
+                        <Text style={styles.deliveryText}>Pick Up</Text>
+                    </TouchableOpacity>
+                </View>
 
-            <View style={styles.slide2}>
-                <TouchableOpacity style={styles.button} onPress={handleMenuNav}>
-                    <Text>Check Menus</Text>
-                </TouchableOpacity>
+                <View style={{flexDirection:'row', alignItems:'center', justifyContent:'center', backgroundColor:'#d3d3d3', width:300, borderRadius:20, marginBottom:20}}>
+                    <View style={{flexDirection:'row', alignItems:'center', paddingLeft:20, paddingRight:20}}>
+                        <Icon
+                            type="material-community"
+                            name="map-marker"
+                            color={'gray'}
+                            size={26}
+                        />
+                        <Text>44 Marritz Street</Text>
+                    </View>
+                    <View style={{flexDirection:'row', alignItems:'center', paddingLeft:20, width:100, backgroundColor:'white', borderRadius:20}}>
+                        <Icon
+                            type="material-community"
+                            name="clock-time-four"
+                            color={'gray'}
+                            size={26}
+                        />
+                        <Text>Now</Text>
+                    </View>
+                </View>
 
-                <TouchableOpacity style={styles.button} onPress={handleCartNav}>
-                    <Text>View Cart</Text>
-                </TouchableOpacity>
-            </View>
+
+                </View>
+                
+                
+                <Swiper containerStyle={styles.wrapper}
+                    showsButtons={true}
+                    autoplay={true}
+                    height={300}>
+
+                    <View style={styles.slide1}>
+                        <Image
+                            source={image4}
+                            style={styles.image}
+                        />
+                    </View>
+                    <View style={styles.slide2}>
+                        <Image
+                            source={image5}
+                            style={styles.image}
+                        />
+                    </View>
+                    <View style={styles.slide1}>
+                        <Image
+                            source={image1}
+                            style={styles.image}
+                        />
+                    </View>
+                    <View style={styles.slide2}>
+                        <Image
+                            source={image2}
+                            style={styles.image}
+                        />
+                    </View>
+                    <View style={styles.slide1}>
+                        <Image
+                            source={image3}
+                            style={styles.image}
+                        />
+                    </View>
+
+                </Swiper>
+
+                <View style={styles.slide2}>
+                    <TouchableOpacity style={styles.button} onPress={handleMenuNav}>
+                        <Text style={{ color: '#FFFFFF', fontWeight: 'bold' }}>Check Menus</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity style={styles.button} onPress={handleCartNav}>
+                        <Text style={{ color: '#FFFFFF', fontWeight: 'bold' }}>View Cart</Text>
+                    </TouchableOpacity>
+                </View>
+            </ScrollView>
+
+
         </View>
     );
 }
@@ -69,8 +148,8 @@ const styles = StyleSheet.create({
         marginBottom: 20,
     },
     image: {
-        width: 300,
-        height: 400,
+        width: 340,
+        height: 300,
         borderRadius: 20,
         resizeMode: 'cover',
     },
@@ -82,6 +161,21 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         borderRadius: 10,
         marginBottom: 20,
+    },
+    deliveryBtn: {
+        paddingHorizontal: 20,
+        borderRadius: 15,
+        paddingVertical: 5,
+        marginBottom: 15,
+        width: 100,
+        marginLeft: 30,
+        marginRight: 30,
+        marginTop: 5,
+    },
+    deliveryText: {
+        marginLeft: 5,
+        fontSize: 16,
+        color: '#FFFFFF',
     },
     overlay: {
         position: 'absolute',
@@ -95,22 +189,17 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#9OO6CB',
+        height: 300,
     },
     slide2: {
-        flex: 4,
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#9200O9',
-        width: 200,
-        height: 20,
+        height: 300,
     },
-    slide3: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#9200O9',
+    wrapper: {
+        height: 300,
     },
-    wrapper: {},
 });
 
 {/* <View style={{ flex: 4, justifyContent: 'center' }}>

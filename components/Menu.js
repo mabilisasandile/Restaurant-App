@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View, Text, FlatList  } from 'react-native';
+import { StyleSheet, View, Text, FlatList, Image, TouchableOpacity } from 'react-native';
 import { collection, getDocs, doc } from "firebase/firestore";
+import { db } from "../config/firebase";
+import { Card } from "react-native-elements";
+import MenuHeader from "./MenuHeader";
 
 export default function Menu() {
 
     const [items, setItems] = useState([]);
 
-    useEffect(()=>{
+    useEffect(() => {
         getItems();
     }, []);
 
-    const getItems = async()=>{
+    const getItems = async () => {
         try {
             const querySnapshot = await getDocs(collection(db, "items"));
 
@@ -28,16 +31,36 @@ export default function Menu() {
 
     // Render each item in the FlatList
     const renderItem = ({ item }) => (
-        <View style={styles.item}>
-            <Text>{item.name}</Text>
-            <Text>{item.description}</Text>
-            <Text>Price: {item.price}</Text>
-        </View>
+        <Card containerStyle={styles.card}>
+            <View style={styles.cardContent}>
+                <View >
+                    <Image
+                        source={{ uri: item.imageURL }}
+                        style={styles.image}
+                    />
+                </View>
+                <View>
+                    <Text style={styles.title}>{item.name}: </Text>
+                    <Text style={styles.description}>{item.description}</Text>
+                    <Text style={styles.price}>R{item.price}.00</Text>
+                </View>
+                <View>
+                    <TouchableOpacity style={styles.btnAdd}>
+                        <Text style={{fontSize: 22, fontWeight: 'bold', color: 'white'}}>+</Text>
+                    </TouchableOpacity>
+                </View>
+            </View>
+
+
+
+        </Card>
     );
 
     return (
         <View style={styles.container}>
-            <Text>Food menu for today</Text>
+            <View>
+                <MenuHeader />
+            </View>
             {/* Render the FlatList */}
             <FlatList
                 data={items}
@@ -52,8 +75,58 @@ export default function Menu() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: '#d8bfd8',
         alignItems: 'center',
         justifyContent: 'center',
     },
+    card: {
+        borderBlockColor: 'black',
+        borderWidth: 1,
+        borderRadius: 20,
+        margin: 20,
+        width: 320,
+        height: 200,
+        flexDirection: 'row', // Row layout for card content
+        alignItems: 'center', // Center elements vertically
+    },
+    cardContent: {
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+    image: {
+        width: 100,
+        height: 100,
+        borderRadius: 20,
+        resizeMode: 'cover',
+    },
+    textContainer: {
+        flex: 1, // Take up remaining space
+        marginLeft: 10, // Add spacing between image and text
+        flexDirection: "row",
+        borderBottomWidth: 1,
+        borderColor: "gray",
+    },
+    title: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        marginLeft: 10,
+    },
+    description: {
+        fontSize: 14,
+        marginTop: 5,
+        marginLeft: 10,
+    },
+    price: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        marginTop: 5, // Add spacing between description and price
+        marginLeft: 10,
+        color: '#8a2be2',
+    },
+    btnAdd: {
+        backgroundColor: '#8a2be2',
+        padding: 15,
+        marginLeft: 10,
+        borderRadius: 10,
+    }
 });

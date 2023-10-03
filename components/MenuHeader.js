@@ -3,7 +3,7 @@ import { View, StyleSheet, Text } from "react-native";
 import { Icon, withBadge } from "react-native-elements";
 
 
-export default function HomeHeader() {
+export default function MenuHeader() {
 
     const CartIconWithBadge = withBadge(0)(Icon);
 
@@ -34,7 +34,7 @@ export default function HomeHeader() {
             </View>
 
             <View style={{ flex:1, justifyContent:'center', alignItems:'center', paddingTop:10}}>
-                <Text style={styles.text}>RestaurantFood</Text>
+                <Text style={styles.text}>EXPLORE OUR MENU</Text>
             </View>
 
             <View style={{ justifyContent:'flex-start', alignItems:'center', paddingTop:10, paddingRight:10 }}>

@@ -2,10 +2,14 @@
 import React, { useState, useEffect } from "react";
 import { auth } from "../config/firebase";
 import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
-import { Text, View, TextInput, Alert, Image, StyleSheet, TouchableOpacity } from "react-native";
+import {
+    Text, View, TextInput, Alert,
+    ScrollView, Image, StyleSheet, TouchableOpacity
+} from "react-native";
 import { Card } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
-import image1 from '../images/ash.jpg';
+// import image1 from '../images/ash.jpg';
+import image1 from '../images/restaurant.jpg';
 
 
 
@@ -64,49 +68,58 @@ const SignIn = () => {
 
         <View style={styles.container}>
 
-            <Card style={styles.card}>
-                <Card.Title title="Sign In Here" />
-                <Card.Content>
-                    <Image
-                        source={image1}
-                        style={styles.image}
-                    />
-                    <TextInput
-                        placeholder="Username/Email"
-                        value={email}
-                        onChangeText={setEmail}
-                        style={styles.inputs}
-                    />
-                    <TextInput
-                        placeholder="Password"
-                        secureTextEntry
-                        value={password}
-                        onChangeText={setPassword}
-                        style={styles.inputs}
-                    />
-                </Card.Content>
+            <ScrollView
+                stickyHeaderIndices={[0]}
+                showsVerticalScrollIndicator={true}
+            >
+                <View style={{ height: 50, backgroundColor: '#8a2be2', alignItems: 'center', justifyContent: 'center', paddingTop: 15 }}>
+                    <Text style={{ fontSize: 16, fontWeight: 'bold', color: 'white' }}>SIGN IN OR LOGIN HERE</Text>
+                </View>
+                <Card style={styles.card}>
+                    <Card.Title title="Enter Username & Password to Login" />
+                    <Card.Content>
+                        <Image
+                            source={image1}
+                            style={styles.image}
+                        />
 
-                <Card.Actions>
-                    <Text style={{ color: 'green' }}>{message}</Text>
-                    <Text style={{ color: 'red' }}>{errorMessage}</Text>
-                    <TouchableOpacity onPress={handleSignin} style={styles.button}>
-                        <Text>Sign In</Text>
-                    </TouchableOpacity>
-                </Card.Actions>
+                        <TextInput
+                            placeholder="Username/Email"
+                            value={email}
+                            onChangeText={setEmail}
+                            style={styles.inputs}
+                        />
+                        <TextInput
+                            placeholder="Password"
+                            secureTextEntry
+                            value={password}
+                            onChangeText={setPassword}
+                            style={styles.inputs}
+                        />
+                    </Card.Content>
 
-                <Card.Actions>
-                    <TouchableOpacity style={styles.nav_link} onPress={handleLinkClick}>
-                        <Text>No account? Sign Up Now </Text>
-                    </TouchableOpacity>
-                </Card.Actions>
+                    <Card.Actions>
+                        <Text style={{ color: 'green' }}>{message}</Text>
+                        <Text style={{ color: 'red' }}>{errorMessage}</Text>
+                        <TouchableOpacity onPress={handleSignin} style={styles.button}>
+                            <Text>Sign In</Text>
+                        </TouchableOpacity>
+                    </Card.Actions>
+
+                    <Card.Actions>
+                        <TouchableOpacity style={styles.nav_link} onPress={handleLinkClick}>
+                            <Text>No account? Sign Up Now </Text>
+                        </TouchableOpacity>
+                    </Card.Actions>
 
 
-                <Card.Actions>
-                    <TouchableOpacity style={styles.nav_link} onPress={handleLinkClick}>
-                        <Text>Forgot Password?</Text>
-                    </TouchableOpacity>
-                </Card.Actions>
-            </Card>
+                    <Card.Actions>
+                        <TouchableOpacity style={styles.nav_link} onPress={handleLinkClick}>
+                            <Text>Forgot Password?</Text>
+                        </TouchableOpacity>
+                    </Card.Actions>
+                </Card>
+            </ScrollView>
 
         </View>
 

@@ -2,7 +2,8 @@
 import React, { useState } from "react";
 import { auth, db } from "../config/firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { Text, View, TextInput, Alert, Button, StyleSheet, TouchableOpacity } from "react-native";
+import { Text, View, TextInput, Alert, 
+    ScrollView, StyleSheet, TouchableOpacity } from "react-native";
 import { addDoc, collection, doc } from "firebase/firestore";
 import { Card } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
@@ -62,62 +63,70 @@ const SignUp = () => {
 
         <View style={styles.container}>
 
-            <Card style={styles.card}>
-                <Card.Title title="Register" subtitle="Fill the form to open an account!" />
-                <Card.Content>
-                    <TextInput
-                        placeholder="Name"
-                        value={name}
-                        onChangeText={setName}
-                        style={styles.inputs}
-                    />
-                    <TextInput
-                        placeholder="Surname"
-                        value={surname}
-                        onChangeText={setSurname}
-                        style={styles.inputs}
-                    />
-                    <TextInput
-                        placeholder="Contact number"
-                        value={phone}
-                        onChangeText={setPhone}
-                        style={styles.inputs}
-                    />
-                    <TextInput
-                        multiline={true}
-                        numberOfLines={3}
-                        placeholder="Address"
-                        style={styles.inputs}
-                        value={address}
-                        onChangeText={(text) => setAddress(text)}
-                    />
-                    <TextInput
-                        placeholder="Email"
-                        value={email}
-                        onChangeText={setEmail}
-                        style={styles.inputs}
-                    />
-                    <TextInput
-                        placeholder="Password"
-                        secureTextEntry
-                        value={password}
-                        onChangeText={setPassword}
-                        style={styles.inputs}
-                    />
-                </Card.Content>
-                <Card.Actions>
-                    <Text style={{ color: 'green' }}>{message}</Text>
-                    <Text style={{ color: 'red' }}>{errorMessage}</Text>
-                    <TouchableOpacity onPress={handleSignup} style={styles.button}>
-                        <Text>Register</Text>
-                    </TouchableOpacity>
-                </Card.Actions>
-                <Card.Actions>
-                    <TouchableOpacity style={styles.nav_link} onPress={handleLinkClick}>
-                        <Text>Already have an account? Sign in </Text>
-                    </TouchableOpacity>
-                </Card.Actions>
-            </Card>
+            <ScrollView
+                stickyHeaderIndices={[0]}
+                showsVerticalScrollIndicator={true}
+            >
+                <View style={{height:30, backgroundColor:'#8a2be2', alignItems:'center', justifyContent:'center', paddingTop:5}}>
+                    <Text style={{fontSize:16, fontWeight: 'bold', color:'white'}}>SIGN UP OR REGISTER HERE</Text>
+                </View>
+                <Card style={styles.card}>
+                    <Card.Title title="Welcome!" subtitle="Fill the form to open an account!" />
+                    <Card.Content>
+                        <TextInput
+                            placeholder="Name"
+                            value={name}
+                            onChangeText={setName}
+                            style={styles.inputs}
+                        />
+                        <TextInput
+                            placeholder="Surname"
+                            value={surname}
+                            onChangeText={setSurname}
+                            style={styles.inputs}
+                        />
+                        <TextInput
+                            placeholder="Contact number"
+                            value={phone}
+                            onChangeText={setPhone}
+                            style={styles.inputs}
+                        />
+                        <TextInput
+                            multiline={true}
+                            numberOfLines={3}
+                            placeholder="Address"
+                            style={styles.inputs}
+                            value={address}
+                            onChangeText={(text) => setAddress(text)}
+                        />
+                        <TextInput
+                            placeholder="Email"
+                            value={email}
+                            onChangeText={setEmail}
+                            style={styles.inputs}
+                        />
+                        <TextInput
+                            placeholder="Password"
+                            secureTextEntry
+                            value={password}
+                            onChangeText={setPassword}
+                            style={styles.inputs}
+                        />
+                    </Card.Content>
+                    <Card.Actions>
+                        <Text style={{ color: 'green' }}>{message}</Text>
+                        <Text style={{ color: 'red' }}>{errorMessage}</Text>
+                        <TouchableOpacity onPress={handleSignup} style={styles.button}>
+                            <Text>Register</Text>
+                        </TouchableOpacity>
+                    </Card.Actions>
+                    <Card.Actions>
+                        <TouchableOpacity style={styles.nav_link} onPress={handleLinkClick}>
+                            <Text>Already have an account? Sign in </Text>
+                        </TouchableOpacity>
+                    </Card.Actions>
+                </Card>
+            </ScrollView>
 
         </View>
 
