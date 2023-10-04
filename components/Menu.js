@@ -3,7 +3,7 @@ import { StyleSheet, View, Text, FlatList, Image, TouchableOpacity } from 'react
 import { collection, getDocs, doc } from "firebase/firestore";
 import { db } from "../config/firebase";
 import { Card } from "react-native-elements";
-import MenuHeader from "./MenuHeader";
+import HomeHeader from "./HomeHeader";
 
 export default function Menu() {
 
@@ -59,7 +59,7 @@ export default function Menu() {
     return (
         <View style={styles.container}>
             <View>
-                <MenuHeader />
+                <HomeHeader />
             </View>
             {/* Render the FlatList */}
             <FlatList

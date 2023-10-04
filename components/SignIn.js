@@ -28,6 +28,10 @@ const SignIn = () => {
                 navigation.navigate('Home')
             } else {
                 console.log('User is signed out')
+                setEmail('');
+                setPassword('');
+                setMessage('');
+                setErrorMessage('');
             }
         })
         return unsubscribe
@@ -47,6 +51,7 @@ const SignIn = () => {
             // Handle successful signin
             Alert.alert("Success", "Signed In Successfully.", [{ text: "OK" }]);
             setMessage("Successfully signed in");
+            console.log("Successfully signed in");
             navigation.navigate("Home"); // Navigate to the AudioRecorder screen
 
         }).catch((error) => {
@@ -59,9 +64,13 @@ const SignIn = () => {
 
     })
 
-    const handleLinkClick = () => {
+    const handleRegister = () => {
         navigation.navigate('Register');
     };
+
+    const handleForgotPassword = ()=>{
+        navigation.navigate('ResetPassword');
+    }
 
 
     return (
@@ -107,14 +116,14 @@ const SignIn = () => {
                     </Card.Actions>
 
                     <Card.Actions>
-                        <TouchableOpacity style={styles.nav_link} onPress={handleLinkClick}>
+                        <TouchableOpacity style={styles.nav_link} onPress={handleRegister}>
                             <Text>No account? Sign Up Now </Text>
                         </TouchableOpacity>
                     </Card.Actions>
 
 
                     <Card.Actions>
-                        <TouchableOpacity style={styles.nav_link} onPress={handleLinkClick}>
+                        <TouchableOpacity style={styles.nav_link} onPress={handleForgotPassword}>
                             <Text>Forgot Password?</Text>
                         </TouchableOpacity>
                     </Card.Actions>

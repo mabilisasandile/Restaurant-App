@@ -1,5 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { StyleSheet, View, Text, Image, TouchableOpacity, ScrollView } from 'react-native';
+import React, { useState, useEffect, useRef } from "react";
+import {
+    StyleSheet, View, Text, Image,
+    TouchableOpacity, ScrollView, Animated
+} from 'react-native';
 import { useNavigation } from "@react-navigation/native";
 // import * as Animatable from 'react-native-animatable';
 import Swiper from "react-native-swiper";
@@ -17,9 +20,23 @@ import { Icon } from "react-native-elements";
 
 export default function Home() {
 
+    const starScale = useRef(new Animated.Value(0)).current;
     const [delivery, setDelivery] = useState(true);
     const navigation = useNavigation();
 
+    useEffect(() => {
+        animateStars();
+    }, []);
+
+    const animateStars = () => {
+        Animated.loop(
+            Animated.timing(starScale, {
+                toValue: 1,
+                duration: 3000,
+                useNativeDriver: true,
+            })
+        ).start();
+    };
 
     const handleMenuNav = () => {
         navigation.navigate('Menu');
@@ -31,7 +48,7 @@ export default function Home() {
 
     return (
         <View style={styles.container}>
-            <View style={{ alignContent:"flex-start", alignItems:"flex-start", paddingBottom:5 }}>
+            <View style={{ alignContent: "flex-start", alignItems: "flex-start", paddingBottom: 5 }}>
                 <HomeHeader />
             </View>
 
@@ -40,46 +57,46 @@ export default function Home() {
                 showsVerticalScrollIndicator={true}
             >
                 <View>
-                <View style={{ marginTop:10, flexDirection:'row', height:50, width:'100%', margin:20 }}>
-                    <TouchableOpacity
-                        onPress={() => { setDelivery(true) }}
-                        style={{ ...styles.deliveryBtn, backgroundColor: delivery ? '#8a2be2' : '#808080' }}
-                    >
-                        <Text style={styles.deliveryText}>Delivery</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        onPress={() => { setDelivery(false) }}
-                        style={{ ...styles.deliveryBtn, backgroundColor: delivery ? '#808080' : '#8a2be2' }}
-                    >
-                        <Text style={styles.deliveryText}>Pick Up</Text>
-                    </TouchableOpacity>
-                </View>
-
-                <View style={{flexDirection:'row', alignItems:'center', justifyContent:'center', backgroundColor:'#d3d3d3', width:300, borderRadius:20, marginBottom:20}}>
-                    <View style={{flexDirection:'row', alignItems:'center', paddingLeft:20, paddingRight:20}}>
-                        <Icon
-                            type="material-community"
-                            name="map-marker"
-                            color={'gray'}
-                            size={26}
-                        />
-                        <Text>44 Marritz Street</Text>
+                    <View style={{ marginTop: 10, flexDirection: 'row', height: 50, width: '100%', margin: 20 }}>
+                        <TouchableOpacity
+                            onPress={() => { setDelivery(true) }}
+                            style={{ ...styles.deliveryBtn, backgroundColor: delivery ? '#8a2be2' : '#808080' }}
+                        >
+                            <Text style={styles.deliveryText}>Delivery</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={() => { setDelivery(false) }}
+                            style={{ ...styles.deliveryBtn, backgroundColor: delivery ? '#808080' : '#8a2be2' }}
+                        >
+                            <Text style={styles.deliveryText}>Pick Up</Text>
+                        </TouchableOpacity>
                     </View>
-                    <View style={{flexDirection:'row', alignItems:'center', paddingLeft:20, width:100, backgroundColor:'white', borderRadius:20}}>
-                        <Icon
-                            type="material-community"
-                            name="clock-time-four"
-                            color={'gray'}
-                            size={26}
-                        />
-                        <Text>Now</Text>
+
+                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', backgroundColor: '#d3d3d3', width: 300, borderRadius: 20, marginBottom: 20 }}>
+                        <View style={{ flexDirection: 'row', alignItems: 'center', paddingLeft: 20, paddingRight: 20 }}>
+                            <Icon
+                                type="material-community"
+                                name="map-marker"
+                                color={'gray'}
+                                size={26}
+                            />
+                            <Text>44 Marritz Street</Text>
+                        </View>
+                        <View style={{ flexDirection: 'row', alignItems: 'center', paddingLeft: 20, width: 100, backgroundColor: 'white', borderRadius: 20 }}>
+                            <Icon
+                                type="material-community"
+                                name="clock-time-four"
+                                color={'gray'}
+                                size={26}
+                            />
+                            <Text>Now</Text>
+                        </View>
                     </View>
-                </View>
 
 
                 </View>
-                
-                
+
+
                 <Swiper containerStyle={styles.wrapper}
                     showsButtons={true}
                     autoplay={true}
@@ -117,6 +134,14 @@ export default function Home() {
                     </View>
 
                 </Swiper>
+
+                <View style={{alignItems: 'center', justifyContent: 'center', marginTop: 20}}>
+                    <Animated.Text
+                        style={[styles.stars, { transform: [{ scale: starScale }] }]}
+                    >
+                        ⭐⭐⭐⭐⭐
+                    </Animated.Text>
+                </View>
 
                 <View style={styles.slide2}>
                     <TouchableOpacity style={styles.button} onPress={handleMenuNav}>
@@ -199,6 +224,9 @@ const styles = StyleSheet.create({
     },
     wrapper: {
         height: 300,
+    },
+    stars: {
+        fontSize: 40,
     },
 });
 
