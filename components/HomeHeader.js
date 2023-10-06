@@ -41,7 +41,6 @@ export default function HomeHeader() {
 
     return (
         <>
-
             <View style={styles.header}>
                 <View style={{ alignItems: "center", justifyContent: "center", marginLeft: 15 }}>
                     <Icon
@@ -61,7 +60,7 @@ export default function HomeHeader() {
                     <CartIconWithBadge
                         type="material-community"
                         name="cart"
-                        size={35}
+                        size={30}
                         color={'white'}
                         onPress={handleCartNav}
                     />

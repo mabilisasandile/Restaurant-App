@@ -13,8 +13,8 @@ const cartSlice = createSlice({
                 actions.payload["quantity"] + 1;
             } else {
                 state.push({ ...actions.payload, quantity:1 });
-            }
-        },
+            }       
+        },          
         removeFromCart: (state, actions) => {
             const newList = state.filter(
                 (value) => value.name != actions.payload.name

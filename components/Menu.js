@@ -6,19 +6,24 @@ import { Card } from "react-native-elements";
 import HomeHeader from "./HomeHeader";
 import { useNavigation } from "@react-navigation/native";
 import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../Redux/CartSlice";
 
 export default function Menu() {
 
     const [items, setItems] = useState([]);
+
     const navigation = useNavigation();
+    const dispatch = useDispatch();
 
     const cartItems = useSelector((state) => state.CartSlice);
-    
-    
+
     useEffect(() => {
         getItems();
         console.log("Cart Items:", cartItems);
     }, []);
+
+
 
     const getItems = async () => {
         try {
@@ -37,11 +42,10 @@ export default function Menu() {
     }
 
 
-    const handleView = id =>{
+    const handleAddToCart = id => {
         const [item] = items.filter(item => item.id === id);
-        console.log("Selected item data", item);
-
-        navigation.navigate('View_Item');
+        dispatch(addToCart(item));
+        // navigation.navigate('Cart');
     }
 
     // Render each item in the FlatList
@@ -59,11 +63,11 @@ export default function Menu() {
                     <Text style={styles.description}>{item.description}</Text>
                     <Text style={styles.price}>R{item.price}.00</Text>
                 </View>
-                <View>
-                    <TouchableOpacity onPress={() => handleView(item.id)} style={styles.btnAdd}>
-                        <Text style={{fontSize: 16, fontWeight: 'bold', color: 'white'}}>VIEW</Text>
-                    </TouchableOpacity>
-                </View>
+            </View>
+            <View>
+                <TouchableOpacity onPress={() => handleAddToCart(item.id)} style={styles.btnAdd}>
+                    <Text style={{ fontSize: 16, fontWeight: 'bold', color: 'white' }}>ADD TO CART</Text>
+                </TouchableOpacity>
             </View>
         </Card>
     );
@@ -137,8 +141,9 @@ const styles = StyleSheet.create({
     },
     btnAdd: {
         backgroundColor: '#8a2be2',
-        padding: 15,
-        marginLeft: 10,
+        padding: 10,
+        marginLeft: 100,
+        marginTop: 15,
         borderRadius: 10,
     }
 });
