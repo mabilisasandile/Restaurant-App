@@ -4,13 +4,20 @@ import { collection, getDocs, doc } from "firebase/firestore";
 import { db } from "../config/firebase";
 import { Card } from "react-native-elements";
 import HomeHeader from "./HomeHeader";
+import { useNavigation } from "@react-navigation/native";
+import { useSelector } from "react-redux";
 
 export default function Menu() {
 
     const [items, setItems] = useState([]);
+    const navigation = useNavigation();
 
+    const cartItems = useSelector((state) => state.CartSlice);
+    
+    
     useEffect(() => {
         getItems();
+        console.log("Cart Items:", cartItems);
     }, []);
 
     const getItems = async () => {
@@ -29,6 +36,14 @@ export default function Menu() {
         }
     }
 
+
+    const handleView = id =>{
+        const [item] = items.filter(item => item.id === id);
+        console.log("Selected item data", item);
+
+        navigation.navigate('View_Item');
+    }
+
     // Render each item in the FlatList
     const renderItem = ({ item }) => (
         <Card containerStyle={styles.card}>
@@ -45,14 +60,11 @@ export default function Menu() {
                     <Text style={styles.price}>R{item.price}.00</Text>
                 </View>
                 <View>
-                    <TouchableOpacity style={styles.btnAdd}>
-                        <Text style={{fontSize: 22, fontWeight: 'bold', color: 'white'}}>+</Text>
+                    <TouchableOpacity onPress={() => handleView(item.id)} style={styles.btnAdd}>
+                        <Text style={{fontSize: 16, fontWeight: 'bold', color: 'white'}}>VIEW</Text>
                     </TouchableOpacity>
                 </View>
             </View>
-
-
-
         </Card>
     );
 

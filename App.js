@@ -8,11 +8,17 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Menu from './components/Menu';
 import Home from './components/Home';
+import ViewItem from './components/ViewItem';
 import Cart from './components/Cart';
 import SignIn from './components/SignIn';
 import SignUp from './components/SignUp';
+import MapScreen from './components/MapScreen';
+import MyAccountScreen from './components/MyAccountScreen';
+import MyOrderScreen from './components/MyOrderScreen';
 import TabScreens from './navigation/TabScreens';
 import ResetPassword from './components/ResetPassword';
+import { Provider } from 'react-redux';
+import { Store } from './Redux/Store';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -27,23 +33,25 @@ export default function App() {
   return (
 
     <View style={styles.container}>
-
-      <StatusBar style="auto" />
-
-      <NavigationContainer>
-        <Stack.Navigator>
-          <Stack.Screen name="SignIn" component={SignIn} />
-          <Stack.Screen
-            name="Home"
-            component={TabScreens}
-            options={{ headerShown: false }} />
-          <Stack.Screen name="Menu" component={Menu} />
-          <Stack.Screen name="Cart" component={Cart} />
-          <Stack.Screen name="Register" component={SignUp} />
-          <Stack.Screen name="ResetPassword" component={ResetPassword} /> 
-        </Stack.Navigator>
-      </NavigationContainer>
-
+      <Provider store={Store}>
+        <NavigationContainer>
+          <Stack.Navigator>
+            <Stack.Screen
+              name="Home"
+              component={TabScreens}
+              options={{ headerShown: false }} />
+            <Stack.Screen name="Menu" component={Menu} />
+            <Stack.Screen name="View_Item" component={ViewItem} />
+            <Stack.Screen name="Cart" component={Cart} />
+            <Stack.Screen name="Map" component={MapScreen} />
+            <Stack.Screen name="My_Orders" component={MyOrderScreen} />
+            <Stack.Screen name="My_Account" component={MyAccountScreen} />
+            <Stack.Screen name="SignIn" component={SignIn} />
+            <Stack.Screen name="Register" component={SignUp} />
+            <Stack.Screen name="ResetPassword" component={ResetPassword} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </Provider>
     </View>
 
 

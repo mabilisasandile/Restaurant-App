@@ -5,10 +5,13 @@ import { View, StyleSheet, Modal, Text, TouchableOpacity } from "react-native";
 import { Icon, withBadge } from "react-native-elements";
 import { useNavigation } from "@react-navigation/native";
 import { auth } from "../config/firebase";
+import { useSelector } from "react-redux";
 
 export default function HomeHeader() {
     const [showCard, setShowCard] = useState(false);
-    const CartIconWithBadge = withBadge(0)(Icon);
+    const cartItems = useSelector((state) => state.CartSlice);
+    const quantity = cartItems.length;
+    const CartIconWithBadge = withBadge(quantity)(Icon);
 
     const navigation = useNavigation();
 
@@ -106,6 +109,8 @@ const styles = StyleSheet.create({
         marginLeft: 5,
         backgroundColor: '#8a2be2',
         paddingLeft: 5,
+        marginRight: 7,
+        paddingRight: 10,
         width: '100%',
     },
     text: {

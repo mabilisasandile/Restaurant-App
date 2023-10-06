@@ -1,11 +1,13 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { Icon } from 'react-native-elements';
 import Menu from '../components/Menu';
 import Home from '../components/Home';
 import Cart from '../components/Cart';
 import SignIn from '../components/SignIn';
 import SignUp from '../components/SignUp';
+import SearchScreen from '../components/SearchScreen';
 
 
 const Tab = createBottomTabNavigator();
@@ -52,15 +54,15 @@ export default function TabScreens() {
                     ),
                 }}
             />
-            {/* <Tab.Screen
-                name="SignIn"
-                component={SignIn}
+            <Tab.Screen
+                name="Search"
+                component={SearchScreen}
                 options={{
                     tabBarIcon: ({ color, size }) => (
-                        <MaterialCommunityIcons name="login" color={color} size={size} />
+                        <Icon name="search" color={color} size={size} />
                     ),
                 }}
-            /> */}
+            />
         </Tab.Navigator>
 
     );

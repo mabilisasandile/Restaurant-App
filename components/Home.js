@@ -153,8 +153,20 @@ export default function Home() {
                     </TouchableOpacity>
                 </View>
             </ScrollView>
-
-
+        { delivery && 
+            <View style={styles.floatButton}>
+            <TouchableOpacity onPress={()=>{navigation.navigate('Map')}}>
+                <Icon 
+                    name="place"
+                    type="material"
+                    size={32}
+                    color='green'
+                />
+                <Text style={{color:'grey'}}>Map</Text>
+            </TouchableOpacity>
+        </View>
+        }
+        
         </View>
     );
 }
@@ -228,41 +240,14 @@ const styles = StyleSheet.create({
     stars: {
         fontSize: 40,
     },
+    floatButton: {
+        position: 'absolute',
+        bottom:10, right:15,
+        backgroundColor: 'white',
+        elevation: 10,
+        width:60, height:60,
+        borderRadius: 30,
+        alignItems: 'center'
+    }
 });
 
-{/* <View style={{ flex: 4, justifyContent: 'center' }}>
-                <Swiper style={styles.wrapper} showsButtons={true} autoplay={true}>
-
-                    <View style={styles.slide1}>
-                        <Image
-                            source={image3}
-                            style={styles.image}
-                        />
-                    </View>
-                    <View style={styles.slide2}>
-                        <Image
-                            source={image4}
-                            style={styles.image}
-                        />
-                    </View>
-                    <View style={styles.slide3}>
-                        <Image
-                            source={image5}
-                            style={styles.image}
-                        />
-                    </View>
-                    <View style={styles.slide1}>
-                        <Image
-                            source={image6}
-                            style={styles.image}
-                        />
-                    </View>
-                    <View style={styles.slide2}>
-                        <Image
-                            source={image7}
-                            style={styles.image}
-                        />
-                    </View>
-
-                </Swiper>
-            </View> */}
