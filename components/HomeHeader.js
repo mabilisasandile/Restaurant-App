@@ -124,8 +124,6 @@ const styles = StyleSheet.create({
         height: 300,
         backgroundColor: '#4b0082',
         borderRadius: 10,
-        // justifyContent: 'center',
-        // alignItems: 'center',
     },
     signOutBtn: {
         marginTop: 60,

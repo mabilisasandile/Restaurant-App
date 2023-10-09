@@ -26,17 +26,17 @@ const cartSlice = createSlice({
                 (value) => value.name == actions.payload.name
             );
             if (isAvailable) {
-                isAvailable.quantity + 1;
+                isAvailable.quantity++;
             } else {
                 console.log("not available");
             }
         },
-        decrementQuantity: () => {
+        decrementQuantity: (state, actions) => {
             const isAvailable = state.find(
                 (value) => value.name == actions.payload.name
             );
-            if (isAvailable) {
-                isAvailable.quantity - 1;
+            if (isAvailable.quantity == 1) {
+                isAvailable.quantity = 1;
             } else {
                 isAvailable.quantity--;
             }

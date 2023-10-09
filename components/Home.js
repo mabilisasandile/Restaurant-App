@@ -9,11 +9,12 @@ import Swiper from "react-native-swiper";
 import Menu from './Menu';
 import Cart from './Cart';
 
-import image1 from '../images/stickel.jpg';
+import image1 from '../images/burak-the-weekender.jpg';
 import image2 from '../images/ash.jpg';
-import image3 from '../images/petsos.jpg';
-import image4 from '../images/esrageziyor.jpg';
+import image3 from '../images/mehmet-suat-gunerli.jpg';
+import image4 from '../images/on-shot.jpg';
 import image5 from '../images/davis.jpg';
+import image6 from '../images/brett.jpg';
 import HomeHeader from "./HomeHeader";
 import { Icon } from "react-native-elements";
 
@@ -104,10 +105,10 @@ export default function Home() {
 
                     <View style={styles.slide1}>
                         <Image
-                            source={image4}
+                            source={image6}
                             style={styles.image}
                         />
-                    </View>
+                    </View> 
                     <View style={styles.slide2}>
                         <Image
                             source={image5}
@@ -132,10 +133,16 @@ export default function Home() {
                             style={styles.image}
                         />
                     </View>
+                    <View style={styles.slide2}>
+                        <Image
+                            source={image4}
+                            style={styles.image}
+                        />
+                    </View>
 
                 </Swiper>
 
-                <View style={{alignItems: 'center', justifyContent: 'center', marginTop: 20}}>
+                <View style={{ alignItems: 'center', justifyContent: 'center', marginTop: 20 }}>
                     <Animated.Text
                         style={[styles.stars, { transform: [{ scale: starScale }] }]}
                     >
@@ -153,20 +160,20 @@ export default function Home() {
                     </TouchableOpacity>
                 </View>
             </ScrollView>
-        { delivery && 
-            <View style={styles.floatButton}>
-            <TouchableOpacity onPress={()=>{navigation.navigate('Map')}}>
-                <Icon 
-                    name="place"
-                    type="material"
-                    size={32}
-                    color='green'
-                />
-                <Text style={{color:'grey'}}>Map</Text>
-            </TouchableOpacity>
-        </View>
-        }
-        
+            {delivery &&
+                <View style={styles.floatButton}>
+                    <TouchableOpacity onPress={() => { navigation.navigate('Map') }}>
+                        <Icon
+                            name="place"
+                            type="material"
+                            size={32}
+                            color='green'
+                        />
+                        <Text style={{ color: 'grey' }}>Map</Text>
+                    </TouchableOpacity>
+                </View>
+            }
+
         </View>
     );
 }
@@ -242,10 +249,10 @@ const styles = StyleSheet.create({
     },
     floatButton: {
         position: 'absolute',
-        bottom:10, right:15,
+        bottom: 10, right: 15,
         backgroundColor: 'white',
         elevation: 10,
-        width:60, height:60,
+        width: 60, height: 60,
         borderRadius: 30,
         alignItems: 'center'
     }

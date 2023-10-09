@@ -45,6 +45,7 @@ export default function Menu() {
     const handleAddToCart = id => {
         const [item] = items.filter(item => item.id === id);
         dispatch(addToCart(item));
+        console.log("Item added to cart:", item);
         // navigation.navigate('Cart');
     }
 
