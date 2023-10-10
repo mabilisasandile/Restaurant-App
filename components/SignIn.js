@@ -8,7 +8,6 @@ import {
 } from "react-native";
 import { Card } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
-// import image1 from '../images/ash.jpg';
 import image1 from '../images/restaurant.jpg';
 
 

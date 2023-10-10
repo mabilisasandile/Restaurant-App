@@ -4,7 +4,7 @@ import {
     SafeAreaView, Modal, FlatList, TouchableOpacity
 } from 'react-native';
 import { responsiveHeight, responsiveFontSize, responsiveWidth } from "react-native-responsive-dimensions";
-import HomeHeader from "./HomeHeader";
+import CartHeader from "./CartHeader";
 import { AntDesign } from "@expo/vector-icons";
 import { useDispatch, useSelector, connect } from "react-redux";
 import { removeFromCart } from "../Redux/CartSlice";
@@ -12,6 +12,7 @@ import { addToCart } from "../Redux/CartSlice";
 import { decrementQuantity } from "../Redux/CartSlice";
 import { incrementQuantity } from "../Redux/CartSlice";
 import { useNavigation } from "@react-navigation/native";
+import { auth } from "../config/firebase";
 
 
 function Cart({ cartItems }) {
@@ -25,18 +26,26 @@ function Cart({ cartItems }) {
     }, []);
 
 
-    const handleGoToCheckOut = () => {
-        nav.navigate('Checkout');
-    }
+    let amount = 0;
+    storeData.forEach(element => {
+        amount += element.price;
+    });
 
+
+    const handleGoToCheckOut = () => {
+        const user = auth.currentUser;
+        console.log("User logged in:", user);
+
+        if (user) {
+            nav.navigate('Checkout');
+        } else {
+            nav.navigate('SignIn');
+        }  
+    }
 
     return (
         <SafeAreaView style={{ flex: 1, paddingHorizontal: 10, backgroundColor: '#d8bfd8', gap: 15 }}>
-            < HomeHeader />
-            <View>
-                <Text style={{ textAlign: 'center', fontWeight: 'bold', fontSize: 22 }}>My Cart</Text>
-            </View>
-
+            < CartHeader />
             <FlatList data={storeData} renderItem={({ item, index }) => (
                 < View style={{
                     height: responsiveHeight(20), backgroundColor: 'white',
@@ -70,7 +79,7 @@ function Cart({ cartItems }) {
                             alignContent: 'center', justifyContent: 'space-between',
                             flexDirection: 'row', backgroundColor: '#dcdcdc'
                         }}>
-                            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10, padding:10 }}>
+                            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10, padding: 10 }}>
                                 <TouchableOpacity
                                     onPress={() => { dispatch(decrementQuantity(item)) }}
                                 >
@@ -98,8 +107,8 @@ function Cart({ cartItems }) {
                                 </TouchableOpacity>
 
                             </View>
-                            <View style={{ flexDirection: 'row', alignItems:'center', gap: 10, backgroundColor:'white' }}>
-                                <Text style={{ fontWeight: 'bold', color:'#8a2be2' }}> {item.quantity * item.price} ZAR</Text>
+                            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10, backgroundColor: 'white' }}>
+                                <Text style={{ fontWeight: 'bold', color: '#8a2be2' }}> {item.quantity * item.price} ZAR</Text>
                             </View>
 
                         </View>
@@ -111,7 +120,7 @@ function Cart({ cartItems }) {
                 <TouchableOpacity onPress={() => handleGoToCheckOut()} style={styles.button}>
                     <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-evenly' }}>
                         <Text style={{ fontSize: 18, fontWeight: '700', color: 'white', textAlign: 'center' }}>GO TO CHECKOUT</Text>
-                        <Text style={{ fontSize: 18, fontWeight: '700', color: 'white', textAlign: 'center' }}> 850 ZAR</Text>
+                        <Text style={{ fontSize: 18, fontWeight: '700', color: 'white', textAlign: 'center' }}> {amount} ZAR</Text>
                     </View>
                 </TouchableOpacity>
             </View>

@@ -16,6 +16,7 @@ import MapScreen from './components/MapScreen';
 import MyAccountScreen from './components/MyAccountScreen';
 import MyOrderScreen from './components/MyOrderScreen';
 import Checkout from './components/CheckOut';
+import OrderPlaced from './components/OrderPlaced';
 import TabScreens from './navigation/TabScreens';
 import ResetPassword from './components/ResetPassword';
 import { Provider } from 'react-redux';
@@ -48,6 +49,7 @@ export default function App() {
             <Stack.Screen name="My_Orders" component={MyOrderScreen} />
             <Stack.Screen name="My_Account" component={MyAccountScreen} />
             <Stack.Screen name="Checkout" component={Checkout} />
+            <Stack.Screen name="Order_Placed" component={OrderPlaced} />
             <Stack.Screen name="SignIn" component={SignIn} />
             <Stack.Screen name="Register" component={SignUp} />
             <Stack.Screen name="ResetPassword" component={ResetPassword} />

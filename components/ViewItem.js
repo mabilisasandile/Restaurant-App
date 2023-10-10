@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View, Text, FlatList, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, SafeAreaView, Image, TouchableOpacity } from 'react-native';
 import { Card } from "react-native-elements";
 import { useNavigation } from "@react-navigation/native";
+import { StatusBar } from 'expo-status-bar';
 import HomeHeader from "./HomeHeader";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../Redux/CartSlice";
-import image3 from '../images/petsos.jpg';
+
 
 const ViewItem = ({ route }) => {
 
     const dispatch = useDispatch();
-    // const productData = route.params.main;
-    // const {name, price, recipe, img} = productData;
-
+    const {menuItemData} = route.params;
+    const {name, price, description, imageURL} = menuItemData;
+    const storeData = useSelector((state) => state.CartSlice);
     const nav = useNavigation();
 
     const [itemName, setItemName] = useState('');
@@ -20,45 +21,48 @@ const ViewItem = ({ route }) => {
     const [itemPrice, setItemPrice] = useState(0);
     const [itemImage, setItemImage] = useState('');
 
-    useEffect(()=>{
-        setItemName("Pizza");
-        setItemRecipe("mmkd jjjs iiis");
-        setItemPrice(159.99);
-        setItemImage(image3);
+    useEffect(() => {
+        setItemName(menuItemData.name);
+        setItemRecipe(menuItemData.description);
+        setItemPrice(menuItemData.price);
+        setItemImage(menuItemData.imageURL);
+        console.log("Viewed item data:", menuItemData);
     }, []);
 
-    const itemData = {
-        itemName,
-        itemRecipe,
-        itemPrice,
-        itemImage
-    }
 
-    const handleAddToCart =()=>{
-        dispatch(addToCart(itemData));
+
+    const handleAddToCart = () => {
+        const item = menuItemData;
+        dispatch(addToCart(item));
+        console.log("Item added to cart:", item);
         nav.navigate('Cart');
     }
 
     return (
-        <View>
+        <SafeAreaView style={{flex:1, gap:20, backgroundColor:"white"}}>
+            <StatusBar backgroundColor="white" />
             <View style={{ alignContent: "flex-start", alignItems: "flex-start", paddingBottom: 5 }}>
                 <HomeHeader />
             </View>
             <View style={styles.container}>
                 <Card containerStyle={styles.card}>
 
-                    <Image source={itemImage} style={styles.image} />
+                    <Image source={{ uri: imageURL }} style={styles.image} />
 
-                    <View style={{ flex: 0.7, paddingHorizontal: 10, paddingVertical:10,
-                    alignItems: 'center', justifyContent:'space-evenly' }}>
+                    <View style={{
+                        flex: 0.7, paddingHorizontal: 10, paddingVertical: 10,
+                        alignItems: 'center', justifyContent: 'space-evenly'
+                    }}>
 
                         <Text>Item: {itemName}</Text>
-                        <Text>Recipe: {itemRecipe}</Text>
-                        <Text>Price: R{itemPrice}</Text>
+                        <Text>Recipe: {description}</Text>
+                        <Text>Price: R{price}</Text>
                         <Text>Delivery Time: 4h30 PM</Text>
 
-                        <TouchableOpacity style={styles.btnAdd}
+                        <TouchableOpacity
+                            style={styles.btnAdd}
                             onPress={handleAddToCart}
+                            activeOpacity={0.8}
                         >
                             <Text style={styles.text}>ADD TO CART</Text>
                         </TouchableOpacity>
@@ -67,7 +71,7 @@ const ViewItem = ({ route }) => {
 
                 </Card>
             </View>
-        </View>
+        </SafeAreaView>
     )
 }
 

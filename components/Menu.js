@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, View, Text, FlatList, Image, TouchableOpacity } from 'react-native';
-import { collection, getDocs, doc } from "firebase/firestore";
+import { collection, getDocs, doc, getDoc } from "firebase/firestore";
 import { db } from "../config/firebase";
 import { Card } from "react-native-elements";
-import HomeHeader from "./HomeHeader";
+import MenuHeader from "./MenuHeader";
 import { useNavigation } from "@react-navigation/native";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../Redux/CartSlice";
+import { removeFromCart } from "../Redux/CartSlice";
+import { FontAwesome } from "@expo/vector-icons";
+
 
 export default function Menu() {
 
@@ -36,9 +39,38 @@ export default function Menu() {
 
             setItems(foodItems);
             console.log("Items data:", foodItems);
+
         } catch (error) {
             console.log("Failed to fetch data", error);
         }
+    }
+
+
+    const handleViewItem = async (itemId) => {
+
+        console.log("Selected item ID", itemId);
+
+        try {
+            //CREATING REFERENCE TO SPECIFIC DOCUMENT IN MENU COLLECTION
+            const menuItemRef = doc(collection(db, "items"), itemId); //,foodItemId
+            console.log("Menu Item Ref ", menuItemRef)
+            //FETCH DOCUMENT DATA
+            const docSnapshot = await getDoc(menuItemRef);
+            console.log(docSnapshot, "Snapshot")
+
+            if (docSnapshot.exists()) {
+                //IF DOCUMENT IS THERE, use docSnapShot.id TO ACCESS DOCUMENTS FIELD
+                const menuItemData = docSnapshot.data();
+                console.log("Category Data:", menuItemData);
+                navigation.navigate('View_Item', { menuItemData });
+                //NOW YOU CAN USE THE foodItemData TO DISPLAY/PROCESS THE DOCUMENT
+            } else {
+                console.log("Document not found");
+            }
+        } catch (error) {
+            console.error("Error fetching menu item", error);
+        }
+
     }
 
 
@@ -46,6 +78,13 @@ export default function Menu() {
         const [item] = items.filter(item => item.id === id);
         dispatch(addToCart(item));
         console.log("Item added to cart:", item);
+        // navigation.navigate('Cart');
+    }
+
+    const handleRemoveFromCart = id => {
+        const [item] = items.filter(item => item.id === id);
+        dispatch(removeFromCart(item));
+        console.log("Item removed from cart:", item);
         // navigation.navigate('Cart');
     }
 
@@ -65,18 +104,39 @@ export default function Menu() {
                     <Text style={styles.price}>R{item.price}.00</Text>
                 </View>
             </View>
-            <View>
-                <TouchableOpacity onPress={() => handleAddToCart(item.id)} style={styles.btnAdd}>
-                    <Text style={{ fontSize: 16, fontWeight: 'bold', color: 'white' }}>ADD TO CART</Text>
+            <View style={styles.cardContent}>
+                <TouchableOpacity onPress={() => handleViewItem(item.id)} style={styles.btn}>
+                    <Text style={{ fontSize: 16, fontWeight: 'bold', color: 'white' }}>VIEW MORE DETAILS</Text>
                 </TouchableOpacity>
+
+                <View style={{ marginLeft: 60, alignItems: 'center' }}>
+                    {cartItems.some((value) => value.id == item.id) ? (
+                        <TouchableOpacity onPress={() => handleRemoveFromCart(item.id)}>
+                            <FontAwesome
+                                name="minus-square"
+                                size={43}
+                                color='grey'
+                            />
+                        </TouchableOpacity>
+                    ) : (
+                        <TouchableOpacity onPress={() => handleAddToCart(item.id)}>
+                            <FontAwesome
+                                name="plus-square"
+                                size={43}
+                                color='#8a2be2'
+                            />
+                        </TouchableOpacity>
+                    )}
+                </View>
             </View>
+
         </Card>
     );
 
     return (
         <View style={styles.container}>
             <View>
-                <HomeHeader />
+                <MenuHeader />
             </View>
             {/* Render the FlatList */}
             <FlatList
@@ -108,7 +168,8 @@ const styles = StyleSheet.create({
     },
     cardContent: {
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
+        justifyContent: 'space-evenly',
     },
     image: {
         width: 100,
@@ -140,10 +201,10 @@ const styles = StyleSheet.create({
         marginLeft: 10,
         color: '#8a2be2',
     },
-    btnAdd: {
+    btn: {
         backgroundColor: '#8a2be2',
         padding: 10,
-        marginLeft: 100,
+        marginLeft: 20,
         marginTop: 15,
         borderRadius: 10,
     }
