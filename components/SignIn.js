@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { auth } from "../config/firebase";
 import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 import {
-    Text, View, TextInput, Alert,
+    Text, View, TextInput, Alert, 
     ScrollView, Image, StyleSheet, TouchableOpacity
 } from "react-native";
 import { Card } from "react-native-paper";
@@ -24,7 +24,7 @@ const SignIn = () => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             if (user) {
                 const uid = user.uid;
-                navigation.navigate('Home')
+                navigation.navigate('Cart')
             } else {
                 console.log('User is signed out')
                 setEmail('');

@@ -67,6 +67,7 @@ export default function Menu() {
             } else {
                 console.log("Document not found");
             }
+            
         } catch (error) {
             console.error("Error fetching menu item", error);
         }

@@ -8,13 +8,12 @@ import CartHeader from "./CartHeader";
 import { AntDesign } from "@expo/vector-icons";
 import { useDispatch, useSelector, connect } from "react-redux";
 import { removeFromCart } from "../Redux/CartSlice";
-import { addToCart } from "../Redux/CartSlice";
 import { decrementQuantity } from "../Redux/CartSlice";
 import { incrementQuantity } from "../Redux/CartSlice";
 import { useNavigation } from "@react-navigation/native";
 import { auth } from "../config/firebase";
 
-
+  
 function Cart({ cartItems }) {
 
     const dispatch = useDispatch();

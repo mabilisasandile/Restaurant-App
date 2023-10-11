@@ -25,8 +25,9 @@ const SignUp = () => {
         createUserWithEmailAndPassword(auth, email, password).then(async () => {
 
             const user = auth.currentUser;
+            const userId = user.uid;
 
-            const docRef = await addDoc(collection(db, 'users'), {
+            const docRef = await addDoc(collection(db, 'users', userId), {
                 user_id: user.uid,
                 name: name,
                 surname: surname,

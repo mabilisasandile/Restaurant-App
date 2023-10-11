@@ -23,7 +23,7 @@ export default function HomeHeader() {
         setShowCard(true);
     }
 
-    //Handle button events
+    //Handle button events 
     const handleClose = () => {
         setShowCard(false);
     }
