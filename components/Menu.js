@@ -52,18 +52,19 @@ export default function Menu() {
 
         try {
             //CREATING REFERENCE TO SPECIFIC DOCUMENT IN MENU COLLECTION
-            const menuItemRef = doc(collection(db, "items"), itemId); //,foodItemId
+            const menuItemRef = doc(collection(db, "items"), itemId); 
             console.log("Menu Item Ref ", menuItemRef)
+
             //FETCH DOCUMENT DATA
             const docSnapshot = await getDoc(menuItemRef);
             console.log(docSnapshot, "Snapshot")
 
             if (docSnapshot.exists()) {
-                //IF DOCUMENT IS THERE, use docSnapShot.id TO ACCESS DOCUMENTS FIELD
+               
                 const menuItemData = docSnapshot.data();
                 console.log("Category Data:", menuItemData);
                 navigation.navigate('View_Item', { menuItemData });
-                //NOW YOU CAN USE THE foodItemData TO DISPLAY/PROCESS THE DOCUMENT
+                
             } else {
                 console.log("Document not found");
             }
@@ -79,14 +80,14 @@ export default function Menu() {
         const [item] = items.filter(item => item.id === id);
         dispatch(addToCart(item));
         console.log("Item added to cart:", item);
-        // navigation.navigate('Cart');
+        
     }
 
     const handleRemoveFromCart = id => {
         const [item] = items.filter(item => item.id === id);
         dispatch(removeFromCart(item));
         console.log("Item removed from cart:", item);
-        // navigation.navigate('Cart');
+        
     }
 
     // Render each item in the FlatList
@@ -102,7 +103,7 @@ export default function Menu() {
                 <View>
                     <Text style={styles.title}>{item.name}: </Text>
                     <Text style={styles.description}>{item.description}</Text>
-                    <Text style={styles.price}>R{item.price}.00</Text>
+                    <Text style={styles.price}>ZAR{item.price}.00</Text>
                 </View>
             </View>
             <View style={styles.cardContent}>

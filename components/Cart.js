@@ -8,27 +8,39 @@ import CartHeader from "./CartHeader";
 import { AntDesign } from "@expo/vector-icons";
 import { useDispatch, useSelector, connect } from "react-redux";
 import { removeFromCart } from "../Redux/CartSlice";
+import { addToCart } from "../Redux/CartSlice";
 import { decrementQuantity } from "../Redux/CartSlice";
 import { incrementQuantity } from "../Redux/CartSlice";
 import { useNavigation } from "@react-navigation/native";
 import { auth } from "../config/firebase";
 
-  
+
 function Cart({ cartItems }) {
 
     const dispatch = useDispatch();
     const storeData = useSelector((state) => state.CartSlice);
     const nav = useNavigation();
+    let amount = 0;
 
     useEffect(() => {
+
         console.log("Items on Cart:", storeData);
+
     }, []);
 
 
-    let amount = 0;
-    storeData.forEach(element => {
-        amount += element.price;
-    });
+
+    //Increment or update total amount
+    // storeData.forEach(element => {
+    //     amount += element.price;
+    // });
+    const calculateTotalAmount = () => {
+        storeData.forEach(element => {
+            amount += element.price;
+        });
+        return amount;
+    }
+
 
 
     const handleGoToCheckOut = () => {
@@ -36,11 +48,14 @@ function Cart({ cartItems }) {
         console.log("User logged in:", user);
 
         if (user) {
-            nav.navigate('Checkout');
+            // nav.navigate('Checkout');
+            nav.navigate('Checkout', { totalAmount: amount });  // Pass the 'amount' as a parameter
         } else {
             nav.navigate('SignIn');
-        }  
+        }
     }
+
+
 
     return (
         <SafeAreaView style={{ flex: 1, paddingHorizontal: 10, backgroundColor: '#d8bfd8', gap: 15 }}>
@@ -64,19 +79,25 @@ function Cart({ cartItems }) {
                             justifyContent: 'space-between', alignItems: 'center'
                         }}
                         >
-                            <Text style={{ fontSize: 20, fontWeight: '600' }}>{item.name}</Text>
-                            <AntDesign name="close"
-                                size={25}
-                                color='grey'
-                                onPress={() => {
-                                    dispatch(removeFromCart(item));
-                                }}
-                            />
+                            <View style={{ paddingLeft:50}}>
+                                <Text style={{ fontSize: 20, fontWeight: '600' }}>{item.name}</Text>
+                            </View>
+
+                            <View style={{ alignItems: 'flex-end', paddingLeft: 80 }}>
+                                <AntDesign name="close"
+                                    size={25}
+                                    color='grey'
+                                    onPress={() => {
+                                        dispatch(removeFromCart(item));
+                                    }}
+                                />
+                            </View>
+
                         </View>
                         <Text style={{ fontSize: 17, color: 'grey', marginTop: 5 }}>Medium | {item.description}</Text>
                         <View style={{
                             alignContent: 'center', justifyContent: 'space-between',
-                            flexDirection: 'row', backgroundColor: '#dcdcdc'
+                            flexDirection: 'row'
                         }}>
                             <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10, padding: 10 }}>
                                 <TouchableOpacity
@@ -107,7 +128,7 @@ function Cart({ cartItems }) {
 
                             </View>
                             <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10, backgroundColor: 'white' }}>
-                                <Text style={{ fontWeight: 'bold', color: '#8a2be2' }}> {item.quantity * item.price} ZAR</Text>
+                                <Text style={{ fontWeight: 'bold', color: '#8a2be2' }}>R{item.quantity * item.price}</Text>
                             </View>
 
                         </View>
@@ -119,7 +140,7 @@ function Cart({ cartItems }) {
                 <TouchableOpacity onPress={() => handleGoToCheckOut()} style={styles.button}>
                     <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-evenly' }}>
                         <Text style={{ fontSize: 18, fontWeight: '700', color: 'white', textAlign: 'center' }}>GO TO CHECKOUT</Text>
-                        <Text style={{ fontSize: 18, fontWeight: '700', color: 'white', textAlign: 'center' }}> {amount} ZAR</Text>
+                        <Text style={{ fontSize: 18, fontWeight: '700', color: 'white', textAlign: 'center' }}>ZAR {calculateTotalAmount()}</Text>
                     </View>
                 </TouchableOpacity>
             </View>

@@ -2,8 +2,10 @@
 import React, { useState } from "react";
 import { auth, db } from "../config/firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { Text, View, TextInput, Alert, 
-    ScrollView, StyleSheet, TouchableOpacity } from "react-native";
+import {
+    Text, View, TextInput, Alert,
+    ScrollView, StyleSheet, TouchableOpacity
+} from "react-native";
 import { addDoc, collection, doc } from "firebase/firestore";
 import { Card } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
@@ -27,7 +29,8 @@ const SignUp = () => {
             const user = auth.currentUser;
             const userId = user.uid;
 
-            const docRef = await addDoc(collection(db, 'users', userId), {
+            // const docRef = await addDoc(collection(db, 'users', userId), {
+            const docRef = await addDoc(collection(db, 'users'), {
                 user_id: user.uid,
                 name: name,
                 surname: surname,
@@ -47,7 +50,6 @@ const SignUp = () => {
         }).catch((error) => {
 
             // Handle signup error
-            Alert.alert("Error", "Failed to sign up!", [{ text: "OK" }]);
             console.log("Failed to register!", error);
             setErrorMessage("An error occurred while registering!")
 
@@ -68,8 +70,8 @@ const SignUp = () => {
                 stickyHeaderIndices={[0]}
                 showsVerticalScrollIndicator={true}
             >
-                <View style={{height:30, backgroundColor:'#8a2be2', alignItems:'center', justifyContent:'center', paddingTop:5}}>
-                    <Text style={{fontSize:16, fontWeight: 'bold', color:'white'}}>SIGN UP OR REGISTER HERE</Text>
+                <View style={{ height: 30, backgroundColor: '#8a2be2', alignItems: 'center', justifyContent: 'center', paddingTop: 5 }}>
+                    <Text style={{ fontSize: 16, fontWeight: 'bold', color: 'white' }}>SIGN UP OR REGISTER HERE</Text>
                 </View>
                 <Card style={styles.card}>
                     <Card.Title title="Welcome!" subtitle="Fill the form to open an account!" />
