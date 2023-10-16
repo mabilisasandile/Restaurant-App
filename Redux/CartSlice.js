@@ -24,7 +24,7 @@ const cartSlice = createSlice({
         incrementQuantity: (state, actions) => {
             const isAvailable = state.find(
                 (value) => value.name == actions.payload.name
-            );
+            ); 
             if (isAvailable) {
                 isAvailable.quantity++;
             } else {

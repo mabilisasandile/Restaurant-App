@@ -103,7 +103,7 @@ export default function Menu() {
                 <View>
                     <Text style={styles.title}>{item.name}: </Text>
                     <Text style={styles.description}>{item.description}</Text>
-                    <Text style={styles.price}>ZAR{item.price}.00</Text>
+                    <Text style={styles.price}>R{item.price}</Text>
                 </View>
             </View>
             <View style={styles.cardContent}>
