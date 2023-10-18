@@ -38,6 +38,7 @@ export default function Checkout({ route }) {
     const userID = user.uid;
     const email = user.email;
     let fetchedData = {};
+    let data = [];
 
 
     const options = [
@@ -62,7 +63,7 @@ export default function Checkout({ route }) {
             const querySnapshot = query(collection(db, "users")
                 , where("user_id", "==", userID));
 
-            const data = await getDocs(querySnapshot);
+            data = await getDocs(querySnapshot);
 
             data.forEach((doc) => {
                 console.log("Doc data: ", doc.data());
@@ -78,7 +79,7 @@ export default function Checkout({ route }) {
 
         } catch (error) {
             console.log("Failed to fetch user data", error);
-        } 
+        }
     }
 
 
@@ -110,9 +111,15 @@ export default function Checkout({ route }) {
     return (
 
         <View style={styles.container}>
-            <Text style={styles.text}>Place your order here!</Text>
+            {userData.map((user, index) => (
+                <View key={index} style={{alignItems: 'center', justifyContent: 'center',}}>
+                    <Text style={styles.text}>Hello {user.name},</Text>
+                    <Text style={styles.text}>Place your order here!</Text>
+                    <Text>Address: {user.address}</Text>
+                </View>
+            ))}
             <Text>{email}</Text>
-            <Text style={styles.text}>Total Amount: R{totalAmount}.00</Text>
+            <Text style={styles.text}>Total Amount: R{totalAmount}</Text>
 
             <TextInput
                 placeholder="Enter drop-off address"
@@ -124,7 +131,7 @@ export default function Checkout({ route }) {
             <View>
                 <Text>Select Card Type:</Text>
                 <Picker
-                    style={{width:250, backgroundColor:'white', borderWidth:2}}
+                    style={{ width: 250, backgroundColor: 'white', borderWidth: 2 }}
                     card_type={card_type}
                     onValueChange={(itemValue) => setCardType(itemValue)}
                 >
@@ -150,15 +157,7 @@ export default function Checkout({ route }) {
                 </TouchableOpacity>
             </View>
 
-            {/* {userData.map((user, index) => (
-                <View key={index}>
-                    <Text style={styles.text}>Hello {user.name},</Text>
-                    <Text style={styles.text}>Place your order here!</Text>
-                    <Text>Phone: {user.phone}</Text>
-                    <Text>Email: {user.email}</Text>
-                    <Text>Address: {user.address}</Text>
-                </View>
-            ))} */}
+
         </View>
 
     );

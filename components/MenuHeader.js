@@ -32,10 +32,11 @@ export default function MenuHeader() {
         try {
             await auth.signOut(); // Sign the user out
             console.log('User signed out successfully');
-          } catch (error) {
+            navigation.navigate('SignIn');
+        } catch (error) {
             console.error('Error signing out:', error);
-          }
-        navigation.navigate('SignIn');
+        }
+        
     }
 
 

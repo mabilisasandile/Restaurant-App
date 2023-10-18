@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { auth } from "../config/firebase";
 import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 import {
-    Text, View, TextInput, Alert, 
+    Text, View, TextInput, Alert,
     ScrollView, Image, StyleSheet, TouchableOpacity
 } from "react-native";
 import { Card } from "react-native-paper";
@@ -23,8 +23,11 @@ const SignIn = () => {
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             if (user) {
-                const uid = user.uid;
                 navigation.navigate('Cart')
+                setEmail('');
+                setPassword('');
+                setMessage('');
+                setErrorMessage('');
             } else {
                 console.log('User is signed out')
                 setEmail('');
@@ -40,6 +43,7 @@ const SignIn = () => {
     useEffect(() => {
         const user = auth.currentUser;
         console.log("User logged in:", user);
+
     }, [])
 
 
@@ -51,7 +55,11 @@ const SignIn = () => {
             Alert.alert("Success", "Signed In Successfully.", [{ text: "OK" }]);
             setMessage("Successfully signed in");
             console.log("Successfully signed in");
-            navigation.navigate("Home"); // Navigate to the AudioRecorder screen
+            setEmail('');
+            setPassword('');
+            setMessage('');
+            setErrorMessage('');
+            navigation.navigate("Home");
 
         }).catch((error) => {
 
@@ -67,7 +75,7 @@ const SignIn = () => {
         navigation.navigate('Register');
     };
 
-    const handleForgotPassword = ()=>{
+    const handleForgotPassword = () => {
         navigation.navigate('ResetPassword');
     }
 
@@ -106,7 +114,7 @@ const SignIn = () => {
                         />
                     </Card.Content>
 
-                    <Card.Actions>
+                    <Card.Actions style={{ alignItems: 'center', justifyContent: 'center' }}>
                         <Text style={{ color: 'green' }}>{message}</Text>
                         <Text style={{ color: 'red' }}>{errorMessage}</Text>
                         <TouchableOpacity onPress={handleSignin} style={styles.button}>

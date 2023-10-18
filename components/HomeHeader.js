@@ -15,18 +15,29 @@ export default function HomeHeader() {
 
     const navigation = useNavigation();
 
+    
+
+    const handleToggleCard = () => {
+        setShowCard(!showCard);     // Toggle the showCard state
+    }
+
+    const handleClose = () => {   
+        setShowCard(false);
+    }
+
+
+    //Handle navigation to screens
     const handleCartNav = () => {
         navigation.navigate('Cart');
     }
 
-    const handleShowCard = () => {
-        setShowCard(true);
+    const handleAccountInfo =()=>{
+        navigation.navigate('My_Account');
     }
 
-    //Handle button events 
-    const handleClose = () => {
-        setShowCard(false);
-    }
+    const handleViewOrder =()=>{
+        navigation.navigate('View_Order');
+    } 
 
     const handleSignOut = async () => {
         try {
@@ -48,7 +59,7 @@ export default function HomeHeader() {
                         name="menu"
                         color={'white'}
                         size={32}
-                        onPress={handleShowCard}
+                        onPress={handleToggleCard}
                     />
                 </View>
 
@@ -77,7 +88,7 @@ export default function HomeHeader() {
                             <Text style={styles.text}>Checkout</Text>
                         </TouchableOpacity>
                         <TouchableOpacity>
-                            <Text style={styles.text}>Place An Order</Text>
+                            <Text style={styles.text}>View Order</Text>
                         </TouchableOpacity>
                         <TouchableOpacity>
                             <Text style={styles.text}>Support</Text>

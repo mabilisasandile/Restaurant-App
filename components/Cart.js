@@ -6,15 +6,13 @@ import {
 import { responsiveHeight, responsiveFontSize, responsiveWidth } from "react-native-responsive-dimensions";
 import CartHeader from "./CartHeader";
 import { AntDesign } from "@expo/vector-icons";
-import { useDispatch, useSelector, connect } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import CartSlice, { removeFromCart } from "../Redux/CartSlice";
 import { addToCart } from "../Redux/CartSlice";
 import { decrementQuantity } from "../Redux/CartSlice";
 import { incrementQuantity } from "../Redux/CartSlice";
 import { useNavigation } from "@react-navigation/native";
 import { auth } from "../config/firebase";
-import { useCreateOrderMutation, useCreatePaymentIntentMutation } from "../store/apiSlice";
-import { useStripe, PaymentIntent } from "@stripe/stripe-react-native";
 
 
 
@@ -26,9 +24,6 @@ function Cart({ cartItems }) {
     const nav = useNavigation();
     let amount = 0;
 
-    const [createOrder, { data, error, isLoading }] = useCreateOrderMutation();
-    const [createPaymentIntent] = useCreatePaymentIntentMutation();
-    const { initPaymentSheet, presentPaymentSheet } = useStripe();
 
     useEffect(() => {
 
@@ -47,72 +42,19 @@ function Cart({ cartItems }) {
 
 
 
-    const handleGoToCheckOut = async () => {
-
-        // 1. Create a payment intent
-        const response = await createPaymentIntent({
-            amount: Math.floor(subTotal * 100),
-        });
-        if (response.error) {
-            Alert.alert('Error', 'Something went wrong');
-            return;
-        }
-        console.log(response);
-
-        // 2. Initialize the payment sheet
-        const initResponse = await initPaymentSheet({
-            merchantDisplayName: 'notJust.dev',
-            paymentIntentClientSecret: response.data.paymentIntent,
-            defaultBillingDetails: {
-                name: 'Name',
-                address: "Default address",
-            }
-        });
-        if (initResponse.error) {
-            console.log(initResponse.error);
-            Alert.alert('Something went wrong');
-            return;
-        }
-
-        // 3. Present the Payment Sheet from Stripe
-        await presentPaymentSheet();
-
-        // 4. If payment ok -> Create the order
-        onCreateOrder();
+    const handleCheckOut = async () => {
 
         const user = auth.currentUser;
         console.log("User logged in:", user);
 
         if (user) {
+            nav.navigate('Payment');
             // nav.navigate('Checkout');
-            nav.navigate('Checkout', { totalAmount: amount });  // Pass the 'amount' as a parameter
+            // nav.navigate('Checkout', { totalAmount: amount });  // Pass the 'amount' as a parameter
         } else {
             nav.navigate('SignIn');
         }
     }
-
-
-    const onCreateOrder = async () => {
-        const result = await createOrder({
-            items: storeData,
-            subTotal,
-            deliveryFee,
-            total,
-            customer: {
-                name: 'James',
-                address: 'My home',
-                email: 'sam@gmail.com',
-            },
-        });
-
-        if (result.data?.status == 'OK') {
-            Alert.alert(
-                'Order has been submitted',
-                `Your order reference is: ${result.data.ref}`
-            );
-            dispatch(CartSlice.actions.clear());
-        }
-    };
 
 
 
@@ -196,7 +138,7 @@ function Cart({ cartItems }) {
             )} />
 
             <View style={{ height: 60 }}>
-                <TouchableOpacity onPress={() => handleGoToCheckOut()} style={styles.button}>
+                <TouchableOpacity onPress={() => handleCheckOut()} style={styles.button}>
                     <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-evenly' }}>
                         <Text style={{ fontSize: 18, fontWeight: '700', color: 'white', textAlign: 'center' }}>CHECKOUT</Text>
                         <Text style={{ fontSize: 18, fontWeight: '700', color: 'white', textAlign: 'center' }}>ZAR {subTotal()}</Text>

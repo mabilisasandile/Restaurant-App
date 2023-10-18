@@ -47,6 +47,10 @@ export default function Home() {
         navigation.navigate('Cart');
     }
 
+    const handleSignInNav = () => {
+        navigation.navigate('SignIn');
+    }
+
     return (
         <View style={styles.container}>
             <View style={{ alignContent: "flex-start", alignItems: "flex-start", paddingBottom: 5 }}>
@@ -108,7 +112,7 @@ export default function Home() {
                             source={image6}
                             style={styles.image}
                         />
-                    </View> 
+                    </View>
                     <View style={styles.slide2}>
                         <Image
                             source={image5}
@@ -152,11 +156,15 @@ export default function Home() {
 
                 <View style={styles.slide2}>
                     <TouchableOpacity style={styles.button} onPress={handleMenuNav}>
-                        <Text style={{ color: '#FFFFFF', fontWeight: 'bold' }}>Check Menus</Text>
+                        <Text style={styles.text1}>CHECK MENU</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.button} onPress={handleCartNav}>
-                        <Text style={{ color: '#FFFFFF', fontWeight: 'bold' }}>View Cart</Text>
+                        <Text style={styles.text1}>VIEW CART</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity style={styles.button} onPress={handleSignInNav}>
+                        <Text style={styles.text1}>SIGN IN</Text>
                     </TouchableOpacity>
                 </View>
             </ScrollView>
@@ -167,7 +175,7 @@ export default function Home() {
                             name="place"
                             type="material"
                             size={32}
-                            color='green'
+                            color='blueviolet'
                         />
                         <Text style={{ color: 'grey' }}>Map</Text>
                     </TouchableOpacity>
@@ -191,6 +199,11 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         marginBottom: 20,
     },
+    text1: {
+        color: '#FFFFFF',
+        fontWeight: 'bold',
+        fontSize: 20,
+    },
     image: {
         width: 340,
         height: 300,
@@ -198,8 +211,8 @@ const styles = StyleSheet.create({
         resizeMode: 'cover',
     },
     button: {
-        width: 200,
-        height: 30,
+        width: 250,
+        height: 40,
         backgroundColor: '#8a2be2',
         alignItems: 'center',
         justifyContent: 'center',

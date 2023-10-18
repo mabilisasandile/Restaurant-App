@@ -16,12 +16,14 @@ import MapScreen from './components/MapScreen';
 import MyAccountScreen from './components/MyAccountScreen';
 import MyOrderScreen from './components/MyOrderScreen';
 import Checkout from './components/CheckOut';
+import Payment from './components/Payment';
 import OrderPlaced from './components/OrderPlaced';
 import TabScreens from './navigation/TabScreens';
 import ResetPassword from './components/ResetPassword';
 import { Provider } from 'react-redux';
 import { Store } from './Redux/Store';
 import { StripeProvider } from '@stripe/stripe-react-native';
+import StackScreens from './navigation/StackScreens';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -36,38 +38,19 @@ export default function App() {
 
   return (
 
-    <View style={styles.container}>
-
+    
       <Provider store={Store}>
 
         <StripeProvider publishableKey={STRIPE_KEY}>
 
-          <NavigationContainer>
-            <Stack.Navigator>
-              <Stack.Screen
-                name="Home"
-                component={TabScreens}
-                options={{ headerShown: false }} />
-              <Stack.Screen name="Menu" component={Menu} />
-              <Stack.Screen name="View_Item" component={ViewItem} />
-              <Stack.Screen name="Cart" component={Cart} />
-              <Stack.Screen name="Map" component={MapScreen} />
-              <Stack.Screen name="My_Orders" component={MyOrderScreen} />
-              <Stack.Screen name="My_Account" component={MyAccountScreen} />
-              <Stack.Screen name="Checkout" component={Checkout} />
-              <Stack.Screen name="Order_Placed" component={OrderPlaced} />
-              <Stack.Screen name="SignIn" component={SignIn} />
-              <Stack.Screen name="Register" component={SignUp} />
-              <Stack.Screen name="ResetPassword" component={ResetPassword} />
-            </Stack.Navigator>
-          </NavigationContainer>
+        <StackScreens />  
 
         </StripeProvider>
 
         <StatusBar style='auto' />
       </Provider>
 
-    </View>
+    
 
 
   );
