@@ -98,7 +98,8 @@ export default function Checkout({ route }) {
                 package: items,
             });
 
-            nav.navigate('Order_Placed');
+            // nav.navigate('Order_Placed');
+            nav.navigate('Payment');
 
         } catch (error) {
             Alert.alert("Error", "Unable to process order.", [{ text: "OK" }]);
@@ -108,55 +109,76 @@ export default function Checkout({ route }) {
 
 
 
+    const handlePayment = () => {
+        nav.navigate('Payment');
+    }
+
+
+
     return (
 
         <View style={styles.container}>
-            {userData.map((user, index) => (
-                <View key={index} style={{alignItems: 'center', justifyContent: 'center',}}>
-                    <Text style={styles.text}>Hello {user.name},</Text>
-                    <Text style={styles.text}>Place your order here!</Text>
-                    <Text>Address: {user.address}</Text>
-                </View>
-            ))}
-            <Text>{email}</Text>
-            <Text style={styles.text}>Total Amount: R{totalAmount}</Text>
-
-            <TextInput
-                placeholder="Enter drop-off address"
-                value={address}
-                onChangeText={setAddress}
-                style={styles.inputs}
-            />
-
-            <View>
-                <Text>Select Card Type:</Text>
-                <Picker
-                    style={{ width: 250, backgroundColor: 'white', borderWidth: 2 }}
-                    card_type={card_type}
-                    onValueChange={(itemValue) => setCardType(itemValue)}
-                >
-                    {options.map((option) => (
-                        <Picker.Item key={option.value} label={option.label} value={option.value} />
+            {userData ? (
+                <View>
+                    {userData.map((user, index) => (
+                        <View key={index} style={{ alignItems: 'center', justifyContent: 'center', }}>
+                            <Text style={styles.text}>Hello {user.name},</Text>
+                            <Text style={styles.text}>Place your order here!</Text>
+                            <Text>Address: {user.address}</Text>
+                        </View>
                     ))}
-                </Picker>
-            </View>
+                    <Text>{email}</Text>
+                    <Text style={styles.text}>Total Amount: R{totalAmount}</Text>
 
-            <TextInput
-                placeholder="Enter Card Number"
-                value={card_number}
-                onChangeText={setCardNumber}
-                style={styles.inputs}
-            />
+                    <TextInput
+                        placeholder="Enter drop-off address"
+                        value={address}
+                        onChangeText={setAddress}
+                        style={styles.inputs}
+                    />
 
-            <View>
-                <TouchableOpacity
-                    style={styles.button}
-                    onPress={handlePlaceOrder}
-                >
-                    <Text style={{ fontSize: 18, fontWeight: '700', color: 'white', textAlign: 'center' }}>Place Order</Text>
-                </TouchableOpacity>
-            </View>
+                    <View>
+                        <Text>Select Card Type:</Text>
+                        <Picker
+                            style={{ width: 250, backgroundColor: 'white', borderWidth: 2 }}
+                            card_type={card_type}
+                            onValueChange={(itemValue) => setCardType(itemValue)}
+                        >
+                            {options.map((option) => (
+                                <Picker.Item key={option.value} label={option.label} value={option.value} />
+                            ))}
+                        </Picker>
+                    </View>
 
+                    {/* <TextInput
+                        placeholder="Enter Card Number"
+                        value={card_number}
+                        onChangeText={setCardNumber}
+                        style={styles.inputs}
+                    /> */}
+
+                    {/* <View>
+                        <TouchableOpacity
+                            style={styles.button}
+                            onPress={handlePayment}
+                        >
+                            <Text style={{ fontSize: 18, fontWeight: '700', color: 'white', textAlign: 'center' }}>Make Payment</Text>
+                        </TouchableOpacity>
+                    </View> */}
+
+                    <View>
+                        <TouchableOpacity
+                            style={styles.button}
+                            onPress={handlePlaceOrder}
+                        >
+                            <Text style={{ fontSize: 18, fontWeight: '700', color: 'white', textAlign: 'center' }}>Place Order</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>) : (
+                <View>
+                    <Text style={{ fontSize: 24, fontWeight: '700' }}>Loading user data...</Text>
+                </View>
+            )}
 
         </View>
 

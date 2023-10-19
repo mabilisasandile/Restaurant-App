@@ -7,7 +7,7 @@ import { useNavigation } from "@react-navigation/native";
 import { auth } from "../config/firebase";
 import { useSelector } from "react-redux";
 
-export default function MenuHeader() {
+export default function HomeHeader() {
     const [showCard, setShowCard] = useState(false);
     const cartItems = useSelector((state) => state.CartSlice);
     const quantity = cartItems.length;
@@ -15,28 +15,38 @@ export default function MenuHeader() {
 
     const navigation = useNavigation();
 
+    
+
+    const handleToggleCard = () => {
+        setShowCard(!showCard);     // Toggle the showCard state
+    }
+
+    const handleClose = () => {   
+        setShowCard(false);
+    }
+
+
+    //Handle navigation to screens
     const handleCartNav = () => {
         navigation.navigate('Cart');
     }
 
-    const handleShowCard = () => {
-        setShowCard(true);
+    const handleAccountInfo =()=>{
+        navigation.navigate('My_Account');
     }
 
-    //Handle button events
-    const handleClose = () => {
-        setShowCard(false);
-    }
+    const handleViewOrder =()=>{
+        navigation.navigate('View_Order');
+    } 
 
     const handleSignOut = async () => {
         try {
             await auth.signOut(); // Sign the user out
             console.log('User signed out successfully');
-            navigation.navigate('SignIn');
-        } catch (error) {
+          } catch (error) {
             console.error('Error signing out:', error);
-        }
-        
+          }
+        navigation.navigate('SignIn');
     }
 
 
@@ -49,7 +59,7 @@ export default function MenuHeader() {
                         name="menu"
                         color={'white'}
                         size={32}
-                        onPress={handleShowCard}
+                        onPress={handleToggleCard}
                     />
                 </View>
 
@@ -71,14 +81,14 @@ export default function MenuHeader() {
             <View style={styles.container}>
                 <Modal visible={showCard} onRequestClose={handleClose}>
                     <View style={styles.card}>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={handleAccountInfo}>
                             <Text style={styles.text}>Account Information</Text>
                         </TouchableOpacity>
                         <TouchableOpacity>
                             <Text style={styles.text}>Checkout</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity>
-                            <Text style={styles.text}>Place An Order</Text>
+                        <TouchableOpacity onPress={handleViewOrder}>
+                            <Text style={styles.text}>View Order</Text>
                         </TouchableOpacity>
                         <TouchableOpacity>
                             <Text style={styles.text}>Support</Text>

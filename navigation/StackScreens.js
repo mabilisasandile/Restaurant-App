@@ -8,6 +8,8 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Menu from '../components/Menu';
+import BreakfastMenu from '../components/BreakfastMenu';
+import LunchMenu from '../components/LunchMenu';
 import Home from '../components/Home';
 import ViewItem from '../components/ViewItem';
 import Cart from '../components/Cart';
@@ -21,6 +23,7 @@ import Payment from '../components/Payment';
 import OrderPlaced from '../components/OrderPlaced';
 import TabScreens from './TabScreens';
 import ResetPassword from '../components/ResetPassword';
+
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -39,6 +42,8 @@ export default function StackScreens() {
                 component={TabScreens}
                 options={{ headerShown: false }} />
               <Stack.Screen name="Menu" component={Menu} />
+              <Stack.Screen name="Breakfast_Menu" component={BreakfastMenu} />
+              <Stack.Screen name="Lunch_Menu" component={LunchMenu} />
               <Stack.Screen name="View_Item" component={ViewItem} />
               <Stack.Screen name="Cart" component={Cart} />
               <Stack.Screen name="Map" component={MapScreen} />

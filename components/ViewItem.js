@@ -12,7 +12,7 @@ const ViewItem = ({ route }) => {
 
     const dispatch = useDispatch();
     const {menuItemData} = route.params;
-    const {name, price, description, imageURL} = menuItemData;
+    const {name, price, description, category, imageURL} = menuItemData;
     const storeData = useSelector((state) => state.CartSlice);
     const nav = useNavigation();
 
@@ -56,6 +56,7 @@ const ViewItem = ({ route }) => {
 
                         <Text>Item: {itemName}</Text>
                         <Text>Recipe: {description}</Text>
+                        <Text style={{color:'grey'}}>{category}</Text>
                         <Text>Price: R{price}</Text>
                         <Text>Delivery Time: 4h30 PM</Text>
 

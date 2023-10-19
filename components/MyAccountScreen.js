@@ -33,9 +33,13 @@ export default function MyAccountScreen() {
         }
     }
 
+    const handleSignIn =()=>{
+        nav.navigate('SignIn');
+    }
+
     return (
         <View style={styles.container}>
-            {user ? (
+            {userData ? (
                 <View style={{alignItems:'center', justifyContent:'center'}}>
                     <Text style={{fontSize:22, fontWeight:'700'}}>My Account</Text>
                     <Text>{user.email}</Text>
@@ -50,7 +54,18 @@ export default function MyAccountScreen() {
                     ))}
                 </View>
             ) : (
-                <SignIn />
+                // <SignIn />
+                <View>
+                    <Text style={{fontSize:24, fontWeight:'700'}}>Loading user data...</Text>
+                    <View style={{paddingTop:30, marginTop:30}}>
+                    <TouchableOpacity
+                            style={styles.button}
+                            onPress={handleSignIn}
+                        >
+                            <Text style={{ fontSize: 18, fontWeight: '700', color: 'white', textAlign: 'center' }}>Sign In</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
             )}
         </View>
     );
@@ -77,5 +92,14 @@ const styles = StyleSheet.create({
         height: 350,
         flexDirection: 'row',
         alignItems: 'center',
+    },
+    button: {
+        backgroundColor: '#8a2be2',
+        padding: 10,
+        marginLeft: 20,
+        marginTop: 5,
+        borderRadius: 10,
+        width: 300,
+        marginBottom: 5,
     },
 });

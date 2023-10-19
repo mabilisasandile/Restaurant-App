@@ -48,9 +48,9 @@ function Cart({ cartItems }) {
         console.log("User logged in:", user);
 
         if (user) {
-            nav.navigate('Payment');
+            // nav.navigate('Payment');
             // nav.navigate('Checkout');
-            // nav.navigate('Checkout', { totalAmount: amount });  // Pass the 'amount' as a parameter
+            nav.navigate('Checkout', { totalAmount: amount });  // Pass the 'amount' as a parameter
         } else {
             nav.navigate('SignIn');
         }

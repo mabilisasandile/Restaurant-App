@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View, Text, FlatList, Image, TouchableOpacity, ScrollView } from 'react-native';
+import { StyleSheet, View, Text, FlatList, Image, TouchableOpacity } from 'react-native';
 import { collection, getDocs, doc, getDoc, where, query } from "firebase/firestore";
 import { db } from "../config/firebase";
 import { Card } from "react-native-elements";
@@ -12,10 +12,10 @@ import { removeFromCart } from "../Redux/CartSlice";
 import { FontAwesome } from "@expo/vector-icons";
 
 
-export default function Menu() {
+export default function LunchMenu() {
 
     const [items, setItems] = useState([]);
-    const [breakfastData, setBreakfastData] = useState([])
+    const [lunchData, setLunchData] = useState([])
 
     const navigation = useNavigation();
     const dispatch = useDispatch();
@@ -24,36 +24,33 @@ export default function Menu() {
     const cartItems = useSelector((state) => state.CartSlice);
 
     useEffect(() => {
-        getItems();
+        handleLunchMenu();
         console.log("Cart Items:", cartItems);
     }, []);
 
 
 
-    const getItems = async () => {
+    const handleLunchMenu = async () => {
         try {
-            const querySnapshot = await getDocs(collection(db, "items"));
+            const querySnapshot = query(collection(db, "items")
+                , where("category", "==", "Lunch"));
 
-            const foodItems = querySnapshot.docs.map((doc) => ({
-                id: doc.id,
-                ...doc.data()
-            }));
+            const data = await getDocs(querySnapshot);
 
-            setItems(foodItems);
-            console.log("Items data:", foodItems);
+            data.forEach((doc) => {
+                console.log("Doc data: ", doc.data());
+                fetchedData[doc.id] = doc.data();
 
+            });
+
+            setLunchData(Object.values(fetchedData));
+
+            console.log("Lunch Menu:", lunchData);
+            
         } catch (error) {
-            console.log("Failed to fetch data", error);
+            console.log("Failed to fetch lunch data", error);
         }
-    }
 
-
-    const handleBreakfastMenu = () => {
-        navigation.navigate("Breakfast_Menu");
-    }
-
-    const handleLunchMenu = () => {
-        navigation.navigate("Lunch_Menu");
     }
 
 
@@ -115,6 +112,7 @@ export default function Menu() {
                 </View>
                 <View>
                     <Text style={styles.title}>{item.name}: </Text>
+                    <Text style={styles.description}>{item.category}</Text>
                     <Text style={styles.price}>R{item.price}</Text>
                 </View>
             </View>
@@ -152,42 +150,13 @@ export default function Menu() {
             <View>
                 <MenuHeader />
             </View>
-
-            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-            <View style={{
-                flexDirection: 'row', alignContent: 'center',
-                justifyContent: 'space-between', alignItems: 'center'
-            }}>
-                <TouchableOpacity
-                    style={{ borderWidth: 1, borderRadius: 30, height:50, width:120 }}
-                    onPress={handleBreakfastMenu}
-                >
-                    <Text style={{margin:12}}>Check Breakfast</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    style={{ borderWidth: 1, borderRadius: 30, height:50, width:120, marginLeft:20 }}
-                    onPress={handleLunchMenu}
-                >
-                    <Text style={{margin:12}}>Check Lunch</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    style={{ borderWidth: 1, borderRadius: 30, height:50, width:120 }}
-                    onPress={handleBreakfastMenu}
-                >
-                    <Text style={{margin:12}}>Check Dinner</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    style={{ borderWidth: 1, borderRadius: 30, height:50, width:120, marginLeft:20 }}
-                    onPress={handleLunchMenu}
-                >
-                    <Text style={{margin:12}}>Check Lunch</Text>
-                </TouchableOpacity>
+            {/* Render the FlatList */}
+            <View>
+            <Text style={{ fontSize: 24, fontWeight: '700' }}>Breakfast Menu</Text>
             </View>
-            </ScrollView>
-            
-             {/* Render the FlatList */}
+
             <FlatList
-                data={items}
+                data={lunchData}
                 renderItem={renderItem}
                 keyExtractor={(item) => item.id}
             />
@@ -240,6 +209,7 @@ const styles = StyleSheet.create({
         fontSize: 14,
         marginTop: 5,
         marginLeft: 10,
+        color: 'grey',
     },
     price: {
         fontSize: 16,

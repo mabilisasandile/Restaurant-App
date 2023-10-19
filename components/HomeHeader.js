@@ -81,13 +81,13 @@ export default function HomeHeader() {
             <View style={styles.container}>
                 <Modal visible={showCard} onRequestClose={handleClose}>
                     <View style={styles.card}>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={handleAccountInfo}>
                             <Text style={styles.text}>Account Information</Text>
                         </TouchableOpacity>
                         <TouchableOpacity>
                             <Text style={styles.text}>Checkout</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={handleViewOrder}>
                             <Text style={styles.text}>View Order</Text>
                         </TouchableOpacity>
                         <TouchableOpacity>

@@ -1,18 +1,24 @@
 
 import { useStripe } from "@stripe/stripe-react-native";
 import React, { useState } from "react";
-import { View, Text, TextInput, Button, Alert, TouchableOpacity } from "react-native";
+import { View, Text, TextInput, Alert, TouchableOpacity } from "react-native";
+// import { collection, getDocs, getDoc, where, query, doc, addDoc } from "firebase/firestore";
+import { db, auth } from "../config/firebase";
 import { useNavigation } from "@react-navigation/native";
+
 
 
 const Payment = () => {
 
     const [name, setName] = useState('');
     const stripe = useStripe();
-    const nav = useNavigation(); 
+    const nav = useNavigation();
+    const user = auth.currentUser;
+    const userID = user.uid;
+    const email = user.email; 
 
 
-    const subscribe = async () => {
+    const pay = async () => {
         try {
             // Sending request
             const response = await fetch('https://restaurant-app-sandile.onrender.com/pay', {
@@ -46,12 +52,38 @@ const Payment = () => {
             }
 
             Alert.alert("Payment complete, thank you!");
+            // nav.navigate('Checkout');
+            nav.navigate('Order_Placed');
+            // saveOrder();
 
         } catch (err) {
             console.log("Error: ", err);
             Alert.alert("Something went wrong, try again later!");
         }
     };
+
+
+
+    // const saveOrder = async () => {
+
+    //     try {
+    //         const docRef = await addDoc(collection(db, 'orders'), {
+    //             user_id: userID,
+    //             email: email,
+    //             address: address,
+    //             total_amount: totalAmount,
+    //             card_type: card_type,
+    //             card_number: card_number,
+    //             package: items,
+    //         });
+
+    //         nav.navigate('Order_Placed');
+
+    //     } catch (error) {
+    //         Alert.alert("Error", "Unable to process order.", [{ text: "OK" }]);
+    //     }
+
+    // }
 
 
 
@@ -73,17 +105,17 @@ const Payment = () => {
                 }}
             />
             <TouchableOpacity
-                onPress={subscribe}
+                onPress={pay}
                 style={{
                     backgroundColor: '#8a2be2',
                     padding: 10,
                     marginLeft: 20,
                     marginTop: 5,
                     borderRadius: 10,
-                    width: 200,
+                    width: 250,
                     marginBottom: 5
                 }}>
-                <Text style={{color:'white', textAlign:'center', fontWeight:'bold', fontSize: 24}}>Subscribe - 25 INR</Text>
+                <Text style={{color:'white', textAlign:'center', fontWeight:'bold', fontSize: 24}}>Make Payment - 25 ZAR</Text>
             </TouchableOpacity>
             
         </View >

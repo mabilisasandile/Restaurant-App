@@ -12,7 +12,7 @@ const OrderPlaced = () => {
     useEffect(()=>{
         setTimeout(()=>{
             nav.navigate('Home');
-        }, 3000);
+        }, 6000);
     }, []);
 
     return (
