@@ -95,7 +95,7 @@ function Cart({ cartItems }) {
                             </View>
 
                         </View>
-                        <Text style={{ fontSize: 17, color: 'grey', marginTop: 5 }}>Medium | {item.description}</Text>
+                        <Text style={{ fontSize: 17, color: 'grey', marginTop: 5 }}>{item.description}</Text>
                         <View style={{
                             alignContent: 'center', justifyContent: 'space-between',
                             flexDirection: 'row'

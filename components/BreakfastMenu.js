@@ -10,6 +10,7 @@ import { useDispatch } from "react-redux";
 import { addToCart } from "../Redux/CartSlice";
 import { removeFromCart } from "../Redux/CartSlice";
 import { FontAwesome } from "@expo/vector-icons";
+import { Alert } from "react-native";
 
 
 export default function BreakfastMenu() {
@@ -46,9 +47,10 @@ export default function BreakfastMenu() {
             setBreakfastData(Object.values(fetchedData));
 
             console.log("Breakfast Menu:", breakfastData);
-            
+
         } catch (error) {
             console.log("Failed to fetch breakfast data", error);
+            Alert.alert("Something went wrong. Please try again!");
         }
 
     }
@@ -77,27 +79,39 @@ export default function BreakfastMenu() {
 
             } else {
                 console.log("Document not found");
+                Alert.alert("Something went wrong. Please try again!");
             }
 
         } catch (error) {
             console.error("Error fetching menu item", error);
+            Alert.alert("Something went wrong. Please try again!");
         }
 
     }
 
 
     const handleAddToCart = id => {
-        const [item] = items.filter(item => item.id === id);
-        dispatch(addToCart(item));
-        console.log("Item added to cart:", item);
+        try {
+            const [item] = breakfastData.filter(item => item.id === id);
+            dispatch(addToCart(item));
+            console.log("Item added to cart:", item);
+        } catch (error) {
+            console.log("Failed to add item into cart:", error);
+            Alert.alert("Something went wrong. Please try again!");
+        }
+
 
     }
 
     const handleRemoveFromCart = id => {
-        const [item] = items.filter(item => item.id === id);
-        dispatch(removeFromCart(item));
-        console.log("Item removed from cart:", item);
-
+        try {
+            const [item] = breakfastData.filter(item => item.id === id);
+            dispatch(removeFromCart(item));
+            console.log("Item removed from cart:", item);
+        } catch (error) {
+            console.log("Failed to remove item from cart:", error);
+            Alert.alert("Something went wrong. Please try again!");
+        }
     }
 
     // Render each item in the FlatList
@@ -152,7 +166,7 @@ export default function BreakfastMenu() {
             </View>
             {/* Render the FlatList */}
             <View>
-            <Text style={{ fontSize: 24, fontWeight: '700' }}>Breakfast Menu</Text>
+                <Text style={{ fontSize: 24, fontWeight: '700' }}>Breakfast Menu</Text>
             </View>
             <FlatList
                 data={breakfastData}
@@ -223,5 +237,21 @@ const styles = StyleSheet.create({
         marginLeft: 20,
         marginTop: 15,
         borderRadius: 10,
+    },
+    bbtn2: {
+        borderWidth: 2,
+        borderRadius: 30,
+        height: 50,
+        width: 120,
+        marginLeft: 20,
+        marginBottom: 10,
+        borderColor: 'white',
+        backgroundColor: '#8a2be2',
+    },
+    btn2_text: {
+        margin: 12, 
+        color: 'white', 
+        fontWeight: '700',
+        fontSize: 16,
     }
 });

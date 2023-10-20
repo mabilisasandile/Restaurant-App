@@ -5,16 +5,29 @@ import { auth } from '../config/firebase';
 import SignIn from './SignIn';
 
 export default function MyAccountScreen() {
+
     const [userData, setUserData] = useState([]);
+    const [editId, setEditId] = useState(null);
+    const [editName, setEditName] = useState('');
+    const [editPhone, setEditPhone] = useState('');
+    const [editAddress, setEditAddress] = useState('');
+    const [editCardType, setEditCardType] = useState('');
+    const [editCardNo, setEditCardNo] = useState('');
+    const [modalVisible, setModalVisible] = useState(false);
+
     const fetchedData = {};
     const user = auth.currentUser;
     const userID = user ? user.uid : null; // Ensure the user object is not null
+
+
 
     useEffect(() => {
         if (userID) {
             getUserData();
         }
     }, [userID]);
+
+
 
     const getUserData = async () => {
         try {
@@ -33,16 +46,21 @@ export default function MyAccountScreen() {
         }
     }
 
-    const handleSignIn =()=>{
+
+
+    const handleSignIn = () => {
         nav.navigate('SignIn');
     }
+
+
 
     return (
         <View style={styles.container}>
             {userData ? (
-                <View style={{alignItems:'center', justifyContent:'center'}}>
-                    <Text style={{fontSize:22, fontWeight:'700'}}>My Account</Text>
+                <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                    <Text style={{ fontSize: 22, fontWeight: '700' }}>My Account</Text>
                     <Text>{user.email}</Text>
+
                     {userData.map((user, index) => (
                         <View key={index}>
                             <Text style={styles.text}>Hello {user.name},</Text>
@@ -52,17 +70,17 @@ export default function MyAccountScreen() {
                             <Text>Address: {user.address}</Text>
                         </View>
                     ))}
+
                 </View>
             ) : (
-                // <SignIn />
                 <View>
-                    <Text style={{fontSize:24, fontWeight:'700'}}>Loading user data...</Text>
-                    <View style={{paddingTop:30, marginTop:30}}>
-                    <TouchableOpacity
-                            style={styles.button}
+                    <Text style={{ fontSize: 24, fontWeight: '700' }}>Loading...</Text>
+                    <View style={{ paddingTop: 100, marginTop: 100 }}>
+                        <TouchableOpacity
+                            style={styles.nav_link}
                             onPress={handleSignIn}
                         >
-                            <Text style={{ fontSize: 18, fontWeight: '700', color: 'white', textAlign: 'center' }}>Sign In</Text>
+                            <Text style={{ fontSize: 18, fontWeight: '400', textAlign: 'center' }}>Have you signed in? No. Then click here to Sign In</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -101,5 +119,20 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         width: 300,
         marginBottom: 5,
+    },
+    nav_link: {
+        backgroundColor: '#87ceeb',
+        paddingHorizontal: 5,
+        width: 200,
+        color: 'blue',
+        fontSize: 18,
+        fontWeight: 'bold',
+        cursor: 'pointer',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: 10,
+        marginBottom: 10,
+        textDecorationLine: 'underline',
+        textDecorationColor: '#000000',
     },
 });

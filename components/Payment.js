@@ -2,20 +2,21 @@
 import { useStripe } from "@stripe/stripe-react-native";
 import React, { useState } from "react";
 import { View, Text, TextInput, Alert, TouchableOpacity } from "react-native";
-// import { collection, getDocs, getDoc, where, query, doc, addDoc } from "firebase/firestore";
+import { doc, deleteDoc, collection, query, where } from "firebase/firestore";
 import { db, auth } from "../config/firebase";
 import { useNavigation } from "@react-navigation/native";
 
 
 
-const Payment = () => {
+const Payment = ({ route }) => {
 
+    const { amount } = route.params;
     const [name, setName] = useState('');
     const stripe = useStripe();
     const nav = useNavigation();
     const user = auth.currentUser;
     const userID = user.uid;
-    const email = user.email; 
+    const email = user.email;
 
 
     const pay = async () => {
@@ -23,7 +24,7 @@ const Payment = () => {
             // Sending request
             const response = await fetch('https://restaurant-app-sandile.onrender.com/pay', {
                 method: 'POST',
-                body: JSON.stringify({ name }),
+                body: JSON.stringify({ name, amount }),     // Include the amount in the request body
                 headers: {
                     "Content-Type": "application/json"
                 }
@@ -39,6 +40,8 @@ const Payment = () => {
             const initSheet = await stripe.initPaymentSheet({
                 paymentIntentClientSecret: clientSecret,
                 merchantDisplayName: 'Sandile',
+                amount: amount * 100, // Convert amount to cents (Stripe expects amount in cents)
+                currency: 'zar', // Set the currency
             });
             if (initSheet.error) {
                 return Alert.alert(initSheet.error.message);
@@ -52,38 +55,22 @@ const Payment = () => {
             }
 
             Alert.alert("Payment complete, thank you!");
-            // nav.navigate('Checkout');
             nav.navigate('Order_Placed');
-            // saveOrder();
 
         } catch (err) {
             console.log("Error: ", err);
             Alert.alert("Something went wrong, try again later!");
+            cancelOrder();
         }
     };
 
 
-
-    // const saveOrder = async () => {
-
-    //     try {
-    //         const docRef = await addDoc(collection(db, 'orders'), {
-    //             user_id: userID,
-    //             email: email,
-    //             address: address,
-    //             total_amount: totalAmount,
-    //             card_type: card_type,
-    //             card_number: card_number,
-    //             package: items,
-    //         });
-
-    //         nav.navigate('Order_Placed');
-
-    //     } catch (error) {
-    //         Alert.alert("Error", "Unable to process order.", [{ text: "OK" }]);
-    //     }
-
-    // }
+    const cancelOrder = async () => {
+        const querySnapshot = query(collection(db, "orders")
+        , where("user_id", "==", userID));
+        await deleteDoc(querySnapshot);
+        // await deleteDoc(doc(querySnapshot));
+    }
 
 
 
@@ -115,12 +102,11 @@ const Payment = () => {
                     width: 250,
                     marginBottom: 5
                 }}>
-                <Text style={{color:'white', textAlign:'center', fontWeight:'bold', fontSize: 24}}>Make Payment - 25 ZAR</Text>
+                <Text style={{ color: 'white', textAlign: 'center', fontWeight: 'bold', fontSize: 24 }}>Make Payment - 25 ZAR</Text>
             </TouchableOpacity>
-            
+
         </View >
     );
-
 }
 
 export default Payment;

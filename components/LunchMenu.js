@@ -46,9 +46,10 @@ export default function LunchMenu() {
             setLunchData(Object.values(fetchedData));
 
             console.log("Lunch Menu:", lunchData);
-            
+
         } catch (error) {
             console.log("Failed to fetch lunch data", error);
+            Alert.alert("Something went wrong. Please try again!");
         }
 
     }
@@ -77,26 +78,37 @@ export default function LunchMenu() {
 
             } else {
                 console.log("Document not found");
+                Alert.alert("Something went wrong. Please try again!");
             }
 
         } catch (error) {
             console.error("Error fetching menu item", error);
+            Alert.alert("Something went wrong. Please try again!");
         }
 
     }
 
 
     const handleAddToCart = id => {
-        const [item] = items.filter(item => item.id === id);
-        dispatch(addToCart(item));
-        console.log("Item added to cart:", item);
-
+        try {
+            const [item] = items.filter(item => item.id === id);
+            dispatch(addToCart(item));
+            console.log("Item added to cart:", item);
+        } catch (error) {
+            console.log("Failed to add to cart:", error);
+            Alert.alert("Something went wrong. Please try again!");
+        }
     }
 
     const handleRemoveFromCart = id => {
-        const [item] = items.filter(item => item.id === id);
-        dispatch(removeFromCart(item));
-        console.log("Item removed from cart:", item);
+        try {
+            const [item] = items.filter(item => item.id === id);
+            dispatch(removeFromCart(item));
+            console.log("Item removed from cart:", item);
+        } catch (error) {
+            console.log("Failed to remove item from cart:", error);
+            Alert.alert("Something went wrong. Please try again!");
+        }
 
     }
 
@@ -152,7 +164,7 @@ export default function LunchMenu() {
             </View>
             {/* Render the FlatList */}
             <View>
-            <Text style={{ fontSize: 24, fontWeight: '700' }}>Breakfast Menu</Text>
+                <Text style={{ fontSize: 24, fontWeight: '700' }}>Breakfast Menu</Text>
             </View>
 
             <FlatList
@@ -224,5 +236,21 @@ const styles = StyleSheet.create({
         marginLeft: 20,
         marginTop: 15,
         borderRadius: 10,
+    },
+    btn2: {
+        borderWidth: 2,
+        borderRadius: 30,
+        height: 50,
+        width: 120,
+        marginLeft: 20,
+        marginBottom: 10,
+        borderColor: 'white',
+        backgroundColor: '#8a2be2',
+    },
+    btn2_text: {
+        margin: 12, 
+        color: 'white', 
+        fontWeight: '700',
+        fontSize: 16,
     }
 });

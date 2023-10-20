@@ -10,6 +10,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Menu from '../components/Menu';
 import BreakfastMenu from '../components/BreakfastMenu';
 import LunchMenu from '../components/LunchMenu';
+import DinnerMenu from '../components/DinnerMenu';
 import Home from '../components/Home';
 import ViewItem from '../components/ViewItem';
 import Cart from '../components/Cart';
@@ -44,6 +45,7 @@ export default function StackScreens() {
               <Stack.Screen name="Menu" component={Menu} />
               <Stack.Screen name="Breakfast_Menu" component={BreakfastMenu} />
               <Stack.Screen name="Lunch_Menu" component={LunchMenu} />
+              <Stack.Screen name="Dinner_Menu" component={DinnerMenu} />
               <Stack.Screen name="View_Item" component={ViewItem} />
               <Stack.Screen name="Cart" component={Cart} />
               <Stack.Screen name="Map" component={MapScreen} />

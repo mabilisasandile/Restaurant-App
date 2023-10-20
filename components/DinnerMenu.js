@@ -1,9 +1,7 @@
+
 import React, { useEffect, useState } from "react";
-import {
-    StyleSheet, View, Text, FlatList, Alert,
-    Image, TouchableOpacity, ScrollView
-} from 'react-native';
-import { collection, getDocs, doc, getDoc } from "firebase/firestore";
+import { StyleSheet, View, Text, FlatList, Image, TouchableOpacity } from 'react-native';
+import { collection, getDocs, doc, getDoc, where, query } from "firebase/firestore";
 import { db } from "../config/firebase";
 import { Card } from "react-native-elements";
 import MenuHeader from "./MenuHeader";
@@ -15,50 +13,46 @@ import { removeFromCart } from "../Redux/CartSlice";
 import { FontAwesome } from "@expo/vector-icons";
 
 
-export default function Menu() {
+export default function DinnerMenu() {
 
-    const [items, setItems] = useState([]);
+    const [dinnerData, setDinnerData] = useState([]);
+
     const navigation = useNavigation();
     const dispatch = useDispatch();
-    const { cartItems } = useSelector((state) => state.CartSlice);
+    let fetchedData = [];
+
+    const cartItems = useSelector((state) => state.CartSlice);
 
     useEffect(() => {
-        getItems();
+        handleDinnerMenu();
         console.log("Cart Items:", cartItems);
     }, []);
 
 
 
-    const getItems = async () => {
+    const handleDinnerMenu = async () => {
         try {
-            const querySnapshot = await getDocs(collection(db, "items"));
+            const querySnapshot = query(collection(db, "items")
+                , where("category", "==", "Dinner"));
 
-            const foodItems = querySnapshot.docs.map((doc) => ({
-                id: doc.id,
-                ...doc.data()
-            }));
+            const data = await getDocs(querySnapshot);
 
-            setItems(foodItems);
-            console.log("Items data:", foodItems);
+            data.forEach((doc) => {
+                console.log("Doc data: ", doc.data());
+                fetchedData[doc.id] = doc.data();
+
+            });
+
+            setDinnerData(Object.values(fetchedData));
+
+            console.log("Lunch Menu:", dinnerData);
 
         } catch (error) {
-            console.log("Failed to fetch data", error);
+            console.log("Failed to fetch dinner data", error);
+            Alert.alert("Something went wrong. Please try again!");
         }
+
     }
-
-
-    const handleBreakfastMenu = () => {
-        navigation.navigate("Breakfast_Menu");
-    }
-
-    const handleLunchMenu = () => {
-        navigation.navigate("Lunch_Menu");
-    }
-
-    const handleDinnerMenu = () => {
-        navigation.navigate("Dinner_Menu");
-    }
-
 
 
 
@@ -69,11 +63,11 @@ export default function Menu() {
         try {
             //CREATING REFERENCE TO SPECIFIC DOCUMENT IN MENU COLLECTION
             const menuItemRef = doc(collection(db, "items"), itemId);
-            console.log("Menu Item Ref ", menuItemRef);
+            console.log("Menu Item Ref ", menuItemRef)
 
             //FETCH DOCUMENT DATA
             const docSnapshot = await getDoc(menuItemRef);
-            console.log(docSnapshot, "Snapshot");
+            console.log(docSnapshot, "Snapshot")
 
             if (docSnapshot.exists()) {
 
@@ -90,23 +84,26 @@ export default function Menu() {
             console.error("Error fetching menu item", error);
             Alert.alert("Something went wrong. Please try again!");
         }
+
     }
+
 
 
     const handleAddToCart = id => {
         try {
-            const [item] = items.filter(item => item.id === id);
+            const [item] = dinnerData.filter(item => item.id === id);
             dispatch(addToCart(item));
             console.log("Item added to cart:", item);
         } catch (error) {
             console.log("Failed to add to cart:", error);
             Alert.alert("Something went wrong. Please try again!");
         }
+
     }
 
     const handleRemoveFromCart = id => {
         try {
-            const [item] = items.filter(item => item.id === id);
+            const [item] = dinnerData.filter(item => item.id === id);
             dispatch(removeFromCart(item));
             console.log("Item removed from cart:", item);
         } catch (error) {
@@ -115,6 +112,7 @@ export default function Menu() {
         }
     }
 
+    
     // Render each item in the FlatList
     const renderItem = ({ item }) => (
         <Card containerStyle={styles.card}>
@@ -127,6 +125,7 @@ export default function Menu() {
                 </View>
                 <View>
                     <Text style={styles.title}>{item.name}: </Text>
+                    <Text style={styles.description}>{item.category}</Text>
                     <Text style={styles.price}>R{item.price}</Text>
                 </View>
             </View>
@@ -153,22 +152,7 @@ export default function Menu() {
                             />
                         </TouchableOpacity>
                     )}
-                    {/* <TouchableOpacity onPress={() => handleAddToCart(item.id)}>
-                        <FontAwesome
-                            name="plus-square"
-                            size={43}
-                            color='#8a2be2'
-                        />
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => handleRemoveFromCart(item.id)}>
-                        <FontAwesome
-                            name="minus-square"
-                            size={43}
-                            color='grey'
-                        />
-                    </TouchableOpacity> */}
                 </View>
-
             </View>
 
         </Card>
@@ -179,42 +163,13 @@ export default function Menu() {
             <View>
                 <MenuHeader />
             </View>
-
-            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                <View style={{
-                    flexDirection: 'row', alignContent: 'center',
-                    justifyContent: 'space-between', alignItems: 'center', height: 70
-                }}>
-                    <TouchableOpacity
-                        style={styles.btn2}
-                        onPress={handleBreakfastMenu}
-                    >
-                        <Text style={styles.btn2_text}>Breakfast</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        style={styles.btn2}
-                        onPress={handleLunchMenu}
-                    >
-                        <Text style={styles.btn2_text}>Lunch Menu</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        style={styles.btn2}
-                        onPress={handleDinnerMenu}
-                    >
-                        <Text style={styles.btn2_text}>Dinner Menu</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        style={styles.btn2}
-                        onPress={handleLunchMenu}
-                    >
-                        <Text style={styles.btn2_text}>Other Menus</Text>
-                    </TouchableOpacity>
-                </View>
-            </ScrollView>
-
             {/* Render the FlatList */}
+            <View>
+                <Text style={{ fontSize: 24, fontWeight: '700' }}>Dinner Menu</Text>
+            </View>
+
             <FlatList
-                data={items}
+                data={dinnerData}
                 renderItem={renderItem}
                 keyExtractor={(item) => item.id}
             />
@@ -267,6 +222,7 @@ const styles = StyleSheet.create({
         fontSize: 14,
         marginTop: 5,
         marginLeft: 10,
+        color: 'grey',
     },
     price: {
         fontSize: 16,
@@ -293,8 +249,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#8a2be2',
     },
     btn2_text: {
-        margin: 12,
-        color: 'white',
+        margin: 12, 
+        color: 'white', 
         fontWeight: '700',
         fontSize: 16,
     }

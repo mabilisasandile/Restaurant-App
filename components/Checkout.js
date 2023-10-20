@@ -100,6 +100,7 @@ export default function Checkout({ route }) {
 
             // nav.navigate('Order_Placed');
             nav.navigate('Payment');
+            nav.navigate('Payment', { amount: totalAmount });  // Pass the 'amount' as a parameter
 
         } catch (error) {
             Alert.alert("Error", "Unable to process order.", [{ text: "OK" }]);
@@ -124,7 +125,7 @@ export default function Checkout({ route }) {
                         <View key={index} style={{ alignItems: 'center', justifyContent: 'center', }}>
                             <Text style={styles.text}>Hello {user.name},</Text>
                             <Text style={styles.text}>Place your order here!</Text>
-                            <Text>Address: {user.address}</Text>
+                            <Text>{user.address}</Text>
                         </View>
                     ))}
                     <Text>{email}</Text>
@@ -150,21 +151,12 @@ export default function Checkout({ route }) {
                         </Picker>
                     </View>
 
-                    {/* <TextInput
+                    <TextInput
                         placeholder="Enter Card Number"
                         value={card_number}
                         onChangeText={setCardNumber}
                         style={styles.inputs}
-                    /> */}
-
-                    {/* <View>
-                        <TouchableOpacity
-                            style={styles.button}
-                            onPress={handlePayment}
-                        >
-                            <Text style={{ fontSize: 18, fontWeight: '700', color: 'white', textAlign: 'center' }}>Make Payment</Text>
-                        </TouchableOpacity>
-                    </View> */}
+                    />
 
                     <View>
                         <TouchableOpacity
@@ -176,7 +168,7 @@ export default function Checkout({ route }) {
                     </View>
                 </View>) : (
                 <View>
-                    <Text style={{ fontSize: 24, fontWeight: '700' }}>Loading user data...</Text>
+                    <Text style={{ fontSize: 24, fontWeight: '700' }}>Loading...</Text>
                 </View>
             )}
 

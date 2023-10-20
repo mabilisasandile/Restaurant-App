@@ -6,6 +6,7 @@ const cartSlice = createSlice({
     initialState: [],
     reducers: {
         addToCart: (state, actions) => {
+            // state.push({ ...actions.payload, quantity:1 });
             const isAvailable = state.find(
                 (value) => value.name == actions.payload.name
             );
