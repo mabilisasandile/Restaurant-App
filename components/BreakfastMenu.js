@@ -16,7 +16,7 @@ import { Alert } from "react-native";
 export default function BreakfastMenu() {
 
     const [items, setItems] = useState([]);
-    const [breakfastData, setBreakfastData] = useState([])
+    const [breakfastData, setBreakfastData] = useState([]);
 
     const navigation = useNavigation();
     const dispatch = useDispatch();

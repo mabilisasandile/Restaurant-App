@@ -90,15 +90,6 @@ export default function HomeHeader() {
                         <TouchableOpacity onPress={handleViewOrder}>
                             <Text style={styles.text}>View Order</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity>
-                            <Text style={styles.text}>Support</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity>
-                            <Text style={styles.text}>Contact Us</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity>
-                            <Text style={styles.text}>About Us</Text>
-                        </TouchableOpacity>
                         <TouchableOpacity onPress={handleClose}>
                             <Text style={styles.text}>Close</Text>
                         </TouchableOpacity>

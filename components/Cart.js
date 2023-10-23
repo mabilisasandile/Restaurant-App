@@ -123,7 +123,7 @@ function Cart({ cartItems }) {
                                 >
                                     <AntDesign name="pluscircleo"
                                         size={24}
-                                        color="black"
+                                         color="black"
                                     />
                                 </TouchableOpacity>
 

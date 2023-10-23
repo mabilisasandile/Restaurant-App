@@ -15,7 +15,6 @@ import image1 from '../images/restaurant.jpg';
 const SignIn = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [message, setMessage] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const navigation = useNavigation();
 
@@ -26,13 +25,11 @@ const SignIn = () => {
                 navigation.navigate('Cart')
                 setEmail('');
                 setPassword('');
-                setMessage('');
                 setErrorMessage('');
             } else {
                 console.log('User is signed out')
                 setEmail('');
                 setPassword('');
-                setMessage('');
                 setErrorMessage('');
             }
         })
@@ -53,7 +50,6 @@ const SignIn = () => {
 
             // Handle successful signin
             Alert.alert("Success", "Signed In Successfully.", [{ text: "OK" }]);
-            setMessage("Successfully signed in");
             console.log("Successfully signed in");
             setEmail('');
             setPassword('');
@@ -84,60 +80,46 @@ const SignIn = () => {
 
         <View style={styles.container}>
 
-            <ScrollView
-                stickyHeaderIndices={[0]}
-                showsVerticalScrollIndicator={true}
-            >
-                <View style={{ height: 50, backgroundColor: '#8a2be2', alignItems: 'center', justifyContent: 'center', paddingTop: 15 }}>
-                    <Text style={{ fontSize: 16, fontWeight: 'bold', color: 'white' }}>SIGN IN OR LOGIN HERE</Text>
+            <View style={{ alignItems: 'center', justifyContent: 'center', backgroundColor: '#d8bfd8', width: 380, height: 600 }}>
+                <View style={{ height: 50, alignItems: 'center', justifyContent: 'center', marginTop: 25, marginBottom: 25 }}>
+                    <Text style={{ fontSize: 22, fontWeight: 'bold', color: '#8a2be2' }}>Welcome Back</Text>
+                    <Text style={{ color: '#8a2be2' }}>Login to your account</Text>
                 </View>
-                <Card style={styles.card}>
-                    <Card.Title title="Enter Username & Password to Login" />
-                    <Card.Content>
-                        <Image
-                            source={image1}
-                            style={styles.image}
-                        />
+                <TextInput
+                    placeholder="Username"
+                    value={email}
+                    onChangeText={setEmail}
+                    style={styles.inputs}
+                />
+                <TextInput
+                    placeholder="Password"
+                    secureTextEntry
+                    value={password}
+                    onChangeText={setPassword}
+                    style={styles.inputs}
+                />
 
-                        <TextInput
-                            placeholder="Username/Email"
-                            value={email}
-                            onChangeText={setEmail}
-                            style={styles.inputs}
-                        />
-                        <TextInput
-                            placeholder="Password"
-                            secureTextEntry
-                            value={password}
-                            onChangeText={setPassword}
-                            style={styles.inputs}
-                        />
-                    </Card.Content>
+                <View style={{
+                    flexDirection: 'row', alignContent: 'center', marginLeft: 150,
+                    justifyContent: 'space-between', alignItems: 'center', height: 70
+                }}>
+                    <TouchableOpacity style={styles.nav_link} onPress={handleForgotPassword}>
+                        <Text>Forgot Password?</Text>
+                    </TouchableOpacity>
+                </View>
 
-                    <Card.Actions style={{ alignItems: 'center', justifyContent: 'center' }}>
-                        <Text style={{ color: 'green' }}>{message}</Text>
-                        <Text style={{ color: 'red' }}>{errorMessage}</Text>
-                        <TouchableOpacity onPress={handleSignin} style={styles.button}>
-                            <Text>Sign In</Text>
-                        </TouchableOpacity>
-                    </Card.Actions>
+                <View style={{alignItems:'center', justifyContent:'center'}}>
+                    <Text style={{ color: 'red' }}>{errorMessage}</Text>
+                    <TouchableOpacity onPress={handleSignin} style={styles.button}>
+                        <Text style={{fontSize:18, fontWeight:'700', color:'white'}}>LOGIN</Text>
+                    </TouchableOpacity>
 
-                    <Card.Actions>
-                        <TouchableOpacity style={styles.nav_link} onPress={handleRegister}>
-                            <Text>No account? Sign Up Now </Text>
-                        </TouchableOpacity>
-                    </Card.Actions>
-
-
-                    <Card.Actions>
-                        <TouchableOpacity style={styles.nav_link} onPress={handleForgotPassword}>
-                            <Text>Forgot Password?</Text>
-                        </TouchableOpacity>
-                    </Card.Actions>
-                </Card>
-            </ScrollView>
-
-        </View>
+                    <TouchableOpacity style={styles.nav_link} onPress={handleRegister}>
+                        <Text>Don't have an account? Sign Up</Text>
+                    </TouchableOpacity>
+                </View>
+            </View>
+        </View >
 
     );
 }
@@ -155,16 +137,6 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         resizeMode: 'cover',
     },
-    card: {
-        marginTop: 15,
-        marginBottom: 15,
-        height: 600,
-        width: 300,
-        backgroundColor: '#d8bfd8',
-        borderRadius: 10,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
     heading: {
         fontSize: 24,
         fontWeight: 'bold',
@@ -177,11 +149,12 @@ const styles = StyleSheet.create({
         color: "#FFFFFF",
     },
     button: {
-        backgroundColor: '#9370db',
+        backgroundColor: '#8a2be2',
         paddingVertical: 10,
         paddingHorizontal: 20,
         borderRadius: 20,
-        width: 150,
+        width: 250,
+        height: 40,
         color: '#ffffff',
         fontSize: 18,
         fontWeight: 'bold',
@@ -203,16 +176,16 @@ const styles = StyleSheet.create({
         marginTop: 5,
         marginBottom: 5,
         textDecorationLine: 'underline',
-        textDecorationColor: '#000000',
+        // textDecorationColor: '#000000',
+        textDecorationColor: 'black',
     },
     inputs: {
         width: 250,
-        height: 30,
+        height: 45,
         backgroundColor: '#fffafa',
-        height: 40,
         borderColor: 'gray',
         borderWidth: 1,
-        borderRadius: 5,
+        borderRadius: 10,
         marginTop: 10,
         marginBottom: 10,
     },

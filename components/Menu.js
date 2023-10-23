@@ -120,55 +120,40 @@ export default function Menu() {
         <Card containerStyle={styles.card}>
             <View style={styles.cardContent}>
                 <View >
-                    <Image
-                        source={{ uri: item.imageURL }}
-                        style={styles.image}
-                    />
+                    <TouchableOpacity onPress={() => handleViewItem(item.id)}>
+                        <Image
+                            source={{ uri: item.imageURL }}
+                            style={styles.image}
+                        />
+                    </TouchableOpacity>
                 </View>
-                <View>
-                    <Text style={styles.title}>{item.name}: </Text>
-                    <Text style={styles.price}>R{item.price}</Text>
-                </View>
+
             </View>
             <View style={styles.cardContent}>
-                <TouchableOpacity onPress={() => handleViewItem(item.id)} style={styles.btn}>
-                    <Text style={{ fontSize: 16, fontWeight: 'bold', color: 'white' }}>VIEW MORE DETAILS</Text>
-                </TouchableOpacity>
+                <View>
+                    <Text style={styles.title}>{item.name}: </Text>
 
-                <View style={{ marginLeft: 60, alignItems: 'center' }}>
-                    {cartItems.some((value) => value.id == item.id) ? (
-                        <TouchableOpacity onPress={() => handleRemoveFromCart(item.id)}>
-                            <FontAwesome
-                                name="minus-square"
-                                size={43}
-                                color='grey'
-                            />
-                        </TouchableOpacity>
-                    ) : (
-                        <TouchableOpacity onPress={() => handleAddToCart(item.id)}>
-                            <FontAwesome
-                                name="plus-square"
-                                size={43}
-                                color='#8a2be2'
-                            />
-                        </TouchableOpacity>
-                    )}
-                    {/* <TouchableOpacity onPress={() => handleAddToCart(item.id)}>
+                </View>
+
+                <View style={{ marginLeft: 10, alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between' }}>
+                    <TouchableOpacity onPress={() => handleAddToCart(item.id)} style={{ marginHorizontal: 10 }}>
                         <FontAwesome
-                            name="plus-square"
-                            size={43}
+                            name="cart-plus"
+                            size={37}
                             color='#8a2be2'
                         />
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => handleRemoveFromCart(item.id)}>
+
+                    {/* <TouchableOpacity onPress={() => handleRemoveFromCart(item.id)} style={{ marginHorizontal: 10 }}>
                         <FontAwesome
-                            name="minus-square"
-                            size={43}
+                            // name="minus-square"
+                            name="cart-arrow-down"
+                            size={37}
                             color='grey'
                         />
                     </TouchableOpacity> */}
+                    <Text style={styles.price}>R{item.price}</Text>
                 </View>
-
             </View>
 
         </Card>
@@ -181,35 +166,39 @@ export default function Menu() {
             </View>
 
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                <View style={{
-                    flexDirection: 'row', alignContent: 'center',
-                    justifyContent: 'space-between', alignItems: 'center', height: 70
-                }}>
-                    <TouchableOpacity
-                        style={styles.btn2}
-                        onPress={handleBreakfastMenu}
-                    >
-                        <Text style={styles.btn2_text}>Breakfast</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        style={styles.btn2}
-                        onPress={handleLunchMenu}
-                    >
-                        <Text style={styles.btn2_text}>Lunch Menu</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        style={styles.btn2}
-                        onPress={handleDinnerMenu}
-                    >
-                        <Text style={styles.btn2_text}>Dinner Menu</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        style={styles.btn2}
-                        onPress={handleLunchMenu}
-                    >
-                        <Text style={styles.btn2_text}>Other Menus</Text>
-                    </TouchableOpacity>
+                <View style={{alignContent: 'center', }}>
+                    <Text>Categories</Text>
+                    <View style={{
+                        flexDirection: 'row', alignContent: 'center',
+                        justifyContent: 'space-between', alignItems: 'center', height: 70
+                    }}>
+                        <TouchableOpacity
+                            style={styles.btn2}
+                            onPress={handleBreakfastMenu}
+                        >
+                            <Text style={styles.btn2_text}>Breakfast</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            style={styles.btn2}
+                            onPress={handleLunchMenu}
+                        >
+                            <Text style={styles.btn2_text}>Lunch Menu</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            style={styles.btn2}
+                            onPress={handleDinnerMenu}
+                        >
+                            <Text style={styles.btn2_text}>Dinner Menu</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            style={styles.btn2}
+                            onPress={handleLunchMenu}
+                        >
+                            <Text style={styles.btn2_text}>Other Menus</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
+
             </ScrollView>
 
             {/* Render the FlatList */}
@@ -246,8 +235,8 @@ const styles = StyleSheet.create({
         justifyContent: 'space-evenly',
     },
     image: {
-        width: 100,
-        height: 100,
+        width: 300,
+        height: 120,
         borderRadius: 20,
         resizeMode: 'cover',
     },
@@ -276,11 +265,13 @@ const styles = StyleSheet.create({
         color: '#8a2be2',
     },
     btn: {
-        backgroundColor: '#8a2be2',
+        cursor: 'pointer',
         padding: 10,
-        marginLeft: 20,
-        marginTop: 15,
+        marginLeft: 10,
+        marginTop: 10,
         borderRadius: 10,
+        textDecorationLine: 'underline',
+        textDecorationColor: 'black',
     },
     btn2: {
         borderWidth: 2,

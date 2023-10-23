@@ -98,9 +98,8 @@ export default function Checkout({ route }) {
                 package: items,
             });
 
-            // nav.navigate('Order_Placed');
             nav.navigate('Payment');
-            nav.navigate('Payment', { amount: totalAmount });  // Pass the 'amount' as a parameter
+            // nav.navigate('Payment', { amount: totalAmount });  // Pass the 'amount' as a parameter
 
         } catch (error) {
             Alert.alert("Error", "Unable to process order.", [{ text: "OK" }]);

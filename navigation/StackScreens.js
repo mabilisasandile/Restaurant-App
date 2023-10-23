@@ -24,6 +24,7 @@ import Payment from '../components/Payment';
 import OrderPlaced from '../components/OrderPlaced';
 import TabScreens from './TabScreens';
 import ResetPassword from '../components/ResetPassword';
+import ViewOrder from '../components/View_Order';
 
 
 const Tab = createBottomTabNavigator();
@@ -53,6 +54,7 @@ export default function StackScreens() {
               <Stack.Screen name="My_Account" component={MyAccountScreen} />
               <Stack.Screen name="Checkout" component={Checkout} />
               <Stack.Screen name="Order_Placed" component={OrderPlaced} />
+              <Stack.Screen name="View_Order" component={ViewOrder} />
               <Stack.Screen name="Payment" component={Payment} />
               <Stack.Screen name="SignIn" component={SignIn} />
               <Stack.Screen name="Register" component={SignUp} />

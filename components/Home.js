@@ -51,6 +51,10 @@ export default function Home() {
         navigation.navigate('SignIn');
     }
 
+    const handleSignUpNav = () => {
+        navigation.navigate('SignUp');
+    }
+
     return (
         <View style={styles.container}>
             <View style={{ alignContent: "flex-start", alignItems: "flex-start", paddingBottom: 5 }}>
@@ -62,20 +66,6 @@ export default function Home() {
                 showsVerticalScrollIndicator={true}
             >
                 <View>
-                    <View style={{ marginTop: 10, flexDirection: 'row', height: 50, width: '100%', margin: 20 }}>
-                        <TouchableOpacity
-                            onPress={() => { setDelivery(true) }}
-                            style={{ ...styles.deliveryBtn, backgroundColor: delivery ? '#8a2be2' : '#808080' }}
-                        >
-                            <Text style={styles.deliveryText}>Delivery</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            onPress={() => { setDelivery(false) }}
-                            style={{ ...styles.deliveryBtn, backgroundColor: delivery ? '#808080' : '#8a2be2' }}
-                        >
-                            <Text style={styles.deliveryText}>Pick Up</Text>
-                        </TouchableOpacity>
-                    </View>
 
                     <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', backgroundColor: '#d3d3d3', width: 300, borderRadius: 20, marginBottom: 20 }}>
                         <View style={{ flexDirection: 'row', alignItems: 'center', paddingLeft: 20, paddingRight: 20 }}>
@@ -156,7 +146,7 @@ export default function Home() {
 
                 <View style={styles.slide2}>
                     <TouchableOpacity style={styles.button} onPress={handleMenuNav}>
-                        <Text style={styles.text1}>CHECK MENU</Text>
+                        <Text style={styles.text1}>CHECK MENUS</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.button} onPress={handleCartNav}>
@@ -164,10 +154,14 @@ export default function Home() {
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.button} onPress={handleSignInNav}>
-                        <Text style={styles.text1}>SIGN IN</Text>
+                        <Text style={styles.text1}>LOGIN</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity style={styles.button} onPress={handleSignInNav}>
+                        <Text style={styles.text1}>REGISTER</Text>
                     </TouchableOpacity>
                 </View>
-            </ScrollView>
+            </ScrollView> 
             {delivery &&
                 <View style={styles.floatButton}>
                     <TouchableOpacity onPress={() => { navigation.navigate('Map') }}>
@@ -258,7 +252,7 @@ const styles = StyleSheet.create({
         height: 300,
     },
     stars: {
-        fontSize: 40,
+        fontSize: 20,
     },
     floatButton: {
         position: 'absolute',

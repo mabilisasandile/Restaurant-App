@@ -164,7 +164,7 @@ export default function LunchMenu() {
             </View>
             {/* Render the FlatList */}
             <View>
-                <Text style={{ fontSize: 24, fontWeight: '700' }}>Breakfast Menu</Text>
+                <Text style={{ fontSize: 24, fontWeight: '700' }}>Lunch Menu</Text>
             </View>
 
             <FlatList

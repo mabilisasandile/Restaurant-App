@@ -1,15 +1,24 @@
 import React from 'react';
-import { View, TouchableOpacity, Text } from 'react-native';
+import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
 
 
-const Tab = createBottomTabNavigator();
 
-
-export default function TabScreens() {
+export default function ViewOrder() {
 
     return (
-        <View>
-            <Text>View order</Text>
+        <View style={styles.container}>
+            <Text style={{fontSize:22, fontWeight:'500'}}>Loading...</Text>
         </View>
     );
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: '#d8bfd8',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    
+});
+

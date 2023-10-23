@@ -1,6 +1,6 @@
 
 import { useStripe } from "@stripe/stripe-react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, TextInput, Alert, TouchableOpacity } from "react-native";
 import { doc, deleteDoc, collection, query, where } from "firebase/firestore";
 import { db, auth } from "../config/firebase";
@@ -10,7 +10,7 @@ import { useNavigation } from "@react-navigation/native";
 
 const Payment = ({ route }) => {
 
-    const { amount } = route.params;
+    // const { amount } = route.params;
     const [name, setName] = useState('');
     const stripe = useStripe();
     const nav = useNavigation();
@@ -19,12 +19,19 @@ const Payment = ({ route }) => {
     const email = user.email;
 
 
+    useEffect(() => {
+        console.log("Total Amount:");
+    }, []);
+
+
+
     const pay = async () => {
         try {
             // Sending request
             const response = await fetch('https://restaurant-app-sandile.onrender.com/pay', {
                 method: 'POST',
-                body: JSON.stringify({ name, amount }),     // Include the amount in the request body
+                body: JSON.stringify({ name }),
+                // body: JSON.stringify({ name, amount }),     // Include the amount in the request body
                 headers: {
                     "Content-Type": "application/json"
                 }
@@ -40,7 +47,7 @@ const Payment = ({ route }) => {
             const initSheet = await stripe.initPaymentSheet({
                 paymentIntentClientSecret: clientSecret,
                 merchantDisplayName: 'Sandile',
-                amount: amount * 100, // Convert amount to cents (Stripe expects amount in cents)
+                // amount: amount * 100, // Convert amount to cents (Stripe expects amount in cents)
                 currency: 'zar', // Set the currency
             });
             if (initSheet.error) {
@@ -67,7 +74,7 @@ const Payment = ({ route }) => {
 
     const cancelOrder = async () => {
         const querySnapshot = query(collection(db, "orders")
-        , where("user_id", "==", userID));
+            , where("user_id", "==", userID));
         await deleteDoc(querySnapshot);
         // await deleteDoc(doc(querySnapshot));
     }
@@ -102,7 +109,8 @@ const Payment = ({ route }) => {
                     width: 250,
                     marginBottom: 5
                 }}>
-                <Text style={{ color: 'white', textAlign: 'center', fontWeight: 'bold', fontSize: 24 }}>Make Payment - 25 ZAR</Text>
+                <Text style={{ color: 'white', textAlign: 'center', fontWeight: 'bold', fontSize: 24 }}>Make Payment - 100 ZAR</Text>
+                {/* <Text style={{ color: 'white', textAlign: 'center', fontWeight: 'bold', fontSize: 24 }}>Make Payment - ZAR {amount}</Text> */}
             </TouchableOpacity>
 
         </View >

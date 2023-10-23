@@ -22,6 +22,7 @@ const SignUp = () => {
     const [message, setMessage] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const navigation = useNavigation();
+    
 
     const handleSignup = (({ navigation }) => {
         createUserWithEmailAndPassword(auth, email, password).then(async () => {
@@ -68,67 +69,71 @@ const SignUp = () => {
 
             <ScrollView
                 stickyHeaderIndices={[0]}
-                showsVerticalScrollIndicator={true}
+                showsVerticalScrollIndicator={false}
             >
-                <View style={{ height: 30, backgroundColor: '#8a2be2', alignItems: 'center', justifyContent: 'center', paddingTop: 5 }}>
-                    <Text style={{ fontSize: 16, fontWeight: 'bold', color: 'white' }}>SIGN UP OR REGISTER HERE</Text>
+                <View style={{ height: 70, alignItems: 'center', justifyContent: 'center', paddingTop: 5 }}>
+                    <Text style={{ fontSize: 22, fontWeight: 'bold', color: '#8a2be2' }}>Register</Text>
+                    <Text style={{ color: '#8a2be2' }}>Create your account</Text>
                 </View>
-                <Card style={styles.card}>
-                    <Card.Title title="Welcome!" subtitle="Fill the form to open an account!" />
-                    <Card.Content>
-                        <TextInput
-                            placeholder="Name"
-                            value={name}
-                            onChangeText={setName}
-                            style={styles.inputs}
-                        />
-                        <TextInput
-                            placeholder="Surname"
-                            value={surname}
-                            onChangeText={setSurname}
-                            style={styles.inputs}
-                        />
-                        <TextInput
-                            placeholder="Contact number"
-                            value={phone}
-                            onChangeText={setPhone}
-                            style={styles.inputs}
-                        />
-                        <TextInput
-                            multiline={true}
-                            numberOfLines={3}
-                            placeholder="Address"
-                            style={styles.inputs}
-                            value={address}
-                            onChangeText={(text) => setAddress(text)}
-                        />
-                        <TextInput
-                            placeholder="Email"
-                            value={email}
-                            onChangeText={setEmail}
-                            style={styles.inputs}
-                        />
-                        <TextInput
-                            placeholder="Password"
-                            secureTextEntry
-                            value={password}
-                            onChangeText={setPassword}
-                            style={styles.inputs}
-                        />
-                    </Card.Content>
-                    <Card.Actions>
-                        <Text style={{ color: 'green' }}>{message}</Text>
-                        <Text style={{ color: 'red' }}>{errorMessage}</Text>
+
+                <View>
+                    <TextInput
+                        placeholder="Name"
+                        value={name}
+                        onChangeText={setName}
+                        style={styles.inputs}
+                    />
+                    <TextInput
+                        placeholder="Surname"
+                        value={surname}
+                        onChangeText={setSurname}
+                        style={styles.inputs}
+                    />
+                    <TextInput
+                        placeholder="Contact number"
+                        value={phone}
+                        onChangeText={setPhone}
+                        style={styles.inputs}
+                    />
+                    <TextInput
+                        multiline={true}
+                        numberOfLines={3}
+                        placeholder="Address"
+                        style={styles.inputs}
+                        value={address}
+                        onChangeText={(text) => setAddress(text)}
+                    />
+                    <TextInput
+                        placeholder="Email"
+                        value={email}
+                        onChangeText={setEmail}
+                        style={styles.inputs}
+                    />
+                    <TextInput
+                        placeholder="Password"
+                        secureTextEntry
+                        value={password}
+                        onChangeText={setPassword}
+                        style={styles.inputs}
+                    />
+
+                    <Text style={{ color: 'green' }}>{message}</Text>
+                    <Text style={{ color: 'red' }}>{errorMessage}</Text>
+                    
+
+                    <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                         <TouchableOpacity onPress={handleSignup} style={styles.button}>
-                            <Text>Register</Text>
+                            <Text style={{fontSize:18, fontWeight:'700', color:'white'}}>REGISTER</Text>
                         </TouchableOpacity>
-                    </Card.Actions>
-                    <Card.Actions>
+
                         <TouchableOpacity style={styles.nav_link} onPress={handleLinkClick}>
                             <Text>Already have an account? Sign in </Text>
                         </TouchableOpacity>
-                    </Card.Actions>
-                </Card>
+                    </View>
+
+                </View>
+
+
             </ScrollView>
 
         </View>
@@ -142,6 +147,7 @@ const styles = StyleSheet.create({
         padding: 20,
         alignItems: 'center',
         justifyContent: 'center',
+        backgroundColor: '#d8bfd8'
     },
     card: {
         marginTop: 15,
@@ -165,11 +171,11 @@ const styles = StyleSheet.create({
         color: "#FFFFFF",
     },
     button: {
-        backgroundColor: '#9370db',
+        backgroundColor: '#8a2be2',
         paddingVertical: 10,
-        paddingHorizontal: 20,
+        paddingHorizontal: 10,
         borderRadius: 20,
-        width: 150,
+        width: 250,
         shadowColor: 'black',
         color: '#fff',
         fontSize: 18,
@@ -177,8 +183,6 @@ const styles = StyleSheet.create({
         cursor: 'pointer',
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: 10,
-        marginBottom: 10,
     },
     nav_link: {
         paddingHorizontal: 5,
@@ -201,8 +205,8 @@ const styles = StyleSheet.create({
         height: 40,
         borderColor: 'gray',
         borderWidth: 1,
-        borderRadius: 5,
-        marginTop: 20,
+        borderRadius: 10,
+        marginTop: 10,
         marginBottom: 20,
     },
     labels: {
