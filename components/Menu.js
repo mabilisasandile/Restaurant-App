@@ -127,12 +127,11 @@ export default function Menu() {
                         />
                     </TouchableOpacity>
                 </View>
-
             </View>
+
             <View style={styles.cardContent}>
                 <View>
                     <Text style={styles.title}>{item.name}: </Text>
-
                 </View>
 
                 <View style={{ marginLeft: 10, alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between' }}>
@@ -143,15 +142,6 @@ export default function Menu() {
                             color='#8a2be2'
                         />
                     </TouchableOpacity>
-
-                    {/* <TouchableOpacity onPress={() => handleRemoveFromCart(item.id)} style={{ marginHorizontal: 10 }}>
-                        <FontAwesome
-                            // name="minus-square"
-                            name="cart-arrow-down"
-                            size={37}
-                            color='grey'
-                        />
-                    </TouchableOpacity> */}
                     <Text style={styles.price}>R{item.price}</Text>
                 </View>
             </View>
@@ -227,7 +217,7 @@ const styles = StyleSheet.create({
         width: 320,
         height: 200,
         flexDirection: 'row', // Row layout for card content
-        alignItems: 'center', // Center elements vertically
+        // alignItems: 'center', // Center elements vertically
     },
     cardContent: {
         flexDirection: 'row',
@@ -235,10 +225,12 @@ const styles = StyleSheet.create({
         justifyContent: 'space-evenly',
     },
     image: {
-        width: 300,
-        height: 120,
-        borderRadius: 20,
-        resizeMode: 'cover',
+        width: 320,
+        height: 140,
+        borderTopLeftRadius: 20,
+        borderTopRightRadius: 20,
+        // resizeMode: 'cover',
+        marginTop: -10,
     },
     textContainer: {
         flex: 1, // Take up remaining space

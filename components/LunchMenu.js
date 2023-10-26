@@ -117,40 +117,30 @@ export default function LunchMenu() {
         <Card containerStyle={styles.card}>
             <View style={styles.cardContent}>
                 <View >
-                    <Image
-                        source={{ uri: item.imageURL }}
-                        style={styles.image}
-                    />
+                    <TouchableOpacity onPress={() => handleViewItem(item.id)}>
+                        <Image
+                            source={{ uri: item.imageURL }}
+                            style={styles.image}
+                        />
+                    </TouchableOpacity>
                 </View>
-                <View>
-                    <Text style={styles.title}>{item.name}: </Text>
-                    <Text style={styles.description}>{item.category}</Text>
-                    <Text style={styles.price}>R{item.price}</Text>
-                </View>
+
             </View>
             <View style={styles.cardContent}>
-                <TouchableOpacity onPress={() => handleViewItem(item.id)} style={styles.btn}>
-                    <Text style={{ fontSize: 16, fontWeight: 'bold', color: 'white' }}>VIEW MORE DETAILS</Text>
-                </TouchableOpacity>
+                <View>
+                    <Text style={styles.title}>{item.name}: </Text>
 
-                <View style={{ marginLeft: 60, alignItems: 'center' }}>
-                    {cartItems.some((value) => value.id == item.id) ? (
-                        <TouchableOpacity onPress={() => handleRemoveFromCart(item.id)}>
-                            <FontAwesome
-                                name="minus-square"
-                                size={43}
-                                color='grey'
-                            />
-                        </TouchableOpacity>
-                    ) : (
-                        <TouchableOpacity onPress={() => handleAddToCart(item.id)}>
-                            <FontAwesome
-                                name="plus-square"
-                                size={43}
-                                color='#8a2be2'
-                            />
-                        </TouchableOpacity>
-                    )}
+                </View>
+
+                <View style={{ marginLeft: 10, alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between' }}>
+                    <TouchableOpacity onPress={() => handleAddToCart(item.id)} style={{ marginHorizontal: 10 }}>
+                        <FontAwesome
+                            name="cart-plus"
+                            size={37}
+                            color='#8a2be2'
+                        />
+                    </TouchableOpacity>
+                    <Text style={styles.price}>R{item.price}</Text>
                 </View>
             </View>
 
@@ -200,10 +190,13 @@ const styles = StyleSheet.create({
         justifyContent: 'space-evenly',
     },
     image: {
-        width: 100,
-        height: 100,
+        width: 300,
+        height: 120,
         borderRadius: 20,
         resizeMode: 'cover',
+        marginLeft: 5,
+        marginRight: 5,
+        marginTop: 5,
     },
     textContainer: {
         flex: 1, // Take up remaining space
@@ -221,7 +214,6 @@ const styles = StyleSheet.create({
         fontSize: 14,
         marginTop: 5,
         marginLeft: 10,
-        color: 'grey',
     },
     price: {
         fontSize: 16,
@@ -231,11 +223,13 @@ const styles = StyleSheet.create({
         color: '#8a2be2',
     },
     btn: {
-        backgroundColor: '#8a2be2',
+        cursor: 'pointer',
         padding: 10,
-        marginLeft: 20,
-        marginTop: 15,
+        marginLeft: 10,
+        marginTop: 10,
         borderRadius: 10,
+        textDecorationLine: 'underline',
+        textDecorationColor: 'black',
     },
     btn2: {
         borderWidth: 2,
@@ -248,8 +242,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#8a2be2',
     },
     btn2_text: {
-        margin: 12, 
-        color: 'white', 
+        margin: 12,
+        color: 'white',
         fontWeight: '700',
         fontSize: 16,
     }
