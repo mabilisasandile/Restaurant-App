@@ -124,24 +124,25 @@ export default function LunchMenu() {
                         />
                     </TouchableOpacity>
                 </View>
-
             </View>
+
+            <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                <Text style={styles.title}>{item.name}: </Text>
+            </View>
+
             <View style={styles.cardContent}>
-                <View>
-                    <Text style={styles.title}>{item.name}: </Text>
-
-                </View>
-
-                <View style={{ marginLeft: 10, alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between' }}>
-                    <TouchableOpacity onPress={() => handleAddToCart(item.id)} style={{ marginHorizontal: 10 }}>
-                        <FontAwesome
-                            name="cart-plus"
-                            size={37}
-                            color='#8a2be2'
-                        />
-                    </TouchableOpacity>
-                    <Text style={styles.price}>R{item.price}</Text>
-                </View>
+                    <View style={{ alignItems:'flex-start' }}>
+                        <Text style={styles.price}>R{item.price}</Text>
+                    </View>
+                    <View style={{ alignItems:'flex-end' }}>
+                        <TouchableOpacity onPress={() => handleAddToCart(item.id)}>
+                            <FontAwesome
+                                name="cart-plus"
+                                size={37}
+                                color='#8a2be2'
+                            />
+                        </TouchableOpacity>
+                    </View>
             </View>
 
         </Card>
@@ -185,18 +186,19 @@ const styles = StyleSheet.create({
         alignItems: 'center', // Center elements vertically
     },
     cardContent: {
+        display:'flex',
+        alignItems:'center',
         flexDirection: 'row',
-        alignItems: 'center',
         justifyContent: 'space-evenly',
+        marginHorizontal: 2,
     },
     image: {
-        width: 300,
-        height: 120,
-        borderRadius: 20,
+        width: 320,
+        height: 140,
+        borderTopLeftRadius: 20,
+        borderTopRightRadius: 20,
         resizeMode: 'cover',
-        marginLeft: 5,
-        marginRight: 5,
-        marginTop: 5,
+        marginTop: -16,
     },
     textContainer: {
         flex: 1, // Take up remaining space
@@ -219,7 +221,6 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: 'bold',
         marginTop: 5, // Add spacing between description and price
-        marginLeft: 10,
         color: '#8a2be2',
     },
     btn: {

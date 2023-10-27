@@ -25,6 +25,7 @@ import OrderPlaced from '../components/OrderPlaced';
 import TabScreens from './TabScreens';
 import ResetPassword from '../components/ResetPassword';
 import ViewOrder from '../components/View_Order';
+import Extras from '../components/Extras';
 
 
 const Tab = createBottomTabNavigator();
@@ -47,6 +48,7 @@ export default function StackScreens() {
               <Stack.Screen name="Breakfast_Menu" component={BreakfastMenu} />
               <Stack.Screen name="Lunch_Menu" component={LunchMenu} />
               <Stack.Screen name="Dinner_Menu" component={DinnerMenu} />
+              <Stack.Screen name="Extras" component={Extras} />
               <Stack.Screen name="View_Item" component={ViewItem} />
               <Stack.Screen name="Cart" component={Cart} />
               <Stack.Screen name="Map" component={MapScreen} />

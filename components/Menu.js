@@ -13,6 +13,10 @@ import { useDispatch } from "react-redux";
 import { addToCart } from "../Redux/CartSlice";
 import { removeFromCart } from "../Redux/CartSlice";
 import { FontAwesome } from "@expo/vector-icons";
+import img_breakfast from "../images/breakfast/gul-isik.jpg";
+import img_lunch from "../images/lunch/jonathan-borba.jpg";
+import img_dinner from "../images/lunch/cats-coming.jpg";
+import img_menu from "../images/petsos.jpg";
 
 
 export default function Menu() {
@@ -21,6 +25,7 @@ export default function Menu() {
     const navigation = useNavigation();
     const dispatch = useDispatch();
     const { cartItems } = useSelector((state) => state.CartSlice);
+
 
     useEffect(() => {
         getItems();
@@ -57,6 +62,10 @@ export default function Menu() {
 
     const handleDinnerMenu = () => {
         navigation.navigate("Dinner_Menu");
+    }
+
+    const handleExtraMenu = () => {
+        navigation.navigate("Extras");
     }
 
 
@@ -129,21 +138,23 @@ export default function Menu() {
                 </View>
             </View>
 
-            <View style={styles.cardContent}>
-                <View>
-                    <Text style={styles.title}>{item.name}: </Text>
-                </View>
+            <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                <Text style={styles.title}>{item.name}: </Text>
+            </View>
 
-                <View style={{ marginLeft: 10, alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between' }}>
-                    <TouchableOpacity onPress={() => handleAddToCart(item.id)} style={{ marginHorizontal: 10 }}>
-                        <FontAwesome
-                            name="cart-plus"
-                            size={37}
-                            color='#8a2be2'
-                        />
-                    </TouchableOpacity>
-                    <Text style={styles.price}>R{item.price}</Text>
-                </View>
+            <View style={styles.cardContent}>
+                    <View style={{ alignItems:'flex-start' }}>
+                        <Text style={styles.price}>R{item.price}</Text>
+                    </View>
+                    <View style={{ alignItems:'flex-end' }}>
+                        <TouchableOpacity onPress={() => handleAddToCart(item.id)}>
+                            <FontAwesome
+                                name="cart-plus"
+                                size={37}
+                                color='#8a2be2'
+                            />
+                        </TouchableOpacity>
+                    </View>
             </View>
 
         </Card>
@@ -155,41 +166,51 @@ export default function Menu() {
                 <MenuHeader />
             </View>
 
-            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                <View style={{alignContent: 'center', }}>
-                    <Text>Categories</Text>
-                    <View style={{
-                        flexDirection: 'row', alignContent: 'center',
-                        justifyContent: 'space-between', alignItems: 'center', height: 70
-                    }}>
-                        <TouchableOpacity
-                            style={styles.btn2}
-                            onPress={handleBreakfastMenu}
-                        >
-                            <Text style={styles.btn2_text}>Breakfast</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            style={styles.btn2}
-                            onPress={handleLunchMenu}
-                        >
-                            <Text style={styles.btn2_text}>Lunch Menu</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            style={styles.btn2}
-                            onPress={handleDinnerMenu}
-                        >
-                            <Text style={styles.btn2_text}>Dinner Menu</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            style={styles.btn2}
-                            onPress={handleLunchMenu}
-                        >
-                            <Text style={styles.btn2_text}>Other Menus</Text>
-                        </TouchableOpacity>
-                    </View>
+            <View style={{ height: 200 }}>
+                <View style={{ mt: -1, alignItems: 'center' }}>
+                    <Text style={{ color: '#8a2be2', fontSize: 22, fontWeight: '700' }}>Categories</Text>
                 </View>
+                <ScrollView horizontal showsHorizontalScrollIndicator={true} >
 
-            </ScrollView>
+                    <View style={{ alignContent: 'center', alignItems: 'center', justifyContent: 'center', mt: 4 }}>
+
+                        <View style={{
+                            flexDirection: 'row', alignContent: 'center',
+                            justifyContent: 'space-between', alignItems: 'center', height: 70
+                        }}>
+
+                            <TouchableOpacity
+                                onPress={handleBreakfastMenu}
+                            >
+                                <Image source={img_breakfast} style={styles.btn2} />
+                                <Text style={styles.btn2_text}>Breakfast</Text>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity
+                                onPress={handleLunchMenu}
+                            >
+                                <Image source={img_lunch} style={styles.btn2} />
+                                <Text style={styles.btn2_text}>Lunch</Text>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity
+                                onPress={handleDinnerMenu}
+                            >
+                                <Image source={img_dinner} style={styles.btn2} />
+                                <Text style={styles.btn2_text}>Dinner</Text>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity
+                                onPress={handleExtraMenu}
+                            >
+                                <Image source={img_menu} style={styles.btn2} />
+                                <Text style={styles.btn2_text}>More</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+
+                </ScrollView>
+            </View>
 
             {/* Render the FlatList */}
             <FlatList
@@ -220,17 +241,19 @@ const styles = StyleSheet.create({
         // alignItems: 'center', // Center elements vertically
     },
     cardContent: {
+        display:'flex',
+        alignItems:'center',
         flexDirection: 'row',
-        alignItems: 'center',
         justifyContent: 'space-evenly',
+        marginHorizontal: 2,
     },
     image: {
         width: 320,
         height: 140,
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20,
-        // resizeMode: 'cover',
-        marginTop: -10,
+        resizeMode: 'cover',
+        marginTop: -16,
     },
     textContainer: {
         flex: 1, // Take up remaining space
@@ -253,7 +276,6 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: 'bold',
         marginTop: 5, // Add spacing between description and price
-        marginLeft: 10,
         color: '#8a2be2',
     },
     btn: {
@@ -267,9 +289,9 @@ const styles = StyleSheet.create({
     },
     btn2: {
         borderWidth: 2,
-        borderRadius: 30,
-        height: 50,
-        width: 120,
+        borderRadius: 50,
+        height: 120,
+        width: 150,
         marginLeft: 20,
         marginBottom: 10,
         borderColor: 'white',
@@ -277,8 +299,10 @@ const styles = StyleSheet.create({
     },
     btn2_text: {
         margin: 12,
-        color: 'white',
+        color: '#8a2be2',
         fontWeight: '700',
         fontSize: 16,
+        textAlign: 'center',
+        marginTop: -4,
     }
 });
