@@ -1,14 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
 import {
     StyleSheet, View, Text, Image,
-    TouchableOpacity, ScrollView, Animated
+    TouchableOpacity, ScrollView, Animated, Alert
 } from 'react-native';
 import { useNavigation } from "@react-navigation/native";
 // import * as Animatable from 'react-native-animatable';
 import Swiper from "react-native-swiper";
 import Menu from './Menu';
 import Cart from './Cart';
-
 import image1 from '../images/burak-the-weekender.jpg';
 import image2 from '../images/ash.jpg';
 import image3 from '../images/mehmet-suat-gunerli.jpg';
@@ -17,6 +16,8 @@ import image5 from '../images/davis.jpg';
 import image6 from '../images/brett.jpg';
 import HomeHeader from "./HomeHeader";
 import { Icon } from "react-native-elements";
+import { auth } from "../config/firebase";
+import { onAuthStateChanged, signOut as firebaseSignOut } from 'firebase/auth'; // Import Firebase Auth functions
 
 
 export default function Home() {
@@ -24,10 +25,45 @@ export default function Home() {
     const starScale = useRef(new Animated.Value(0)).current;
     const [delivery, setDelivery] = useState(true);
     const navigation = useNavigation();
+    const [user, setUser] = useState(null); // Store user information
+
 
     useEffect(() => {
         animateStars();
     }, []);
+
+
+    useEffect(() => {
+        // const auth = getAuth();
+
+        // Check the user's authentication status
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // User is signed in
+                setUser(user);
+            } else {
+                // User is signed out
+                setUser(null);
+            }
+        });
+    }, []);
+
+
+    //Logout or Sign out
+    const handleSignOut = () => {
+        // const auth = getAuth();
+
+        firebaseSignOut(auth)
+            .then(() => {
+                // Sign-out successful, redirect to the sign-in page or any other desired location
+                navigation.navigate('Home');
+            })
+            .catch((error) => {
+                // An error occurred during sign-out.
+                console.error('Sign out error: ', error);
+                Alert.alert("Error", "Something went wrong.", [{ text: "OK" }]);
+            });
+    };
 
     const animateStars = () => {
         Animated.loop(
@@ -153,15 +189,23 @@ export default function Home() {
                         <Text style={styles.text1}>VIEW CART</Text>
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.button} onPress={handleSignInNav}>
-                        <Text style={styles.text1}>LOGIN</Text>
-                    </TouchableOpacity>
+                    {user ? (
+                        <TouchableOpacity style={styles.button} onPress={handleSignOut}>
+                            <Text style={styles.text1}>LOG OUT</Text>
+                        </TouchableOpacity>
+                    ) : (
+                        <View>
+                            <TouchableOpacity style={styles.button} onPress={handleSignInNav}>
+                                <Text style={styles.text1}>LOGIN</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={styles.button} onPress={handleSignUpNav}>
+                                <Text style={styles.text1}>REGISTER</Text>
+                            </TouchableOpacity>
+                        </View>
+                    )}
 
-                    <TouchableOpacity style={styles.button} onPress={handleSignInNav}>
-                        <Text style={styles.text1}>REGISTER</Text>
-                    </TouchableOpacity>
                 </View>
-            </ScrollView> 
+            </ScrollView>
             {delivery &&
                 <View style={styles.floatButton}>
                     <TouchableOpacity onPress={() => { navigation.navigate('Map') }}>

@@ -8,6 +8,11 @@ export default function SearchScreen() {
     const [item_name, setItemName] = useState('');
     const [message, setMessage] = useState(null);
 
+    useEffect (()=>{
+        setMessage('');
+        setItemName('');
+    }, []);
+
     const handleSearch =()=>{
         setMessage("No item matching your search...")
     }

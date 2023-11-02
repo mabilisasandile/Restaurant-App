@@ -1,30 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  Alert,
-  Modal,
-  TextInput,
-  Button,
+  View, Text, StyleSheet, TouchableOpacity,
+  Alert, Modal, TextInput, Button
 } from 'react-native';
-import {
-  collection,
-  getDocs,
-  where,
-  query,
-  db,
-  doc,
-  setDoc,
-} from 'firebase/firestore';
+import { collection, getDocs, where, query, db, doc, setDoc } from 'firebase/firestore';
 import { auth } from '../config/firebase';
-import SignIn from './SignIn';
+import { useNavigation } from '@react-navigation/native';
 
 export default function MyAccountScreen() {
+
   const [userData, setUserData] = useState([]);
   const [editId, setEditId] = useState(null);
   const [editName, setEditName] = useState('');
+  const [editEmail, setEditEmail] = useState('');
   const [editPhone, setEditPhone] = useState('');
   const [editAddress, setEditAddress] = useState('');
   const [editCardType, setEditCardType] = useState('');
@@ -35,12 +23,13 @@ export default function MyAccountScreen() {
   const fetchedData = {};
   const user = auth.currentUser;
   const userID = user ? user.uid : null; // Ensure the user object is not null
+  const nav = useNavigation();
 
   useEffect(() => {
     if (userID) {
       getUserData();
     }
-  }, [userID]);
+  }, [userID, getUserData]);
 
   const getUserData = async () => {
     try {
@@ -54,10 +43,11 @@ export default function MyAccountScreen() {
       setUserData(Object.values(fetchedData));
     } catch (error) {
       console.log('Failed to fetch user data', error);
+      Alert.alert('Error', 'Failed to fetch user data!');
     }
   };
 
-  const handleEditRoom = async () => {
+  const handleEdit = async () => {
     try {
       if (!editName || !editAddress || !editPhone || !editCardType || !editCardNo) {
         return Alert.alert('Warning', 'All fields are required!');
@@ -66,6 +56,7 @@ export default function MyAccountScreen() {
       const userInfo = {
         name: editName,
         address: editAddress,
+        email: editEmail,
         phone: editPhone,
         cardType: editCardType,
         cardNo: editCardNo,
@@ -90,15 +81,27 @@ export default function MyAccountScreen() {
 
   return (
     <View style={styles.container}>
-      {userData ? (
+      {userData.length < 1 ? (
+        <View style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <Text style={{ fontSize: 24, fontWeight: '700' }}>Loading...</Text>
+          <View style={{ paddingTop: 100, marginTop: 100 }}>
+            <Text>Have you signed in? No.</Text>
+            <TouchableOpacity style={styles.nav_link} onPress={handleSignIn}>
+              <Text style={{ fontSize: 18, fontWeight: '400', textAlign: 'center' }}>
+                Then click here to Sign In
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+
+      ) : (
+
         <View style={{ alignItems: 'center', justifyContent: 'center' }}>
           <Text style={{ fontSize: 22, fontWeight: '700' }}>My Account</Text>
-          <Text>{user.email}</Text>
-
           {userData.map((user, index) => (
             <View key={index}>
-              <Text style={styles.text}>Hello {user.name},</Text>
-              <Text style={styles.text}>Place your order here!</Text>
+              <Text style={styles.text}>First Name: {user.name},</Text>
+              <Text style={styles.text}>Last Name: </Text>
               <Text>Phone: {user.phone}</Text>
               <Text>Email: {user.email}</Text>
               <Text>Address: {user.address}</Text>
@@ -108,6 +111,7 @@ export default function MyAccountScreen() {
                   setEditId(user.id);
                   setEditName(user.name);
                   setEditAddress(user.address);
+                  setEditEmail(user.email);
                   setEditPhone(user.phone);
                   setEditCardType(user.cardType);
                   setEditCardNo(user.cardNo);
@@ -138,6 +142,11 @@ export default function MyAccountScreen() {
                   onChangeText={(text) => setEditPhone(text)}
                 />
                 <TextInput
+                  placeholder="Email"
+                  value={editEmail}
+                  onChangeText={(text) => setEditEmail(text)}
+                />
+                <TextInput
                   placeholder="Address"
                   value={editAddress}
                   onChangeText={(text) => setEditAddress(text)}
@@ -152,22 +161,11 @@ export default function MyAccountScreen() {
                   value={editCardNo}
                   onChangeText={(text) => setEditCardNo(text)}
                 />
-                <Button title="Save" onPress={handleEditRoom} />
+                <Button title="Save" onPress={handleEdit} />
                 <Button title="Cancel" onPress={() => setModalVisible(false)} />
               </View>
             </View>
           </Modal>
-        </View>
-      ) : (
-        <View>
-          <Text style={{ fontSize: 24, fontWeight: '700' }}>Loading...</Text>
-          <View style={{ paddingTop: 100, marginTop: 100 }}>
-            <TouchableOpacity style={styles.nav_link} onPress={handleSignIn}>
-              <Text style={{ fontSize: 18, fontWeight: '400', textAlign: 'center' }}>
-                Have you signed in? No. Then click here to Sign In
-              </Text>
-            </TouchableOpacity>
-          </View>
         </View>
       )}
     </View>
@@ -231,6 +229,6 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 10,
     textDecorationLine: 'underline',
-    textDecorationColor: '#000000',
+    textDecorationColor: 'navy',
   }
-  });
+});

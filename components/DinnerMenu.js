@@ -1,6 +1,7 @@
 
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View, Text, FlatList, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, FlatList, TouchableHighlight,
+     Image, TouchableOpacity } from 'react-native';
 import { collection, getDocs, doc, getDoc, where, query } from "firebase/firestore";
 import { db } from "../config/firebase";
 import { Card } from "react-native-elements";
@@ -115,10 +116,15 @@ export default function DinnerMenu() {
 
     // Render each item in the FlatList
     const renderItem = ({ item }) => (
-        <Card containerStyle={styles.card}>
+        <TouchableHighlight
+        underlayColor='white'
+        activeOpacity={0.9}
+        onPress={() => handleViewItem(item.id)}
+        style={{marginVertical:5 }}>
+        <View style={styles.card}>
             <View style={styles.cardContent}>
                 <View >
-                    <TouchableOpacity onPress={() => handleViewItem(item.id)}>
+                    <TouchableOpacity>
                         <Image
                             source={{ uri: item.imageURL }}
                             style={styles.image}
@@ -145,7 +151,8 @@ export default function DinnerMenu() {
                         </TouchableOpacity>
                     </View>
             </View>
-        </Card>
+        </View>
+        </TouchableHighlight>
     );
 
     return (
@@ -177,6 +184,7 @@ const styles = StyleSheet.create({
     },
     card: {
         borderBlockColor: 'black',
+        backgroundColor: 'white',
         borderWidth: 1,
         borderRadius: 20,
         margin: 20,
@@ -190,6 +198,7 @@ const styles = StyleSheet.create({
         alignItems:'center',
         flexDirection: 'row',
         justifyContent: 'space-evenly',
+        // justifyContent: 'space-between',
         marginHorizontal: 2,
     },
     image: {

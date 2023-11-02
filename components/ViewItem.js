@@ -17,7 +17,7 @@ const ViewItem = ({ route }) => {
     const nav = useNavigation();
 
     const [itemName, setItemName] = useState('');
-    const [itemRecipe, setItemRecipe] = useState('');
+    const [itemRecipe, setItemRecipe] = useState(''); 
     const [itemPrice, setItemPrice] = useState(0);
     const [itemImage, setItemImage] = useState('');
 

@@ -1,27 +1,42 @@
 
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { View, StyleSheet, Modal, Text, TouchableOpacity } from "react-native";
 import { Icon, withBadge } from "react-native-elements";
 import { useNavigation } from "@react-navigation/native";
 import { auth } from "../config/firebase";
 import { useSelector } from "react-redux";
+import { onAuthStateChanged, signOut as firebaseSignOut } from 'firebase/auth'; // Import Firebase Auth functions
 
-export default function HomeHeader() {
+export default function MenuHeader() {
     const [showCard, setShowCard] = useState(false);
+    const [user, setUser] = useState(null); // Store user information
     const cartItems = useSelector((state) => state.CartSlice);
     const quantity = cartItems.length;
     const CartIconWithBadge = withBadge(quantity)(Icon);
-
     const navigation = useNavigation();
 
-    
+
+    useEffect(() => {
+        // const auth = getAuth();
+
+        // Check the user's authentication status
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // User is signed in
+                setUser(user);
+            } else {
+                // User is signed out
+                setUser(null);
+            }
+        });
+    }, []);
 
     const handleToggleCard = () => {
         setShowCard(!showCard);     // Toggle the showCard state
     }
 
-    const handleClose = () => {   
+    const handleClose = () => {
         setShowCard(false);
     }
 
@@ -31,21 +46,25 @@ export default function HomeHeader() {
         navigation.navigate('Cart');
     }
 
-    const handleAccountInfo =()=>{
+    const handleAccountInfo = () => {
         navigation.navigate('My_Account');
     }
 
-    const handleViewOrder =()=>{
+    const handleViewOrder = () => {
         navigation.navigate('View_Order');
-    } 
+    }
+
+    const handleSignIn = () => {
+        navigation.navigate('SignIn');
+    }
 
     const handleSignOut = async () => {
         try {
             await auth.signOut(); // Sign the user out
             console.log('User signed out successfully');
-          } catch (error) {
+        } catch (error) {
             console.error('Error signing out:', error);
-          }
+        }
         navigation.navigate('SignIn');
     }
 
@@ -64,7 +83,7 @@ export default function HomeHeader() {
                 </View>
 
                 <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', paddingTop: 10 }}>
-                    <Text style={styles.text}>Food Menu</Text>
+                    <Text style={styles.text}>FOOD MENU</Text>
                 </View>
 
                 <View style={{ justifyContent: 'flex-start', alignItems: 'center', paddingTop: 10, paddingRight: 10 }}>
@@ -93,9 +112,17 @@ export default function HomeHeader() {
                         <TouchableOpacity onPress={handleClose}>
                             <Text style={styles.text}>Close</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={handleSignOut} style={styles.signOutBtn}>
-                            <Text style={styles.text}>Sign Out</Text>
-                        </TouchableOpacity>
+
+                        {user ? (
+                            <TouchableOpacity onPress={handleSignOut} style={styles.signOutBtn}>
+                                <Text style={styles.text}>Sign Out</Text>
+                            </TouchableOpacity>
+                        ) : (
+                            <TouchableOpacity onPress={handleSignIn} style={styles.signOutBtn}>
+                                <Text style={styles.text}>Sign In</Text>
+                            </TouchableOpacity>
+                        )}
+
                     </View>
                 </Modal>
             </View>

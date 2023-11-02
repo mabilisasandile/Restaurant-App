@@ -22,7 +22,7 @@ const SignIn = () => {
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             if (user) {
-                navigation.navigate('Cart')
+                navigation.navigate('Home')
                 setEmail('');
                 setPassword('');
                 setErrorMessage('');
@@ -60,8 +60,8 @@ const SignIn = () => {
         }).catch((error) => {
 
             // Handle signin error
-            Alert.alert("Error", "Failed to sign in. Invalid Username/Password!", [{ text: "OK" }]);
             console.log(error);
+            Alert.alert("Error", "Invalid Username or Password!", [{ text: "OK" }]);
             setErrorMessage("Error. Wrong username/password entered!")
         })
 

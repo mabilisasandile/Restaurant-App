@@ -48,8 +48,6 @@ function Cart({ cartItems }) {
         console.log("User logged in:", user);
 
         if (user) {
-            // nav.navigate('Payment');
-            // nav.navigate('Checkout');
             nav.navigate('Checkout', { totalAmount: amount });  // Pass the 'amount' as a parameter
         } else {
             nav.navigate('SignIn');
@@ -63,39 +61,43 @@ function Cart({ cartItems }) {
             < CartHeader />
             <FlatList data={storeData} renderItem={({ item, index }) => (
                 < View style={{
-                    height: responsiveHeight(20), backgroundColor: 'white',
-                    borderBottomColor: '#8a2be2', borderBottomWidth: 4, flexDirection: 'row'
+                    height: responsiveHeight(20), borderRadius: 10, marginBottom: 5,
+                    borderBottomWidth: 2, flexDirection: 'row', borderWidth: 1, borderColor: 'black'
                 }}>
-                    <View style={{ flex: 0.35 }}>
+                    <View style={{ flex: 0.35, width: 142 }}>
                         <Image source={{ uri: item.imageURL }}
-                            style={{ height: 140, width: 142, borderRadius: 20 }} />
+                            style={{ height: 141, width: 142, borderRadius: 10 }} />
                     </View>
 
                     <View style={{
                         flex: 0.7, paddingHorizontal: 10, paddingVertical: 10,
                         alignItems: 'center', justifyContent: 'space-evenly'
                     }}>
-                        <View style={{
-                            flexDirection: 'row', alignContent: 'center',
-                            justifyContent: 'space-between', alignItems: 'center'
-                        }}
-                        >
-                            <View style={{ paddingLeft: 50 }}>
-                                <Text style={{ fontSize: 20, fontWeight: '600' }}>{item.name}</Text>
-                            </View>
 
-                            <View style={{ alignItems: 'flex-end', paddingLeft: 80 }}>
-                                <AntDesign name="close"
-                                    size={25}
-                                    color='grey'
-                                    onPress={() => {
-                                        dispatch(removeFromCart(item));
-                                    }}
-                                />
-                            </View>
-
+                        <View style={{ alignItems: 'flex-end', paddingLeft: 192 }}>
+                            <AntDesign name="close"
+                                size={25}
+                                color='grey'
+                                onPress={() => {
+                                    dispatch(removeFromCart(item));
+                                }}
+                            />
                         </View>
-                        <Text style={{ fontSize: 17, color: 'grey', marginTop: 5 }}>{item.description}</Text>
+
+                        <View style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                            {/* <Text style={{ fontSize: 20, fontWeight: '600' }}>{item.name}</Text> */}
+                            <Text numberOfLines={2} ellipsizeMode="tail"
+                                style={{ fontSize: 20, fontWeight: '600', maxWidth: 80, flexWrap: 'wrap', textAlign: 'center' }}>
+                                {item.name}
+                            </Text>
+                        </View>
+
+
+                        {/* <Text style={{ fontSize: 17, color: 'grey', marginTop: 5 }}>{item.description}</Text> */}
+                        <Text numberOfLines={2} ellipsizeMode="tail"
+                            style={{ fontSize: 17, color: 'grey', marginTop: 5, maxWidth: 150, flexWrap: 'wrap', textAlign: 'center' }}>
+                            {item.description}
+                        </Text>
                         <View style={{
                             alignContent: 'center', justifyContent: 'space-between',
                             flexDirection: 'row'
@@ -123,13 +125,15 @@ function Cart({ cartItems }) {
                                 >
                                     <AntDesign name="pluscircleo"
                                         size={24}
-                                         color="black"
+                                        color="black"
                                     />
                                 </TouchableOpacity>
 
                             </View>
-                            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10, backgroundColor: 'white' }}>
-                                <Text style={{ fontWeight: 'bold', color: '#8a2be2' }}>R{item.quantity * item.price}</Text>
+                            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+                                <Text style={{ fontWeight: 'bold', color: '#8a2be2' }}>
+                                    R{parseFloat((item.quantity * item.price).toFixed(2)).toFixed(2)}
+                                </Text>
                             </View>
 
                         </View>
@@ -141,7 +145,7 @@ function Cart({ cartItems }) {
                 <TouchableOpacity onPress={() => handleCheckOut()} style={styles.button}>
                     <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-evenly' }}>
                         <Text style={{ fontSize: 18, fontWeight: '700', color: 'white', textAlign: 'center' }}>CHECKOUT</Text>
-                        <Text style={{ fontSize: 18, fontWeight: '700', color: 'white', textAlign: 'center' }}>ZAR {subTotal()}</Text>
+                        <Text style={{ fontSize: 18, fontWeight: '700', color: 'white', textAlign: 'center' }}>ZAR {parseFloat((subTotal()).toFixed(2)).toFixed(2)}</Text>
                     </View>
                 </TouchableOpacity>
             </View>

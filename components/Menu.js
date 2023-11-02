@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import {
     StyleSheet, View, Text, FlatList, Alert,
-    Image, TouchableOpacity, ScrollView
+    Image, TouchableOpacity, ScrollView, TouchableHighlight
 } from 'react-native';
 import { collection, getDocs, doc, getDoc } from "firebase/firestore";
 import { db } from "../config/firebase";
@@ -126,7 +126,13 @@ export default function Menu() {
 
     // Render each item in the FlatList
     const renderItem = ({ item }) => (
-        <Card containerStyle={styles.card}>
+       
+        <TouchableHighlight
+        underlayColor='white'
+        activeOpacity={0.9}
+        onPress={() => handleViewItem(item.id)}
+        style={{marginVertical:5 }}>
+        <View style={styles.card}>
             <View style={styles.cardContent}>
                 <View >
                     <TouchableOpacity onPress={() => handleViewItem(item.id)}>
@@ -138,15 +144,15 @@ export default function Menu() {
                 </View>
             </View>
 
-            <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-                <Text style={styles.title}>{item.name}: </Text>
+            <View style={{ alignItems: 'center', justifyContent: 'center' }}> 
+                <Text numberOfLines={1} ellipsizeMode="tail" style={styles.title}> {item.name} </Text>
             </View>
 
             <View style={styles.cardContent}>
-                    <View style={{ alignItems:'flex-start' }}>
+                    <View style={{ alignItems:'flex-start', marginLeft:5 }}>
                         <Text style={styles.price}>R{item.price}</Text>
                     </View>
-                    <View style={{ alignItems:'flex-end' }}>
+                    <View style={{ alignItems:'flex-end', marginRight:5 }}>
                         <TouchableOpacity onPress={() => handleAddToCart(item.id)}>
                             <FontAwesome
                                 name="cart-plus"
@@ -157,7 +163,8 @@ export default function Menu() {
                     </View>
             </View>
 
-        </Card>
+        </View>
+      </TouchableHighlight >
     );
 
     return (
@@ -166,7 +173,7 @@ export default function Menu() {
                 <MenuHeader />
             </View>
 
-            <View style={{ height: 200 }}>
+            <View style={{ height: 140 }}>
                 <View style={{ mt: -1, alignItems: 'center' }}>
                     <Text style={{ color: '#8a2be2', fontSize: 22, fontWeight: '700' }}>Categories</Text>
                 </View>
@@ -176,7 +183,7 @@ export default function Menu() {
 
                         <View style={{
                             flexDirection: 'row', alignContent: 'center',
-                            justifyContent: 'space-between', alignItems: 'center', height: 70
+                            justifyContent: 'space-between', alignItems: 'center', height: 50
                         }}>
 
                             <TouchableOpacity
@@ -215,6 +222,7 @@ export default function Menu() {
             {/* Render the FlatList */}
             <FlatList
                 data={items}
+                numColumns={2} // Display two cards per row
                 renderItem={renderItem}
                 keyExtractor={(item) => item.id}
             />
@@ -226,34 +234,32 @@ export default function Menu() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        width: '100%',
         backgroundColor: '#d8bfd8',
         alignItems: 'center',
         justifyContent: 'center',
     },
     card: {
-        borderBlockColor: 'black',
-        borderWidth: 1,
-        borderRadius: 20,
-        margin: 20,
-        width: 320,
-        height: 200,
-        flexDirection: 'row', // Row layout for card content
-        // alignItems: 'center', // Center elements vertically
+        flex: 1,
+        backgroundColor: 'white',
+        borderRadius: 5,
+        margin: 10,
+        width: 150,
+        height: 150,
+        elevation: 13, // Add elevation for a card-like appearance
     },
     cardContent: {
-        display:'flex',
-        alignItems:'center',
+        display: 'flex',
+        alignItems: 'center',
         flexDirection: 'row',
-        justifyContent: 'space-evenly',
-        marginHorizontal: 2,
+        justifyContent: 'space-between',
     },
     image: {
-        width: 320,
-        height: 140,
-        borderTopLeftRadius: 20,
-        borderTopRightRadius: 20,
+        width: 150,
+        height: 80,
+        borderTopLeftRadius: 10,
+        borderTopRightRadius: 10,
         resizeMode: 'cover',
-        marginTop: -16,
     },
     textContainer: {
         flex: 1, // Take up remaining space
@@ -263,9 +269,10 @@ const styles = StyleSheet.create({
         borderColor: "gray",
     },
     title: {
-        fontSize: 18,
-        fontWeight: 'bold',
+        fontSize: 16,
+        fontWeight: '600',
         marginLeft: 10,
+        color: '#8a2be2',
     },
     description: {
         fontSize: 14,
@@ -288,13 +295,13 @@ const styles = StyleSheet.create({
         textDecorationColor: 'black',
     },
     btn2: {
-        borderWidth: 2,
+        borderWidth: 1,
         borderRadius: 50,
-        height: 120,
-        width: 150,
+        height: 70,
+        width: 120,
         marginLeft: 20,
         marginBottom: 10,
-        borderColor: 'white',
+        borderColor: 'black',
         backgroundColor: '#8a2be2',
     },
     btn2_text: {
@@ -303,6 +310,6 @@ const styles = StyleSheet.create({
         fontWeight: '700',
         fontSize: 16,
         textAlign: 'center',
-        marginTop: -4,
+        marginTop: -10,
     }
 });
