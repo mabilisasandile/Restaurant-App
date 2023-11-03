@@ -16,11 +16,18 @@ const cartSlice = createSlice({
                 state.push({ ...actions.payload, quantity:1 });
             }       
         },          
-        removeFromCart: (state, actions) => {
-            const newList = state.filter(
-                (value) => value.name !== actions.payload.name
-            );
-            return (state - newList);
+        // removeFromCart: (state, actions) => {
+        //     const newList = state.filter(
+        //         (value) => value.name !== actions.payload.name
+        //     );
+        //     return (state - newList);
+        // },
+        removeFromCart(state, action) {
+            const nextCartItems = state.cartItems.filter(
+                cartItems => cartItems.id !== action.payload.id
+            )
+
+            state.cartItems = nextCartItems;
         },
         incrementQuantity: (state, actions) => {
             const isAvailable = state.find(

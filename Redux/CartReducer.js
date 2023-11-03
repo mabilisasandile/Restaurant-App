@@ -1,9 +1,9 @@
 
-// cartReducer.js
-// const initialState = {
-//   items: [],
-// };
-const initialState = [];
+cartReducer.js
+const initialState = {
+  items: [],
+};
+// const initialState = [];
 
 
 const cartReducer = (state = initialState, action) => {
