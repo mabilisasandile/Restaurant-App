@@ -54,7 +54,7 @@ export default function TabScreens() {
                     ),
                 }}
             />
-            <Tab.Screen
+            {/* <Tab.Screen
                 name="Search"
                 component={SearchScreen}
                 options={{
@@ -62,7 +62,7 @@ export default function TabScreens() {
                         <Icon name="search" color={color} size={size} />
                     ),
                 }}
-            />
+            /> */}
         </Tab.Navigator>
 
     );

@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View, Text, FlatList, TouchableHighlight,
+import { StyleSheet, View, Text, FlatList, TouchableHighlight, Alert,
      Image, TouchableOpacity } from 'react-native';
 import { collection, getDocs, doc, getDoc, where, query } from "firebase/firestore";
 import { db } from "../config/firebase";
@@ -95,6 +95,7 @@ export default function DinnerMenu() {
             const [item] = dinnerData.filter(item => item.id === id);
             dispatch(addToCart(item));
             console.log("Item added to cart:", item);
+            Alert.alert("Item added to cart");
         } catch (error) {
             console.log("Failed to add to cart:", error);
             Alert.alert("Something went wrong. Please try again!");
@@ -107,6 +108,7 @@ export default function DinnerMenu() {
             const [item] = dinnerData.filter(item => item.id === id);
             dispatch(removeFromCart(item));
             console.log("Item removed from cart:", item);
+            Alert.alert("Item removed from cart");
         } catch (error) {
             console.log("Failed to remove item from cart:", error);
             Alert.alert("Something went wrong. Please try again!");
@@ -116,15 +118,10 @@ export default function DinnerMenu() {
 
     // Render each item in the FlatList
     const renderItem = ({ item }) => (
-        <TouchableHighlight
-        underlayColor='white'
-        activeOpacity={0.9}
-        onPress={() => handleViewItem(item.id)}
-        style={{marginVertical:5 }}>
-        <View style={styles.card}>
+        <Card containerStyle={styles.card}>
             <View style={styles.cardContent}>
                 <View >
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={() => handleViewItem(item.id)}>
                         <Image
                             source={{ uri: item.imageURL }}
                             style={styles.image}
@@ -137,7 +134,7 @@ export default function DinnerMenu() {
                 <Text style={styles.title}>{item.name}: </Text>
             </View>
 
-            <View style={styles.cardContent}>
+            <View style={styles.cardContent2}>
                     <View style={{ alignItems:'flex-start' }}>
                         <Text style={styles.price}>R{item.price}</Text>
                     </View>
@@ -151,8 +148,8 @@ export default function DinnerMenu() {
                         </TouchableOpacity>
                     </View>
             </View>
-        </View>
-        </TouchableHighlight>
+
+        </Card>
     );
 
     return (
@@ -178,13 +175,12 @@ export default function DinnerMenu() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#d8bfd8',
+        // backgroundColor: '#d8bfd8',
         alignItems: 'center',
         justifyContent: 'center',
     },
     card: {
         borderBlockColor: 'black',
-        backgroundColor: 'white',
         borderWidth: 1,
         borderRadius: 20,
         margin: 20,
@@ -198,9 +194,14 @@ const styles = StyleSheet.create({
         alignItems:'center',
         flexDirection: 'row',
         justifyContent: 'space-evenly',
-        // justifyContent: 'space-between',
         marginHorizontal: 2,
     },
+    cardContent2: {
+        display:'flex',
+        alignItems:'center',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+    },   
     image: {
         width: 320,
         height: 140,

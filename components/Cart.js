@@ -17,7 +17,7 @@ import { auth } from "../config/firebase";
 
 
 
-function Cart({ cartItems }) {
+function Cart() {
 
     const dispatch = useDispatch();
     const storeData = useSelector((state) => state.CartSlice);
@@ -48,11 +48,22 @@ function Cart({ cartItems }) {
         console.log("User logged in:", user);
 
         if (user) {
-            nav.navigate('Checkout', { totalAmount: amount });  // Pass the 'amount' as a parameter
+            nav.navigate('Checkout', { totalAmount: parseFloat(amount.toFixed(2)) });
         } else {
             nav.navigate('SignIn');
         }
     }
+
+    const handleRemoveFromCart = (id) => {
+        dispatch(removeFromCart(id))
+            .then(() => {
+                Alert.alert("Item removed from cart");
+            })
+            .catch((error) => {
+                console.log("Failed to remove from cart", error);
+                Alert.alert("Error", "Unable to remove item.", [{ text: "OK" }]);
+            });
+    };
 
 
 
@@ -70,17 +81,16 @@ function Cart({ cartItems }) {
                     </View>
 
                     <View style={{
-                        flex: 0.7, paddingHorizontal: 10, paddingVertical: 10,
+                        flex: 0.7, paddingHorizontal: 10, paddingVertical: 10, 
                         alignItems: 'center', justifyContent: 'space-evenly'
                     }}>
 
                         <View style={{ alignItems: 'flex-end', paddingLeft: 192 }}>
-                            <AntDesign name="close"
+                            <AntDesign
+                                name="close"
                                 size={25}
                                 color='grey'
-                                onPress={() => {
-                                    dispatch(removeFromCart(item));
-                                }}
+                                onPress={() => handleRemoveFromCart(item.id)}
                             />
                         </View>
 
@@ -145,7 +155,9 @@ function Cart({ cartItems }) {
                 <TouchableOpacity onPress={() => handleCheckOut()} style={styles.button}>
                     <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-evenly' }}>
                         <Text style={{ fontSize: 18, fontWeight: '700', color: 'white', textAlign: 'center' }}>CHECKOUT</Text>
-                        <Text style={{ fontSize: 18, fontWeight: '700', color: 'white', textAlign: 'center' }}>ZAR {parseFloat((subTotal()).toFixed(2)).toFixed(2)}</Text>
+                        <Text style={{ fontSize: 18, fontWeight: '700', color: 'white', textAlign: 'center' }}>
+                            ZAR {parseFloat((subTotal()).toFixed(2)).toFixed(2)}
+                        </Text>
                     </View>
                 </TouchableOpacity>
             </View>
@@ -159,7 +171,7 @@ function Cart({ cartItems }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#d8bfd8',
+        // backgroundColor: '#d8bfd8',
         alignItems: 'center',
         justifyContent: 'center',
     },

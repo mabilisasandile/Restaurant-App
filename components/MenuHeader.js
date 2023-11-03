@@ -140,6 +140,8 @@ const styles = StyleSheet.create({
         marginRight: 7,
         paddingRight: 10,
         width: '100%',
+        top: 0,
+        zIndex: 1000,
     },
     text: {
         fontSize: 24,

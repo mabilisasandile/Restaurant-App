@@ -54,11 +54,11 @@ const ViewItem = ({ route }) => {
                         alignItems: 'center', justifyContent: 'space-evenly'
                     }}>
 
-                        <Text>Item: {itemName}</Text>
-                        <Text>Recipe: {description}</Text>
+                        <Text numberOfLines={1} ellipsizeMode="tail">Item: {itemName}</Text>
+                        <Text numberOfLines={4} ellipsizeMode="tail">Description: {description}</Text>
                         <Text style={{color:'grey'}}>{category}</Text>
                         <Text>Price: R{price}</Text>
-                        <Text>Delivery Time: 4h30 PM</Text>
+                        {/* <Text>Delivery Time: 4h30 PM</Text> */}
 
                         <TouchableOpacity
                             style={styles.btnAdd}

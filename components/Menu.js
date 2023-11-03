@@ -25,7 +25,7 @@ export default function Menu() {
     const navigation = useNavigation();
     const dispatch = useDispatch();
     const { cartItems } = useSelector((state) => state.CartSlice);
-
+    const loading = "Loading..."
 
     useEffect(() => {
         getItems();
@@ -107,6 +107,7 @@ export default function Menu() {
             const [item] = items.filter(item => item.id === id);
             dispatch(addToCart(item));
             console.log("Item added to cart:", item);
+            Alert.alert("Item added to cart");
         } catch (error) {
             console.log("Failed to add to cart:", error);
             Alert.alert("Something went wrong. Please try again!");
@@ -126,45 +127,53 @@ export default function Menu() {
 
     // Render each item in the FlatList
     const renderItem = ({ item }) => (
-       
-        <TouchableHighlight
-        underlayColor='white'
-        activeOpacity={0.9}
-        onPress={() => handleViewItem(item.id)}
-        style={{marginVertical:5 }}>
-        <View style={styles.card}>
-            <View style={styles.cardContent}>
-                <View >
-                    <TouchableOpacity onPress={() => handleViewItem(item.id)}>
-                        <Image
-                            source={{ uri: item.imageURL }}
-                            style={styles.image}
-                        />
-                    </TouchableOpacity>
-                </View>
-            </View>
 
-            <View style={{ alignItems: 'center', justifyContent: 'center' }}> 
-                <Text numberOfLines={1} ellipsizeMode="tail" style={styles.title}> {item.name} </Text>
-            </View>
+        <View>
+            {items.length < 1 ? (
+                <Text style={{ fontSize: 21, fontWeight: '500', textAlign: 'center' }}>Loading...</Text>
+            ) : (
+                <TouchableHighlight
+                    underlayColor='white'
+                    activeOpacity={0.9}
+                    onPress={() => handleViewItem(item.id)}
+                    style={{ marginVertical: 0 }}>
+                    <View style={styles.card}>
+                        <View style={styles.cardContent}>
+                            <View >
+                                <TouchableOpacity onPress={() => handleViewItem(item.id)}>
+                                    <Image
+                                        source={{ uri: item.imageURL }}
+                                        style={styles.image}
+                                    />
+                                </TouchableOpacity>
+                            </View>
+                        </View>
 
-            <View style={styles.cardContent}>
-                    <View style={{ alignItems:'flex-start', marginLeft:5 }}>
-                        <Text style={styles.price}>R{item.price}</Text>
+                        <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                            <Text numberOfLines={1} ellipsizeMode="tail" style={styles.title}> {item.name} </Text>
+                        </View>
+
+                        <View style={styles.cardContent}>
+                            <View style={{ alignItems: 'flex-start', marginLeft: 5 }}>
+                                <Text style={styles.price}>R{item.price}</Text>
+                            </View>
+                            <View style={{ alignItems: 'flex-end', marginRight: 5 }}>
+                                <TouchableOpacity onPress={() => handleAddToCart(item.id)}>
+                                    <FontAwesome
+                                        name="cart-plus"
+                                        size={25}
+                                        color='black'
+                                    />
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+
                     </View>
-                    <View style={{ alignItems:'flex-end', marginRight:5 }}>
-                        <TouchableOpacity onPress={() => handleAddToCart(item.id)}>
-                            <FontAwesome
-                                name="cart-plus"
-                                size={37}
-                                color='#8a2be2'
-                            />
-                        </TouchableOpacity>
-                    </View>
-            </View>
-
+                </TouchableHighlight >
+            )}
         </View>
-      </TouchableHighlight >
+
+
     );
 
     return (
@@ -226,6 +235,7 @@ export default function Menu() {
                 renderItem={renderItem}
                 keyExtractor={(item) => item.id}
             />
+
         </View>
     );
 }
@@ -235,16 +245,16 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         width: '100%',
-        backgroundColor: '#d8bfd8',
+        // backgroundColor: '#d8bfd8',
         alignItems: 'center',
         justifyContent: 'center',
     },
     card: {
         flex: 1,
         backgroundColor: 'white',
-        borderRadius: 5,
-        margin: 10,
-        width: 150,
+        borderRadius: 10,
+        margin: 5,
+        width: 170,
         height: 150,
         elevation: 13, // Add elevation for a card-like appearance
     },
@@ -255,8 +265,8 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
     },
     image: {
-        width: 150,
-        height: 80,
+        width: 170,
+        height: 100,
         borderTopLeftRadius: 10,
         borderTopRightRadius: 10,
         resizeMode: 'cover',
@@ -272,7 +282,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: '600',
         marginLeft: 10,
-        color: '#8a2be2',
+        // color: '#8a2be2',
     },
     description: {
         fontSize: 14,
@@ -283,7 +293,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: 'bold',
         marginTop: 5, // Add spacing between description and price
-        color: '#8a2be2',
+        // color: '#8a2be2',
     },
     btn: {
         cursor: 'pointer',
@@ -302,7 +312,7 @@ const styles = StyleSheet.create({
         marginLeft: 20,
         marginBottom: 10,
         borderColor: 'black',
-        backgroundColor: '#8a2be2',
+        // backgroundColor: '#8a2be2',
     },
     btn2_text: {
         margin: 12,

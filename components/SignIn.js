@@ -51,10 +51,6 @@ const SignIn = () => {
             // Handle successful signin
             Alert.alert("Success", "Signed In Successfully.", [{ text: "OK" }]);
             console.log("Successfully signed in");
-            setEmail('');
-            setPassword('');
-            setMessage('');
-            setErrorMessage('');
             navigation.navigate("Home");
 
         }).catch((error) => {
