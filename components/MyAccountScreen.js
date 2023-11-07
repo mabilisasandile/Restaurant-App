@@ -3,8 +3,8 @@ import {
   View, Text, StyleSheet, TouchableOpacity,
   Alert, Modal, TextInput, Button
 } from 'react-native';
-import { collection, getDocs, where, query, db, doc, setDoc } from 'firebase/firestore';
-import { auth } from '../config/firebase';
+import { collection, getDocs, getDoc, where, query, doc, setDoc } from 'firebase/firestore';
+import { auth, db } from '../config/firebase';
 import { useNavigation } from '@react-navigation/native';
 
 export default function MyAccountScreen() {
@@ -20,30 +20,39 @@ export default function MyAccountScreen() {
   const [modalVisible, setModalVisible] = useState(false);
   const [editMode, setEditMode] = useState(false);
 
-  const fetchedData = {};
+  let fetchedData = {};
   const user = auth.currentUser;
   const userID = user ? user.uid : null; // Ensure the user object is not null
+  const email = user.email;
   const nav = useNavigation();
 
   useEffect(() => {
     if (userID) {
+      console.log("UserID:", userID);
+      console.log("User Email:", email);
       getUserData();
     }
   }, [userID, getUserData]);
 
   const getUserData = async () => {
     try {
-      const querySnapshot = query(collection(db, 'users'), where('user_id', '==', userID));
-      const data = await getDocs(querySnapshot);
+      const docRef = doc(db, "users", userID);
+      const docSnap = await getDoc(docRef);
 
-      data.forEach((doc) => {
-        fetchedData[doc.id] = doc.data();
-      });
+      if (docSnap.exists()) {
+        const user = docSnap.data();
+        setUserData(user);
+        console.log("User data:", docSnap.data());
+      } else {
+        Alert.alert('Error', 'User data not found.');
+      }
+      // const user = docSnap.data();
+      // setUserData(user);
+      // console.log("User data:", docSnap.data());
 
-      setUserData(Object.values(fetchedData));
     } catch (error) {
       console.log('Failed to fetch user data', error);
-      Alert.alert('Error', 'Failed to fetch user data!');
+      Alert.alert('Error', 'Unable to fetch account information!');
     }
   };
 
@@ -81,14 +90,13 @@ export default function MyAccountScreen() {
 
   return (
     <View style={styles.container}>
-      {userData.length < 1 ? (
+      {user.length < 1 ? (
         <View style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <Text style={{ fontSize: 24, fontWeight: '700' }}>Loading...</Text>
           <View style={{ paddingTop: 100, marginTop: 100 }}>
-            <Text>Have you signed in? No.</Text>
+            <Text>Looks like you did not sign in.</Text>
             <TouchableOpacity style={styles.nav_link} onPress={handleSignIn}>
               <Text style={{ fontSize: 18, fontWeight: '400', textAlign: 'center' }}>
-                Then click here to Sign In
+                Click here to Sign In!
               </Text>
             </TouchableOpacity>
           </View>
@@ -97,30 +105,38 @@ export default function MyAccountScreen() {
       ) : (
 
         <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-          <Text style={{ fontSize: 22, fontWeight: '700' }}>My Account</Text>
-          {userData.map((user, index) => (
-            <View key={index}>
-              <Text style={styles.text}>First Name: {user.name},</Text>
-              <Text style={styles.text}>Last Name: </Text>
-              <Text>Phone: {user.phone}</Text>
-              <Text>Email: {user.email}</Text>
-              <Text>Address: {user.address}</Text>
-              <Button
-                title="Edit"
-                onPress={() => {
-                  setEditId(user.id);
-                  setEditName(user.name);
-                  setEditAddress(user.address);
-                  setEditEmail(user.email);
-                  setEditPhone(user.phone);
-                  setEditCardType(user.cardType);
-                  setEditCardNo(user.cardNo);
-                  setEditMode(true);
-                  setModalVisible(true);
-                }}
-              />
-            </View>
-          ))}
+          <View>
+            {userData ? (
+              <View>
+                    <Text style={{ fontSize: 22, fontWeight: '700', textAlign: 'center' }}>My Account</Text>
+                    <Text style={styles.text}>Full Details(s) </Text>
+                    <Text>{userData.name} {userData.surname}</Text>
+                    <Text>Phone: {userData.phone}</Text>
+                    <Text>Email: {userData.email}</Text>
+                    <Text>Address: {userData.address}</Text>
+                    <Text></Text>
+                    <Button
+                      title="Edit"
+                      onPress={() => {
+                        setEditId(userData.id);
+                        setEditName(userData.name);
+                        setEditAddress(userData.address);
+                        setEditEmail(userData.email);
+                        setEditPhone(userData.phone);
+                        setEditCardType(userData.cardType);
+                        setEditCardNo(userData.cardNo);
+                        setEditMode(true);
+                        setModalVisible(true);
+                      }}
+                    />
+              </View>
+            ) : (
+              <View>
+                <Text style={{ fontSize: 24, fontWeight: '400', textAlign: 'center' }}>Loading...</Text>
+              </View>
+            )}
+          </View>
+
 
           {/* Edit Modal */}
           <Modal

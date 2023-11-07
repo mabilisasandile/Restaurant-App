@@ -131,7 +131,7 @@ export default function BreakfastMenu() {
             </View>
 
             <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-                <Text style={styles.title}>{item.name}: </Text>
+                <Text numberOfLines={1} ellipsizeMode="tail" style={styles.title}>{item.name} </Text>
             </View>
 
             <View style={styles.cardContent2}>

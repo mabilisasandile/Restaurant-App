@@ -6,7 +6,8 @@ import {
     Text, View, TextInput, Alert,
     ScrollView, StyleSheet, TouchableOpacity
 } from "react-native";
-import { addDoc, collection, doc } from "firebase/firestore";
+import { Picker } from '@react-native-picker/picker';
+import { addDoc, collection, doc, setDoc } from "firebase/firestore";
 import { Card } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import SignIn from "./SignIn";
@@ -19,10 +20,18 @@ const SignUp = () => {
     const [address, setAddress] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [cardType, setCardType] = useState('');
+    const [cardNo, setCardNo] = useState('');
     const [message, setMessage] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const navigation = useNavigation();
-    
+
+    const options = [
+        { label: 'Debit', value: 'Debit' },
+        { label: 'Credit', value: 'Credit' },
+        { label: 'Cheque', value: 'Cheque' },
+    ];
+
 
     const handleSignup = (({ navigation }) => {
         createUserWithEmailAndPassword(auth, email, password).then(async () => {
@@ -30,14 +39,15 @@ const SignUp = () => {
             const user = auth.currentUser;
             const userId = user.uid;
 
-            // const docRef = await addDoc(collection(db, 'users', userId), {
-            const docRef = await addDoc(collection(db, 'users'), {
-                user_id: user.uid,
+            const docRef = await setDoc(doc(db, 'users', userId), {
+                user_id: userId,
                 name: name,
                 surname: surname,
                 phone: phone,
                 address: address,
                 email: email,
+                cardType: cardType,
+                cardNo: cardNo,
             });
 
             console.log("New user:", docRef);
@@ -52,7 +62,8 @@ const SignUp = () => {
 
             // Handle signup error
             console.log("Failed to register!", error);
-            setErrorMessage("An error occurred while registering!")
+            Alert.alert("Error", "Something went wrong.")
+            // setErrorMessage("An error occurred while registering!")
 
         })
     })
@@ -89,6 +100,24 @@ const SignUp = () => {
                         onChangeText={setSurname}
                         style={styles.inputs}
                     />
+                    <View>
+                        <Text>Select Card Type:</Text>
+                        <Picker
+                            style={{ width: 250, backgroundColor: 'white', borderWidth: 2 }}
+                            value={cardType}
+                            onValueChange={(itemValue) => setCardType(itemValue)}
+                        >
+                            {options.map((option) => (
+                                <Picker.Item key={option.value} label={option.label} value={option.value} />
+                            ))}
+                        </Picker>
+                    </View>
+                    <TextInput
+                        placeholder="Enter Card Number"
+                        value={card_number}
+                        onChangeText={setCardNo}
+                        style={styles.inputs}
+                    />
                     <TextInput
                         placeholder="Contact number"
                         value={phone}
@@ -119,11 +148,11 @@ const SignUp = () => {
 
                     <Text style={{ color: 'green' }}>{message}</Text>
                     <Text style={{ color: 'red' }}>{errorMessage}</Text>
-                    
+
 
                     <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                         <TouchableOpacity onPress={handleSignup} style={styles.button}>
-                            <Text style={{fontSize:18, fontWeight:'700', color:'white'}}>REGISTER</Text>
+                            <Text style={{ fontSize: 18, fontWeight: '700', color: 'white' }}>REGISTER</Text>
                         </TouchableOpacity>
 
                         <TouchableOpacity style={styles.nav_link} onPress={handleLinkClick}>

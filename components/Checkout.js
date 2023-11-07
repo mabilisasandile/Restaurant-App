@@ -41,6 +41,17 @@ export default function Checkout({ route }) {
     let data = [];
 
 
+    // Get today's date
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0'); // Months are zero-based, so we add 1 and format to two digits
+    const day = String(today.getDate()).padStart(2, '0'); // Format day to two digits
+
+    const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    const dayOfWeekName = daysOfWeek[today.getDay()];
+    const currentDate = `${dayOfWeekName}, ${year}-${month}-${day}`;
+
+
     const options = [
         { label: 'Debit', value: 'Debit' },
         { label: 'Credit', value: 'Credit' },
@@ -95,11 +106,12 @@ export default function Checkout({ route }) {
                 total_amount: totalAmount,
                 card_type: card_type,
                 card_number: card_number,
+                date: currentDate,
                 package: items,
             });
 
             nav.navigate('Payment');
-            // nav.navigate('Payment', { amount: totalAmount });  // Pass the 'amount' as a parameter
+            // nav.navigate('Payment', { amount: totalAmount });  // Pass the 'amount' as a parameter 
 
         } catch (error) {
             Alert.alert("Error", "Unable to process order.", [{ text: "OK" }]);
@@ -124,6 +136,7 @@ export default function Checkout({ route }) {
                         <View key={index} style={{ alignItems: 'center', justifyContent: 'center', }}>
                             <Text style={styles.text}>Hello {user.name},</Text>
                             <Text style={styles.text}>Place your order here!</Text>
+                            <Text style={styles.text}>Today: {currentDate}</Text>
                             <Text>{user.address}</Text>
                         </View>
                     ))}

@@ -88,7 +88,7 @@ export default function Home() {
     }
 
     const handleSignUpNav = () => {
-        navigation.navigate('SignUp');
+        navigation.navigate('Register');
     }
 
     return (

@@ -5,12 +5,19 @@ import { View, Text, TextInput, Alert, TouchableOpacity } from "react-native";
 import { doc, deleteDoc, collection, query, where } from "firebase/firestore";
 import { db, auth } from "../config/firebase";
 import { useNavigation } from "@react-navigation/native";
+import { removeFromCart } from "../Redux/CartSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 
 
 const Payment = ({ route }) => {
 
     // const { amount } = route.params;
+    const dispatch = useDispatch();
+    const storeData = useSelector((state) => state.CartSlice);
+    var data = JSON.stringify(storeData);
+    data = JSON.parse(data);
+
     const [name, setName] = useState('');
     const stripe = useStripe();
     const nav = useNavigation();
@@ -62,6 +69,7 @@ const Payment = ({ route }) => {
             }
 
             Alert.alert("Payment complete, thank you!");
+            dispatch(removeFromCart(data));
             nav.navigate('Order_Placed');
 
         } catch (err) {

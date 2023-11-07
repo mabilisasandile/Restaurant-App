@@ -7,7 +7,7 @@ export default function MapScreen(){
 
     return(
         <View style={styles.container}>
-            <Text>Restaurant Map</Text>
+            <Text>Loading...</Text>
         </View>
     );
 }

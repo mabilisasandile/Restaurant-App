@@ -21,6 +21,8 @@ function Cart() {
 
     const dispatch = useDispatch();
     const storeData = useSelector((state) => state.CartSlice);
+    var data = JSON.stringify(storeData);
+    data = JSON.parse(data);
     const nav = useNavigation();
     let amount = 0;
 
@@ -32,11 +34,16 @@ function Cart() {
     }, []);
 
 
-
     const subTotal = () => {
-        storeData.forEach(element => {
-            amount += element.price;
-        });
+        try {
+            // storeData.forEach(element => {
+            data.forEach(element => {
+                amount += element.price;
+            });
+        } catch (error) {
+            console.log("Error:", error);
+        }
+
         return amount;
     }
 
@@ -55,14 +62,19 @@ function Cart() {
     }
 
     const handleRemoveFromCart = (id) => {
-        dispatch(removeFromCart(id))
-            .then(() => {
+        try {
+            const itemToRemove = data.find(item => item.id === id);
+            if (itemToRemove) {
+                dispatch(removeFromCart(itemToRemove));
                 Alert.alert("Item removed from cart");
-            })
-            .catch((error) => {
-                console.log("Failed to remove from cart", error);
-                Alert.alert("Error", "Unable to remove item.", [{ text: "OK" }]);
-            });
+            } else {
+                Alert.alert("Error", "Item not found in the cart.", [{ text: "OK" }]);
+            }
+        } catch (error) {
+            console.log("Failed to remove from cart", error);
+            Alert.alert("Error", "Unable to remove item.", [{ text: "OK" }]);
+        }
+
     };
 
 
@@ -70,7 +82,7 @@ function Cart() {
     return (
         <SafeAreaView style={{ flex: 1, paddingHorizontal: 10, backgroundColor: '#d8bfd8', gap: 15 }}>
             < CartHeader />
-            <FlatList data={storeData} renderItem={({ item, index }) => (
+            <FlatList data={data} renderItem={({ item, index }) => (
                 < View style={{
                     height: responsiveHeight(20), borderRadius: 10, marginBottom: 5,
                     borderBottomWidth: 2, flexDirection: 'row', borderWidth: 1, borderColor: 'black'
@@ -81,17 +93,20 @@ function Cart() {
                     </View>
 
                     <View style={{
-                        flex: 0.7, paddingHorizontal: 10, paddingVertical: 10, 
+                        flex: 0.7, paddingHorizontal: 10, paddingVertical: 10,
                         alignItems: 'center', justifyContent: 'space-evenly'
                     }}>
 
                         <View style={{ alignItems: 'flex-end', paddingLeft: 192 }}>
-                            <AntDesign
-                                name="close"
-                                size={25}
-                                color='grey'
-                                onPress={() => handleRemoveFromCart(item.id)}
-                            />
+                            <TouchableOpacity onPress={() => handleRemoveFromCart(item.id)}>
+                                <AntDesign
+                                    name="close"
+                                    size={25}
+                                    color='grey'
+
+                                />
+                            </TouchableOpacity>
+
                         </View>
 
                         <View style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
