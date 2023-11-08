@@ -108,27 +108,27 @@ export default function MyAccountScreen() {
           <View>
             {userData ? (
               <View>
-                    <Text style={{ fontSize: 22, fontWeight: '700', textAlign: 'center' }}>My Account</Text>
-                    <Text style={styles.text}>Full Details(s) </Text>
-                    <Text>{userData.name} {userData.surname}</Text>
-                    <Text>Phone: {userData.phone}</Text>
-                    <Text>Email: {userData.email}</Text>
-                    <Text>Address: {userData.address}</Text>
-                    <Text></Text>
-                    <Button
-                      title="Edit"
-                      onPress={() => {
-                        setEditId(userData.id);
-                        setEditName(userData.name);
-                        setEditAddress(userData.address);
-                        setEditEmail(userData.email);
-                        setEditPhone(userData.phone);
-                        setEditCardType(userData.cardType);
-                        setEditCardNo(userData.cardNo);
-                        setEditMode(true);
-                        setModalVisible(true);
-                      }}
-                    />
+                <Text style={{ fontSize: 22, fontWeight: '700', textAlign: 'center' }}>My Account</Text>
+                <Text style={styles.text}>Full Details </Text>
+                <Text>{userData.name} {userData.surname}</Text>
+                <Text>Phone: {userData.phone}</Text>
+                <Text>Email: {userData.email}</Text>
+                <Text>Address: {userData.address}</Text>
+                <Text></Text>
+                <Button
+                  title="Edit"
+                  onPress={() => {
+                    setEditId(userData.user_id);
+                    setEditName(userData.name);
+                    setEditAddress(userData.address);
+                    setEditEmail(userData.email);
+                    setEditPhone(userData.phone);
+                    setEditCardType(userData.cardType);
+                    setEditCardNo(userData.cardNo);
+                    setEditMode(true);
+                    setModalVisible(true);
+                  }}
+                />
               </View>
             ) : (
               <View>
@@ -150,34 +150,42 @@ export default function MyAccountScreen() {
                 <TextInput
                   placeholder="Name"
                   value={editName}
+                  style={styles.inputs}
                   onChangeText={(text) => setEditName(text)}
                 />
                 <TextInput
                   placeholder="Phone"
                   value={editPhone}
+                  style={styles.inputs}
                   onChangeText={(text) => setEditPhone(text)}
                 />
                 <TextInput
                   placeholder="Email"
                   value={editEmail}
+                  style={styles.inputs}
                   onChangeText={(text) => setEditEmail(text)}
                 />
                 <TextInput
                   placeholder="Address"
                   value={editAddress}
+                  style={styles.inputs}
                   onChangeText={(text) => setEditAddress(text)}
                 />
                 <TextInput
                   placeholder="Card Type"
                   value={editCardType}
+                  style={styles.inputs}
                   onChangeText={(text) => setEditCardType(text)}
                 />
                 <TextInput
                   placeholder="Card Number"
                   value={editCardNo}
+                  style={styles.inputs}
                   onChangeText={(text) => setEditCardNo(text)}
                 />
-                <Button title="Save" onPress={handleEdit} />
+                <View style={{ marginBottom: 20 }}>
+                  <Button title="Save" onPress={handleEdit} />
+                </View>
                 <Button title="Cancel" onPress={() => setModalVisible(false)} />
               </View>
             </View>
@@ -246,5 +254,16 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     textDecorationLine: 'underline',
     textDecorationColor: 'navy',
-  }
+  },
+  inputs: {
+    width: 250,
+    height: 30,
+    backgroundColor: '#fffafa',
+    height: 40,
+    borderColor: 'gray',
+    borderWidth: 1,
+    borderRadius: 10,
+    marginTop: 10,
+    marginBottom: 20,
+  },
 });

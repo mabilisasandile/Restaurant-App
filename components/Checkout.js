@@ -30,7 +30,7 @@ export default function Checkout({ route }) {
     const [docId, setDocId] = useState(null);
     const [items, setItems] = useState([]);
     const [card_number, setCardNumber] = useState('');
-    const [card_type, setCardType] = useState('default');   // Initialize with a default value
+    const [card_type, setCardType] = useState('');   // Initialize with a default value
 
 
     const nav = useNavigation();
@@ -137,7 +137,7 @@ export default function Checkout({ route }) {
                             <Text style={styles.text}>Hello {user.name},</Text>
                             <Text style={styles.text}>Place your order here!</Text>
                             <Text style={styles.text}>Today: {currentDate}</Text>
-                            <Text>{user.address}</Text>
+                            <Text style={{ textAlign:'center', fontWeight:'400' }}>{user.address}</Text>
                         </View>
                     ))}
                     <Text>{email}</Text>
@@ -154,7 +154,7 @@ export default function Checkout({ route }) {
                         <Text>Select Card Type:</Text>
                         <Picker
                             style={{ width: 250, backgroundColor: 'white', borderWidth: 2 }}
-                            card_type={card_type}
+                            value={card_type}
                             onValueChange={(itemValue) => setCardType(itemValue)}
                         >
                             {options.map((option) => (
@@ -193,7 +193,6 @@ export default function Checkout({ route }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#d8bfd8',
         alignItems: 'center',
         justifyContent: 'center',
     },

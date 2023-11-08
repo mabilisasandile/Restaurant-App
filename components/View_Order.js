@@ -1,7 +1,9 @@
 
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View, Text, FlatList, TouchableHighlight, Alert,
-     Image, TouchableOpacity } from 'react-native';
+import {
+    StyleSheet, View, Text, FlatList, TouchableHighlight, Alert,
+    Image, TouchableOpacity
+} from 'react-native';
 import { collection, getDocs, doc, getDoc, where, query } from "firebase/firestore";
 import { db } from "../config/firebase";
 import { Card } from "react-native-elements";
@@ -16,15 +18,14 @@ export default function ViewOrder() {
     const [orderData, setOrderData] = useState([]);
 
     const navigation = useNavigation();
-    let fetchedData = [];
     const user = auth.currentUser;
     const userID = user ? user.uid : null; // Ensure the user object is not null
-    
-    
+
+
 
     useEffect(() => {
         handleOrderData();
-        
+        console.log("userID:", userID);
     }, []);
 
 
@@ -35,16 +36,18 @@ export default function ViewOrder() {
                 , where("user_id", "==", userID));
 
             const data = await getDocs(querySnapshot);
+            let fetchedData = {};
 
             data.forEach((doc) => {
                 console.log("Doc data: ", doc.data());
+                console.log("Doc id:", doc.id);
                 fetchedData[doc.id] = doc.data();
 
             });
 
             setOrderData(Object.values(fetchedData));
 
-            console.log("Order data:", orderData);
+            console.log("fetchedData:", fetchedData);
 
         } catch (error) {
             console.log("Failed to fetch order data", error);
@@ -53,21 +56,28 @@ export default function ViewOrder() {
 
     }
 
+    console.log("Order data:", orderData);
+
 
     // Render each item in the FlatList
     const renderItem = ({ order }) => (
         <Card containerStyle={styles.card}>
-            
+
 
             <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-                <Text numberOfLines={1} ellipsizeMode="tail" style={styles.title}>Order No. {order.id} </Text>
+                {/* <Text numberOfLines={1} ellipsizeMode="tail" style={styles.title}>Order No. {order.id} </Text> */}
+                <Text numberOfLines={1} ellipsizeMode="tail" style={styles.title}>Order No.  </Text>
             </View>
 
             <View style={styles.cardContent2}>
-                    <View style={{ alignItems:'flex-start' }}>
-                        <Text>Date: {order.date}</Text>
-                        <Text style={styles.price}>Total Amount: R{order.total_amount}</Text>
-                    </View>
+                <View style={{ alignItems: 'flex-start' }}>
+                    {/* <Text>Date: {order.date}</Text> */}
+                    <Text>Date: </Text>
+
+                    {/* <Text style={styles.price}>Total Amount: R{order.total_amount}</Text> */}
+                    <Text style={styles.price}>Total Amount: R</Text>
+
+                </View>
             </View>
 
         </Card>
@@ -111,18 +121,18 @@ const styles = StyleSheet.create({
         alignItems: 'center', // Center elements vertically
     },
     cardContent: {
-        display:'flex',
-        alignItems:'center',
+        display: 'flex',
+        alignItems: 'center',
         flexDirection: 'row',
         justifyContent: 'space-evenly',
         marginHorizontal: 2,
     },
     cardContent2: {
-        display:'flex',
-        alignItems:'center',
+        display: 'flex',
+        alignItems: 'center',
         flexDirection: 'row',
         justifyContent: 'space-between',
-    },   
+    },
     image: {
         width: 320,
         height: 140,

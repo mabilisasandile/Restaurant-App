@@ -90,7 +90,7 @@ const Payment = ({ route }) => {
 
 
     return (
-        <View style={{ alignItems: 'center', justifyContent: 'center', backgroundColor: '#d8bfd8', height: 650 }}>
+        <View style={{ alignItems: 'center', justifyContent: 'center', height: 650 }}>
             <TextInput
                 value={name}
                 onChangeText={(text) => setName(text)}
