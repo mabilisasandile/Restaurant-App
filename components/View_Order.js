@@ -36,7 +36,7 @@ export default function ViewOrder() {
                 , where("user_id", "==", userID));
 
             const data = await getDocs(querySnapshot);
-            let fetchedData = {};
+            let fetchedData = [];
 
             data.forEach((doc) => {
                 console.log("Doc data: ", doc.data());
@@ -61,26 +61,33 @@ export default function ViewOrder() {
 
     // Render each item in the FlatList
     const renderItem = ({ order }) => (
-        <Card containerStyle={styles.card}>
+        <View>
+            {orderData ? (
+                <Card containerStyle={styles.card}>
+                    <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                        {/* <Text numberOfLines={1} ellipsizeMode="tail" style={styles.title}>Order No. {order.id} </Text> */}
+                        <Text numberOfLines={1} ellipsizeMode="tail" style={styles.title}>Order No.  </Text>
+                    </View>
 
+                    <View style={styles.cardContent2}>
+                        <View style={{ alignItems: 'flex-start' }}>
+                            <View>Client: {order.email}</View>
+                            {/* <Text>Date: {order.date}</Text> */}
+                            <Text>Date: </Text>
 
-            <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-                {/* <Text numberOfLines={1} ellipsizeMode="tail" style={styles.title}>Order No. {order.id} </Text> */}
-                <Text numberOfLines={1} ellipsizeMode="tail" style={styles.title}>Order No.  </Text>
-            </View>
+                            {/* <Text style={styles.price}>Total Amount: R{order.total_amount}</Text> */}
+                            <Text style={styles.price}>Total Amount: R</Text>
 
-            <View style={styles.cardContent2}>
-                <View style={{ alignItems: 'flex-start' }}>
-                    {/* <Text>Date: {order.date}</Text> */}
-                    <Text>Date: </Text>
-
-                    {/* <Text style={styles.price}>Total Amount: R{order.total_amount}</Text> */}
-                    <Text style={styles.price}>Total Amount: R</Text>
-
+                        </View>
+                    </View>
+                </Card>
+            ) : (
+                <View style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <Text style={{ fontWeight: '400', color: 'black' }}>Loading...</Text>
                 </View>
-            </View>
+            )}
+        </View>
 
-        </Card>
     );
 
     return (
