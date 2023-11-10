@@ -114,7 +114,7 @@ const SignUp = () => {
                     </View>
                     <TextInput
                         placeholder="Enter Card Number"
-                        value={card_number}
+                        value={cardNo}
                         onChangeText={setCardNo}
                         style={styles.inputs}
                     />

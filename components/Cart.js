@@ -89,7 +89,7 @@ function Cart() {
                 }}>
                     <View style={{ flex: 0.35, width: 142 }}>
                         <Image source={{ uri: item.imageURL }}
-                            style={{ height: 141, width: 142, borderRadius: 10 }} />
+                            style={{ height: 141, width: 150, borderRadius: 10 }} />
                     </View>
 
                     <View style={{

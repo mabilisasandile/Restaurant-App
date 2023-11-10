@@ -76,7 +76,7 @@ const SignIn = () => {
 
         <View style={styles.container}>
 
-            <View style={{ alignItems: 'center', justifyContent: 'center', backgroundColor: '#d8bfd8', width: 380, height: 600 }}>
+            <View style={{ alignItems: 'center', justifyContent: 'center', backgroundColor: '#d8bfd8', width: 380, height: 700 }}>
                 <View style={{ height: 50, alignItems: 'center', justifyContent: 'center', marginTop: 25, marginBottom: 25 }}>
                     <Text style={{ fontSize: 22, fontWeight: 'bold', color: '#8a2be2' }}>Welcome Back</Text>
                     <Text style={{ color: '#8a2be2' }}>Login to your account</Text>
@@ -146,9 +146,7 @@ const styles = StyleSheet.create({
     },
     button: {
         backgroundColor: '#8a2be2',
-        paddingVertical: 10,
-        paddingHorizontal: 20,
-        borderRadius: 20,
+        borderRadius: 15,
         width: 250,
         height: 40,
         color: '#ffffff',
@@ -157,7 +155,6 @@ const styles = StyleSheet.create({
         cursor: 'pointer',
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: 5,
         marginBottom: 5,
     },
     nav_link: {

@@ -20,7 +20,7 @@ export default function ViewOrder() {
     const navigation = useNavigation();
     const user = auth.currentUser;
     const userID = user ? user.uid : null; // Ensure the user object is not null
-
+    let fetchedData = [];
 
 
     useEffect(() => {
@@ -36,7 +36,6 @@ export default function ViewOrder() {
                 , where("user_id", "==", userID));
 
             const data = await getDocs(querySnapshot);
-            let fetchedData = [];
 
             data.forEach((doc) => {
                 console.log("Doc data: ", doc.data());
@@ -53,34 +52,41 @@ export default function ViewOrder() {
             console.log("Failed to fetch order data", error);
             Alert.alert("Something went wrong. Please try again!");
         }
-
     }
 
     console.log("Order data:", orderData);
 
 
     // Render each item in the FlatList
-    const renderItem = ({ order }) => (
+    const renderItem = ({ item }) => (
         <View>
             {orderData ? (
-                <Card containerStyle={styles.card}>
-                    <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-                        {/* <Text numberOfLines={1} ellipsizeMode="tail" style={styles.title}>Order No. {order.id} </Text> */}
-                        <Text numberOfLines={1} ellipsizeMode="tail" style={styles.title}>Order No.  </Text>
-                    </View>
-
+                <View style={styles.card}>  
                     <View style={styles.cardContent2}>
                         <View style={{ alignItems: 'flex-start' }}>
-                            <View>Client: {order.email}</View>
-                            {/* <Text>Date: {order.date}</Text> */}
-                            <Text>Date: </Text>
+                            <Text style={styles.title}>Order No. {item.order_no} </Text>
+                            <Text>Customer: {item.email}</Text>
+                            <Text>Date: {item.date}</Text>
+                            <Text style={{ fontWeight:'bold' }}>Item(s): </Text>
+                            <FlatList
+                                data={item.package}
+                                renderItem={({ item }) => (
+                                    <View style={{ flexDirection: 'row', marginLeft:30 }}>
+                                        <Text>* {item.name.length > 20 ? item.name.slice(0, 20) + '...' : item.name}</Text>
+                                        <Text style={{ fontSize: 22, fontWeight: '600' }}> | </Text>
+                                        <Text>R{item.price} </Text>
+                                        <Text style={{ fontSize: 22, fontWeight: '600' }}> | </Text>
+                                        <Text>QTY-{item.quantity}</Text>
+                                    </View>
 
-                            {/* <Text style={styles.price}>Total Amount: R{order.total_amount}</Text> */}
-                            <Text style={styles.price}>Total Amount: R</Text>
-
+                                )}
+                                keyExtractor={(item) => item.id}
+                            />
+                            <Text style={{marginLeft:30}}>-------------------------------------------</Text>
+                            <Text style={styles.price}>Total Amount: R{item.total_amount}</Text>
                         </View>
                     </View>
-                </Card>
+                </View>
             ) : (
                 <View style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <Text style={{ fontWeight: '400', color: 'black' }}>Loading...</Text>
@@ -103,7 +109,7 @@ export default function ViewOrder() {
             <FlatList
                 data={orderData}
                 renderItem={renderItem}
-                keyExtractor={(order) => order.id}
+                keyExtractor={(item) => item.id}
             />
         </View>
     );
@@ -113,7 +119,6 @@ export default function ViewOrder() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        // backgroundColor: '#d8bfd8',
         alignItems: 'center',
         justifyContent: 'center',
     },
@@ -123,7 +128,7 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         margin: 20,
         width: 320,
-        height: 200,
+        height: 'auto',
         flexDirection: 'row', // Row layout for card content
         alignItems: 'center', // Center elements vertically
     },
@@ -158,7 +163,9 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 18,
         fontWeight: 'bold',
-        marginLeft: 10,
+        marginLeft: 110,
+        marginBottom: 20,
+        textAlign: 'center',
     },
     description: {
         fontSize: 14,
@@ -168,8 +175,10 @@ const styles = StyleSheet.create({
     price: {
         fontSize: 16,
         fontWeight: 'bold',
-        marginTop: 5, // Add spacing between description and price
+        marginTop: 5, 
+        marginBottom: 10,
         color: '#8a2be2',
+        marginLeft: 30,
     },
     btn: {
         cursor: 'pointer',

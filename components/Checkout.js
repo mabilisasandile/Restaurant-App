@@ -31,6 +31,7 @@ export default function Checkout({ route }) {
     const [items, setItems] = useState([]);
     const [card_number, setCardNumber] = useState('');
     const [card_type, setCardType] = useState('');   // Initialize with a default value
+    // const [orderNo, setOrderNo] = useState(0);
 
 
     const nav = useNavigation();
@@ -39,6 +40,7 @@ export default function Checkout({ route }) {
     const email = user.email;
     let fetchedData = {};
     let data = [];
+    const randomNumber = Math.floor(Math.random() * 500) + 1;
 
 
     // Get today's date
@@ -108,6 +110,7 @@ export default function Checkout({ route }) {
                 card_number: card_number,
                 date: currentDate,
                 package: items,
+                order_no: randomNumber,
             });
 
             nav.navigate('Payment');
@@ -137,7 +140,7 @@ export default function Checkout({ route }) {
                             <Text style={styles.text}>Hello {user.name},</Text>
                             <Text style={styles.text}>Place your order here!</Text>
                             <Text style={styles.text}>Today: {currentDate}</Text>
-                            <Text style={{ textAlign:'center', fontWeight:'400' }}>{user.address}</Text>
+                            <Text style={{ textAlign: 'center', fontWeight: '400' }}>{user.address}</Text>
                         </View>
                     ))}
                     <Text>{email}</Text>
@@ -154,11 +157,15 @@ export default function Checkout({ route }) {
                         <Text>Select Card Type:</Text>
                         <Picker
                             style={{ width: 250, backgroundColor: 'white', borderWidth: 2 }}
-                            value={card_type}
+                            // value={card_type}
                             onValueChange={(itemValue) => setCardType(itemValue)}
                         >
                             {options.map((option) => (
-                                <Picker.Item key={option.value} label={option.label} value={option.value} />
+                                <Picker.Item
+                                    key={option.value}
+                                    label={option.label}
+                                    value={option.value}
+                                />
                             ))}
                         </Picker>
                     </View>

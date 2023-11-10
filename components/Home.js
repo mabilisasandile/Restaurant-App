@@ -101,7 +101,7 @@ export default function Home() {
                 stickyHeaderIndices={[0]}
                 showsVerticalScrollIndicator={true}
             >
-                <View>
+                <View style={{display:'flex', alignItems: 'center', justifyContent: 'center'}}>
 
                     <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', backgroundColor: '#d3d3d3', width: 300, borderRadius: 20, marginBottom: 20 }}>
                         <View style={{ flexDirection: 'row', alignItems: 'center', paddingLeft: 20, paddingRight: 20 }}>
