@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View, Text, FlatList, TouchableHighlight, Alert,
+import { StyleSheet, View, Text, FlatList, TouchableHighlight, Alert, Modal,
      Image, TouchableOpacity } from 'react-native';
 import { collection, getDocs, doc, getDoc, where, query } from "firebase/firestore";
 import { db } from "../config/firebase";

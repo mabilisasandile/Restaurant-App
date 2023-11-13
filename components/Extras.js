@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View, Text, FlatList, Image, TouchableOpacity } from 'react-native';
+import {
+    StyleSheet, View, Text, FlatList,
+    TouchableHighlight, TouchableOpacity, Alert
+} from 'react-native';
 import { collection, getDocs, doc, getDoc } from "firebase/firestore";
 import { db } from "../config/firebase";
 import { Card } from "react-native-elements";
@@ -30,7 +33,7 @@ export default function Extras() {
 
     const getItems = async () => {
         try {
-            const querySnapshot = await getDocs(collection(db, "items"));
+            const querySnapshot = await getDocs(collection(db, "extras"));
 
             const foodItems = querySnapshot.docs.map((doc) => ({
                 id: doc.id,
@@ -54,7 +57,7 @@ export default function Extras() {
 
         try {
             //CREATING REFERENCE TO SPECIFIC DOCUMENT IN MENU COLLECTION
-            const menuItemRef = doc(collection(db, "items"), itemId);
+            const menuItemRef = doc(collection(db, "extras"), itemId);
             console.log("Menu Item Ref ", menuItemRef)
 
             //FETCH DOCUMENT DATA
@@ -91,52 +94,44 @@ export default function Extras() {
         }
     }
 
-    const handleRemoveFromCart = id => {
-        try {
-            const [item] = items.filter(item => item.id === id);
-            dispatch(removeFromCart(item));
-            console.log("Item removed from cart:", item);
-        } catch (error) {
-            console.log("Failed to remove item from cart:", error);
-            Alert.alert("Something went wrong. Please try again!");
-        }
-
-    }
 
     // Render each item in the FlatList
     const renderItem = ({ item }) => (
-        <Card containerStyle={styles.card}>
-            <View style={styles.cardContent}>
-                <View >
-                    <TouchableOpacity onPress={() => handleViewItem(item.id)}>
-                        <Image
-                            source={{ uri: item.imageURL }}
-                            style={styles.image}
-                        />
-                    </TouchableOpacity>
-                </View>
-            </View>
+        <View>
+            {items.length < 1 ? (
+                <Text style={{ fontSize: 21, fontWeight: '500', textAlign: 'center' }}>Loading...</Text>
+            ) : (
+                <TouchableHighlight
+                    underlayColor='white'
+                    activeOpacity={0.9}
+                    onPress={() => handleViewItem(item.id)}
+                    style={{ marginVertical: 0 }}>
+                    <View style={styles.card}>
 
-            <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-                <Text style={styles.title}>{item.name}: </Text>
-            </View>
+                        <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                            <Text numberOfLines={1} ellipsizeMode="tail" style={styles.title}> {item.name} </Text>
+                        </View>
 
-            <View style={styles.cardContent}>
-                    <View style={{ alignItems:'flex-start' }}>
-                        <Text style={styles.price}>R{item.price}</Text>
+                        <View style={styles.cardContent}>
+
+                            <View style={{ alignItems: 'flex-start', marginLeft: 1 }}>
+                                <Text style={styles.price}>R{item.price}</Text>
+                            </View>
+                            <View style={{ alignItems: 'flex-end', marginRight: 1 }}>
+                                <TouchableOpacity onPress={() => handleAddToCart(item.id)}>
+                                    <FontAwesome
+                                        name="cart-plus"
+                                        size={25}
+                                        color='#8a2be2'
+                                    />
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+
                     </View>
-                    <View style={{ alignItems:'flex-end' }}>
-                        <TouchableOpacity onPress={() => handleAddToCart(item.id)}>
-                            <FontAwesome
-                                name="cart-plus"
-                                size={37}
-                                color='#8a2be2'
-                            />
-                        </TouchableOpacity>
-                    </View>
-            </View>
-
-        </Card>
+                </TouchableHighlight >
+            )}
+        </View>
     );
 
     return (
@@ -151,6 +146,7 @@ export default function Extras() {
 
             <FlatList
                 data={items}
+                numColumns={2} // Display two cards per row
                 renderItem={renderItem}
                 keyExtractor={(item) => item.id}
             />
@@ -162,23 +158,21 @@ export default function Extras() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#d8bfd8',
         alignItems: 'center',
         justifyContent: 'center',
     },
     card: {
-        borderBlockColor: 'black',
-        borderWidth: 1,
-        borderRadius: 20,
-        margin: 20,
-        width: 320,
-        height: 200,
-        flexDirection: 'row', // Row layout for card content
-        alignItems: 'center', // Center elements vertically
+        flex: 1,
+        backgroundColor: 'white',
+        borderRadius: 10,
+        margin: 5,
+        width: 170,
+        height: 60,
+        elevation: 13, // Add elevation for a card-like appearance
     },
     cardContent: {
-        display:'flex',
-        alignItems:'center',
+        display: 'flex',
+        alignItems: 'center',
         flexDirection: 'row',
         justifyContent: 'space-evenly',
         marginHorizontal: 2,

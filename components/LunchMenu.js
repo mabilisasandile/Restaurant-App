@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View, Text, FlatList, Alert,
-     Image, TouchableOpacity } from 'react-native';
+import {
+    StyleSheet, View, Text, FlatList, Alert,
+    Image, TouchableOpacity, Modal
+} from 'react-native';
 import { collection, getDocs, doc, getDoc, where, query } from "firebase/firestore";
 import { db } from "../config/firebase";
 import { Card } from "react-native-elements";
@@ -16,11 +18,14 @@ import { FontAwesome } from "@expo/vector-icons";
 export default function LunchMenu() {
 
     const [items, setItems] = useState([]);
-    const [lunchData, setLunchData] = useState([])
+    const [lunchData, setLunchData] = useState([]);
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [extras, setExtras] = useState([]);
 
     const navigation = useNavigation();
     const dispatch = useDispatch();
     let fetchedData = [];
+    let extrasData = [];
 
     const cartItems = useSelector((state) => state.CartSlice);
 
@@ -31,6 +36,7 @@ export default function LunchMenu() {
 
 
 
+    // Fetch lunch menu from Firestore
     const handleLunchMenu = async () => {
         try {
             const querySnapshot = query(collection(db, "items")
@@ -52,9 +58,33 @@ export default function LunchMenu() {
             console.log("Failed to fetch lunch data", error);
             Alert.alert("Something went wrong while fetching data.");
         }
-
     }
 
+
+
+    //Fetch extras menu from Firestore
+    const handleExtrasMenu = async () => {
+        try {
+            const querySnapshot = query(collection(db, "extras")
+                , where("category", "==", "Drink"));
+
+            const data = await getDocs(querySnapshot);
+
+            data.forEach((doc) => {
+                console.log("Doc data: ", doc.data());
+                extrasData[doc.id] = doc.data();
+
+            });
+
+            setExtras(Object.values(extrasData));
+
+            console.log("Extras menu:", extras);
+
+        } catch (error) {
+            console.log("Failed to fetch extras data", error);
+            Alert.alert("Something went wrong while fetching data.");
+        }
+    }
 
 
 
@@ -93,6 +123,10 @@ export default function LunchMenu() {
     const handleAddToCart = id => {
         try {
             const [item] = items.filter(item => item.id === id);
+
+            handleExtrasMenu();
+            setIsModalVisible(true);
+
             dispatch(addToCart(item));
             console.log("Item added to cart:", item);
             Alert.alert("Item added to cart");
@@ -102,18 +136,9 @@ export default function LunchMenu() {
         }
     }
 
-    const handleRemoveFromCart = id => {
-        try {
-            const [item] = items.filter(item => item.id === id);
-            dispatch(removeFromCart(item));
-            console.log("Item removed from cart:", item);
-            Alert.alert("Item removed from cart");
-        } catch (error) {
-            console.log("Failed to remove item from cart:", error);
-            Alert.alert("Something went wrong. Please try again!");
-        }
-
-    }
+    const hideModal = () => {
+        setIsModalVisible(false);
+    };
 
     // Render each item in the FlatList
     const renderItem = ({ item }) => (
@@ -134,18 +159,18 @@ export default function LunchMenu() {
             </View>
 
             <View style={styles.cardContent2}>
-                    <View style={{ alignItems:'flex-start' }}>
-                        <Text style={styles.price}>R{item.price}</Text>
-                    </View>
-                    <View style={{ alignItems:'flex-end' }}>
-                        <TouchableOpacity onPress={() => handleAddToCart(item.id)}>
-                            <FontAwesome
-                                name="cart-plus"
-                                size={37}
-                                color='#8a2be2'
-                            />
-                        </TouchableOpacity>
-                    </View>
+                <View style={{ alignItems: 'flex-start' }}>
+                    <Text style={styles.price}>R{item.price}</Text>
+                </View>
+                <View style={{ alignItems: 'flex-end' }}>
+                    <TouchableOpacity onPress={() => handleAddToCart(item.id)}>
+                        <FontAwesome
+                            name="cart-plus"
+                            size={37}
+                            color='#8a2be2'
+                        />
+                    </TouchableOpacity>
+                </View>
             </View>
 
         </Card>
@@ -166,6 +191,37 @@ export default function LunchMenu() {
                 renderItem={renderItem}
                 keyExtractor={(item) => item.id}
             />
+
+            {/* Modal */}
+            <Modal
+                visible={isModalVisible}
+                transparent={true}
+                animationType="slide"
+                onRequestClose={hideModal}
+            >
+                <View style={styles.modalContainer}>
+                    <View style={styles.modalContent}>
+                        {/* Add your content for the modal here */}
+                        <Text style={{ fontSize: 18, fontWeight: '700' }}>Add Extras</Text>
+                        <FlatList
+                            data={extras}
+                            renderItem={({ item }) => (
+                                <View style={{ flexDirection: 'row', marginLeft: 30 }}>
+                                    <TouchableOpacity onPress={() => handleAddToCart(item.id)}>
+                                        <Text style={{ fontSize: 18, fontWeight: '500' }}>* {item.name.length > 20 ? item.name.slice(0, 20) + '...' : item.name} - R{item.price}</Text>
+                                    </TouchableOpacity>
+                                </View>
+
+                            )}
+                            keyExtractor={(item) => item.id}
+                        />
+                        {/* Close button */}
+                        <TouchableOpacity onPress={hideModal}>
+                            <Text style={styles.closeButton}>Close</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </Modal>
         </View>
     );
 }
@@ -189,18 +245,18 @@ const styles = StyleSheet.create({
         alignItems: 'center', // Center elements vertically
     },
     cardContent: {
-        display:'flex',
-        alignItems:'center',
+        display: 'flex',
+        alignItems: 'center',
         flexDirection: 'row',
         justifyContent: 'space-evenly',
         marginHorizontal: 2,
     },
     cardContent2: {
-        display:'flex',
-        alignItems:'center',
+        display: 'flex',
+        alignItems: 'center',
         flexDirection: 'row',
         justifyContent: 'space-between',
-    },   
+    },
     image: {
         width: 320,
         height: 140,
@@ -256,5 +312,25 @@ const styles = StyleSheet.create({
         color: 'white',
         fontWeight: '700',
         fontSize: 16,
-    }
+    },
+    modalContainer: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    modalContent: {
+        padding: 20,
+        borderRadius: 10,
+        height: "70%", // Set the height to half of the screen
+        width: "80%", // Set the width to 80% of the screen
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: '#d8bfd8',
+    },
+    closeButton: {
+        marginTop: 20,
+        color: "blue",
+        fontSize: 20,
+        fontWeight:'700'
+    },
 });
