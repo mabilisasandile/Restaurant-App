@@ -180,8 +180,8 @@ const styles = StyleSheet.create({
     image: {
         width: 320,
         height: 140,
-        borderTopLeftRadius: 20,
-        borderTopRightRadius: 20,
+        borderTopLeftRadius: 10,
+        borderTopRightRadius: 10,
         resizeMode: 'cover',
         marginTop: -16,
     },

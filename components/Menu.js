@@ -162,7 +162,7 @@ export default function Menu() {
                                     <FontAwesome
                                         name="cart-plus"
                                         size={25}
-                                        color='black'
+                                        color='#8a2be2'
                                     />
                                 </TouchableOpacity>
                             </View>
@@ -172,8 +172,6 @@ export default function Menu() {
                 </TouchableHighlight >
             )}
         </View>
-
-
     );
 
     return (
@@ -293,7 +291,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: 'bold',
         marginTop: 5, // Add spacing between description and price
-        // color: '#8a2be2',
+        color: '#8a2be2',
     },
     btn: {
         cursor: 'pointer',

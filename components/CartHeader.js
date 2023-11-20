@@ -18,8 +18,6 @@ export default function CartHeader() {
 
 
     useEffect(() => {
-        // const auth = getAuth();
-
         // Check the user's authentication status
         onAuthStateChanged(auth, (user) => {
             if (user) {

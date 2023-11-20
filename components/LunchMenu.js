@@ -123,18 +123,35 @@ export default function LunchMenu() {
     const handleAddToCart = id => {
         try {
             const [item] = items.filter(item => item.id === id);
+            dispatch(addToCart(item));
+
+            console.log("Item added to cart:", item);
+            Alert.alert("Item added to cart");
 
             handleExtrasMenu();
             setIsModalVisible(true);
-
-            dispatch(addToCart(item));
-            console.log("Item added to cart:", item);
-            Alert.alert("Item added to cart");
         } catch (error) {
             console.log("Failed to add to cart:", error);
             Alert.alert("Something went wrong. Please try again!");
         }
     }
+
+
+    //Add Extras to cart
+    const handleAddExtras = id => {
+        try {
+            const [item] = items.filter(item => item.id === id);
+            dispatch(addToCart(item));
+
+            console.log("Item added to cart:", item);
+            Alert.alert("Item added to cart");
+
+        } catch (error) {
+            console.log("Failed to add extras to cart:", error);
+            Alert.alert("Something went wrong. Please try again!");
+        }
+    }
+
 
     const hideModal = () => {
         setIsModalVisible(false);
@@ -207,8 +224,8 @@ export default function LunchMenu() {
                             data={extras}
                             renderItem={({ item }) => (
                                 <View style={{ flexDirection: 'row', marginLeft: 30 }}>
-                                    <TouchableOpacity onPress={() => handleAddToCart(item.id)}>
-                                        <Text style={{ fontSize: 18, fontWeight: '500' }}>* {item.name.length > 20 ? item.name.slice(0, 20) + '...' : item.name} - R{item.price}</Text>
+                                    <TouchableOpacity onPress={() => handleAddExtras(item.id)}>
+                                        <Text style={{ fontSize: 18, fontWeight: '500' }}>* {item.name.length > 20 ? item.name.slice(0, 20) + '...' : item.name} | R{item.price}</Text>
                                     </TouchableOpacity>
                                 </View>
 
@@ -237,7 +254,7 @@ const styles = StyleSheet.create({
     card: {
         borderBlockColor: 'black',
         borderWidth: 1,
-        borderRadius: 20,
+        borderRadius: 10,
         margin: 20,
         width: 320,
         height: 200,
@@ -260,8 +277,8 @@ const styles = StyleSheet.create({
     image: {
         width: 320,
         height: 140,
-        borderTopLeftRadius: 20,
-        borderTopRightRadius: 20,
+        borderTopLeftRadius: 10,
+        borderTopRightRadius: 10,
         resizeMode: 'cover',
         marginTop: -16,
     },
@@ -331,6 +348,6 @@ const styles = StyleSheet.create({
         marginTop: 20,
         color: "blue",
         fontSize: 20,
-        fontWeight:'700'
+        fontWeight: '700'
     },
 });

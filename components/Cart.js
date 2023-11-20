@@ -8,12 +8,10 @@ import CartHeader from "./CartHeader";
 import { AntDesign } from "@expo/vector-icons";
 import { useDispatch, useSelector } from "react-redux";
 import CartSlice, { removeFromCart } from "../Redux/CartSlice";
-import { addToCart } from "../Redux/CartSlice";
 import { decrementQuantity } from "../Redux/CartSlice";
 import { incrementQuantity } from "../Redux/CartSlice";
 import { useNavigation } from "@react-navigation/native";
 import { auth } from "../config/firebase";
-
 
 
 
@@ -24,29 +22,37 @@ function Cart() {
     var data = JSON.stringify(storeData);
     data = JSON.parse(data);
     const nav = useNavigation();
-    let amount = 0;
+    const [amount, setAmount] = useState(0);
 
 
     useEffect(() => {
-
         console.log("Items on Cart:", storeData);
+        calculateSubTotal();
+    }, [storeData]);
 
-    }, []);
 
+    // Calculate sub total amount
+    const calculateSubTotal = () => {
+        let totalAmount = 0;
+        storeData.forEach((item) => {
+            totalAmount += item.price * item.quantity;
+        });
+        setAmount(totalAmount);
+    };
 
-    const subTotal = () => {
-        try {
-            // storeData.forEach(element => {
-            data.forEach(element => {
-                amount += element.price;
-            });
-        } catch (error) {
-            console.log("Error:", error);
+    // Increase item quantity
+    const increaseQuantity = (item) => {
+        dispatch(incrementQuantity(item));
+        calculateSubTotal();
+    };
+
+    // Decrease item quantity
+    const decreaseQuantity = (item) => {
+        if (item.quantity > 1) {
+            dispatch(decrementQuantity(item));
+            calculateSubTotal();
         }
-
-        return amount;
-    }
-
+    };
 
 
     const handleCheckOut = async () => {
@@ -62,8 +68,9 @@ function Cart() {
     }
 
     const handleRemoveFromCart = (id) => {
+        console.log("handleRemoveFromCart item id:", id);
         try {
-            const itemToRemove = data.find(item => item.id === id);
+            const itemToRemove = storeData.find(item => item.id === id);
             if (itemToRemove) {
                 dispatch(removeFromCart(itemToRemove));
                 Alert.alert("Item removed from cart");
@@ -74,13 +81,12 @@ function Cart() {
             console.log("Failed to remove from cart", error);
             Alert.alert("Error", "Unable to remove item.", [{ text: "OK" }]);
         }
-
     };
 
 
 
     return (
-        <SafeAreaView style={{ flex: 1, paddingHorizontal: 10, backgroundColor: '#d8bfd8', gap: 15 }}>
+        <SafeAreaView style={{ flex: 1, paddingHorizontal: 10, gap: 15 }}>
             < CartHeader />
             <FlatList data={data} renderItem={({ item, index }) => (
                 < View style={{
@@ -129,7 +135,7 @@ function Cart() {
                         }}>
                             <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10, padding: 10 }}>
                                 <TouchableOpacity
-                                    onPress={() => { dispatch(decrementQuantity(item)) }}
+                                    onPress={() => { decreaseQuantity(item) }}
                                 >
                                     <AntDesign name="minuscircleo"
                                         size={24}
@@ -144,7 +150,7 @@ function Cart() {
                                         if (item.quantity == 10) {
 
                                         } else {
-                                            dispatch(incrementQuantity(item));
+                                            increaseQuantity(item);
                                         }
                                     }}
                                 >
@@ -171,7 +177,7 @@ function Cart() {
                     <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-evenly' }}>
                         <Text style={{ fontSize: 18, fontWeight: '700', color: 'white', textAlign: 'center' }}>CHECKOUT</Text>
                         <Text style={{ fontSize: 18, fontWeight: '700', color: 'white', textAlign: 'center' }}>
-                            ZAR {parseFloat((subTotal()).toFixed(2)).toFixed(2)}
+                            ZAR {parseFloat((amount).toFixed(2)).toFixed(2)}
                         </Text>
                     </View>
                 </TouchableOpacity>

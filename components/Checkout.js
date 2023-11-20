@@ -30,7 +30,8 @@ export default function Checkout({ route }) {
     const [docId, setDocId] = useState(null);
     const [items, setItems] = useState([]);
     const [card_number, setCardNumber] = useState('');
-    const [card_type, setCardType] = useState('');   // Initialize with a default value
+    const [card_type, setCardType] = useState(''); 
+    const [amount, setAmount] = useState(0);
     // const [orderNo, setOrderNo] = useState(0);
 
 
@@ -65,6 +66,7 @@ export default function Checkout({ route }) {
     useEffect(() => {
         getUserData();
         setItems(storeData)
+        setAmount(totalAmount);
         console.log("User logged in:", user);
         console.log("User id:", userID);
     }, []);
@@ -113,8 +115,8 @@ export default function Checkout({ route }) {
                 order_no: randomNumber,
             });
 
-            nav.navigate('Payment');
-            // nav.navigate('Payment', { amount: totalAmount });  // Pass the 'amount' as a parameter 
+            // nav.navigate('Payment');
+            nav.navigate('Payment', { amount: amount });  // Pass the 'amount' as a parameter 
 
         } catch (error) {
             Alert.alert("Error", "Unable to process order.", [{ text: "OK" }]);
@@ -199,7 +201,10 @@ export default function Checkout({ route }) {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
+        // flex: 1,
+        marginTop: 100,
+        marginLeft: 20,
+        display:'flex',
         alignItems: 'center',
         justifyContent: 'center',
     },
@@ -222,10 +227,10 @@ const styles = StyleSheet.create({
     button: {
         backgroundColor: '#8a2be2',
         padding: 10,
-        marginLeft: 20,
+        // marginLeft: 10,
         marginTop: 5,
         borderRadius: 10,
-        width: 300,
+        width: 250,
         marginBottom: 5,
     },
     inputs: {

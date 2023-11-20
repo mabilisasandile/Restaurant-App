@@ -82,9 +82,9 @@ const SignUp = () => {
                 stickyHeaderIndices={[0]}
                 showsVerticalScrollIndicator={false}
             >
-                <View style={{ height: 70, alignItems: 'center', justifyContent: 'center', paddingTop: 5 }}>
-                    <Text style={{ fontSize: 22, fontWeight: 'bold', color: '#8a2be2' }}>Register</Text>
-                    <Text style={{ color: '#8a2be2' }}>Create your account</Text>
+                <View style={{ height: 70,display:'flex', alignItems: 'center', justifyContent: 'center', paddingTop: 5, backgroundColor:'#d8bfd8' }}>
+                    <Text style={{ fontSize: 22, fontWeight: 'bold', color: '#8a2be2', textAlign:'center' }}>Register</Text>
+                    <Text style={{ color: '#8a2be2', textAlign:'center' }}>Create your account</Text>
                 </View>
 
                 <View>

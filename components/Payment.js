@@ -12,13 +12,14 @@ import { useDispatch, useSelector } from "react-redux";
 
 const Payment = ({ route }) => {
 
-    // const { amount } = route.params;
+    const { amount } = route.params;
     const dispatch = useDispatch();
     const storeData = useSelector((state) => state.CartSlice);
     var data = JSON.stringify(storeData);
     data = JSON.parse(data);
 
     const [name, setName] = useState('');
+    const [totalAmount, setTotalAmount] = useState(0);
     const stripe = useStripe();
     const nav = useNavigation();
     const user = auth.currentUser;
@@ -27,18 +28,19 @@ const Payment = ({ route }) => {
 
 
     useEffect(() => {
+        setTotalAmount(amount * 100);   // Convert amount to cents (Stripe expects amount in cents)
         console.log("Total Amount:");
-    }, []);
+    }, []);  
 
 
 
     const pay = async () => {
         try {
-            // Sending request
+            // Sending request to process the payment
             const response = await fetch('https://restaurant-app-sandile.onrender.com/pay', {
                 method: 'POST',
-                body: JSON.stringify({ name }),
-                // body: JSON.stringify({ name, amount }),     // Include the amount in the request body
+                // body: JSON.stringify({ name }),
+                body: JSON.stringify({ name, totalAmount }),     // Include the amount in the request body
                 headers: {
                     "Content-Type": "application/json"
                 }
@@ -54,7 +56,7 @@ const Payment = ({ route }) => {
             const initSheet = await stripe.initPaymentSheet({
                 paymentIntentClientSecret: clientSecret,
                 merchantDisplayName: 'Sandile',
-                // amount: amount * 100, // Convert amount to cents (Stripe expects amount in cents)
+                amount: totalAmount, 
                 currency: 'zar', // Set the currency
             });
             if (initSheet.error) {
@@ -69,7 +71,7 @@ const Payment = ({ route }) => {
             }
 
             Alert.alert("Payment complete, thank you!");
-            dispatch(removeFromCart(data));
+            dispatch(removeFromCart(storeData));     // or dispatch(removeFromCart(data))
             nav.navigate('Order_Placed');
 
         } catch (err) {
