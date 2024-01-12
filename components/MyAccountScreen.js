@@ -32,6 +32,9 @@ export default function MyAccountScreen() {
       console.log("User Email:", email);
       getUserData();
     }
+    else {
+      handleSignIn();
+    }
   }, [userID, getUserData]);
 
   const getUserData = async () => {

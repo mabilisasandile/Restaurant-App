@@ -33,11 +33,17 @@ function Cart() {
 
     // Calculate sub total amount
     const calculateSubTotal = () => {
-        let totalAmount = 0;
-        storeData.forEach((item) => {
-            totalAmount += item.price * item.quantity;
-        });
-        setAmount(totalAmount);
+        try {
+            let totalAmount = 0;
+            storeData.forEach((item) => {
+                totalAmount += item.price * item.quantity;
+            });
+            setAmount(totalAmount);
+        } catch (error) {
+            console.log("Failed to calculate sub total:", error);
+            Alert.alert("Error", "Something went wrong.", [{ text: "OK" }]);
+        }
+
     };
 
     // Increase item quantity
@@ -72,8 +78,14 @@ function Cart() {
         try {
             const itemToRemove = storeData.find(item => item.id === id);
             if (itemToRemove) {
-                dispatch(removeFromCart(itemToRemove));
-                Alert.alert("Item removed from cart");
+                try {
+                    dispatch(removeFromCart(itemToRemove));
+                    Alert.alert("Item removed from cart");
+                } catch (error) {
+                    console.log("Failed to remove from cart", error);
+                    Alert.alert("Error", "Something went wrong.", [{ text: "OK" }]);
+                }
+
             } else {
                 Alert.alert("Error", "Item not found in the cart.", [{ text: "OK" }]);
             }

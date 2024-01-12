@@ -71,9 +71,17 @@ const Payment = ({ route }) => {
             }
 
             Alert.alert("Payment complete, thank you!");
-            dispatch(removeFromCart(storeData));     // or dispatch(removeFromCart(data))
-            nav.navigate('Order_Placed');
+            // nav.navigate('Order_Placed');
 
+            try {
+                dispatch(removeFromCart(storeData));     // or dispatch(removeFromCart(data))
+                nav.navigate('Order_Placed');
+
+            } catch (error) {
+                console.log("Error occurred while clearing cart", error);
+                nav.navigate('Order_Placed');
+            }
+            
         } catch (err) {
             console.log("Error: ", err);
             Alert.alert("Something went wrong, try again later!");

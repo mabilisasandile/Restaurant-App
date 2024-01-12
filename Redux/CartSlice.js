@@ -17,10 +17,15 @@ const cartSlice = createSlice({
             }       
         },          
         removeFromCart: (state, actions) => {
-            const newList = state.filter(
-                (value) => value.name !== actions.payload.name
-            );
-            return (state - newList);
+            try {
+                const newList = state.filter(
+                    (value) => value.name !== actions.payload.name
+                );
+                return (state - newList);
+            } catch (error) {
+                console.log("Remove from cart error:", error);
+            }
+            
         },
         // removeFromCart(state, action) {
         //     const nextCartItems = state.cartItems.filter(

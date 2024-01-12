@@ -19,7 +19,7 @@ import SignUp from '../components/SignUp';
 import MapScreen from '../components/MapScreen';
 import MyAccountScreen from '../components/MyAccountScreen';
 import MyOrderScreen from '../components/MyOrderScreen';
-import Checkout from '../components/CheckOut';
+import Checkout from '../components/Checkout';
 import Payment from '../components/Payment';
 import OrderPlaced from '../components/OrderPlaced';
 import TabScreens from './TabScreens';
